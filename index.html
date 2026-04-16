@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MO Gas Houston — Interview Prep</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--card:#161b22;--border:#30363d;
+  --text:#e6edf3;--muted:#8b949e;
+  --amber:#f59e0b;--green:#22c55e;--blue:#60a5fa;--red:#f87171;--purple:#a78bfa;
+  --sidebar:260px;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.6;display:flex}
+a{color:var(--blue);text-decoration:none}
+
+/* SIDEBAR */
+#sidebar{width:var(--sidebar);min-height:100vh;background:#010409;border-right:1px solid var(--border);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+#sidebar-header{padding:20px 16px 12px;border-bottom:1px solid var(--border)}
+#sidebar-header h1{font-size:13px;font-weight:700;color:var(--amber);letter-spacing:.5px;text-transform:uppercase}
+#sidebar-header p{font-size:11px;color:var(--muted);margin-top:2px}
+#sidebar nav{flex:1;padding:8px 0}
+#sidebar nav a{display:flex;align-items:center;gap:8px;padding:7px 16px;font-size:12px;color:var(--muted);transition:all .15s;border-left:2px solid transparent;white-space:nowrap}
+#sidebar nav a:hover,#sidebar nav a.active{color:var(--text);background:rgba(255,255,255,.04);border-left-color:var(--amber)}
+#sidebar nav .nav-group{padding:12px 16px 4px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+#sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+
+/* MAIN */
+#main{margin-left:var(--sidebar);flex:1;max-width:960px;padding:32px 40px 80px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1a1f2e 0%,#161b22 100%);border:1px solid var(--border);border-radius:10px;padding:32px;margin-bottom:32px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(245,158,11,.12) 0%,transparent 70%);pointer-events:none}
+.hero h2{font-size:24px;font-weight:700;color:var(--amber);margin-bottom:6px}
+.hero p{color:var(--muted);font-size:14px;max-width:600px}
+.hero .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tag{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid}
+.tag.amber{color:var(--amber);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)}
+.tag.green{color:var(--green);border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.08)}
+.tag.blue{color:var(--blue);border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.08)}
+
+/* SECTIONS */
+section{margin-bottom:40px;scroll-margin-top:20px}
+section h2{font-size:18px;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+section h2 .icon{font-size:16px}
+section h3{font-size:14px;font-weight:600;color:var(--amber);margin:16px 0 8px}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:12px}
+.card-title{font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* HIGHLIGHT BOXES */
+.hl{border-radius:6px;padding:12px 16px;margin:10px 0;border-left:3px solid}
+.hl.amber{background:rgba(245,158,11,.06);border-color:var(--amber)}
+.hl.green{background:rgba(34,197,94,.06);border-color:var(--green)}
+.hl.blue{background:rgba(96,165,250,.06);border-color:var(--blue)}
+.hl.red{background:rgba(248,113,113,.06);border-color:var(--red)}
+.hl p{font-size:13px;color:var(--text)}
+.hl strong{color:var(--amber)}
+
+/* LISTS */
+ul.clean{list-style:none;padding:0}
+ul.clean li{padding:4px 0;font-size:13px;color:var(--muted);padding-left:14px;position:relative}
+ul.clean li::before{content:'›';position:absolute;left:0;color:var(--amber)}
+ul.bullets li{margin-left:18px;font-size:13px;color:var(--muted);padding:2px 0}
+
+/* TABLES */
+table.data{width:100%;border-collapse:collapse;font-size:12px}
+table.data th{background:#0d1117;color:var(--muted);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.5px;font-size:11px}
+table.data td{padding:8px 12px;border-bottom:1px solid rgba(48,54,61,.5);color:var(--text)}
+table.data tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge.red{background:rgba(248,113,113,.15);color:var(--red)}
+.badge.green{background:rgba(34,197,94,.15);color:var(--green)}
+.badge.amber{background:rgba(245,158,11,.15);color:var(--amber)}
+.badge.blue{background:rgba(96,165,250,.15);color:var(--blue)}
+
+/* Q&A */
+.qa-item{border:1px solid var(--border);border-radius:6px;margin-bottom:8px;overflow:hidden}
+.qa-q{padding:12px 16px;cursor:pointer;font-size:13px;font-weight:500;display:flex;justify-content:space-between;align-items:center;transition:background .15s}
+.qa-q:hover{background:rgba(255,255,255,.03)}
+.qa-q .arrow{color:var(--muted);transition:transform .2s}
+.qa-a{display:none;padding:12px 16px;background:rgba(255,255,255,.02);font-size:13px;color:var(--muted);border-top:1px solid var(--border);line-height:1.7}
+.qa-a.open{display:block}
+.qa-q.open .arrow{transform:rotate(90deg)}
+
+/* QUIZ */
+.quiz-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;border:1px solid var(--amber);background:rgba(245,158,11,.08);color:var(--amber);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;margin:4px}
+.quiz-btn:hover{background:rgba(245,158,11,.18)}
+#quiz-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:999;align-items:center;justify-content:center}
+#quiz-modal.open{display:flex}
+#quiz-box{background:var(--card);border:1px solid var(--border);border-radius:12px;width:640px;max-width:95vw;max-height:90vh;overflow-y:auto;padding:28px}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.quiz-title{font-size:16px;font-weight:700;color:var(--amber)}
+.quiz-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1}
+.quiz-progress{height:4px;background:var(--border);border-radius:2px;margin-bottom:20px}
+.quiz-progress-bar{height:100%;background:var(--amber);border-radius:2px;transition:width .3s}
+.quiz-q-text{font-size:14px;font-weight:600;margin-bottom:16px;line-height:1.5}
+.quiz-q-num{font-size:11px;color:var(--muted);margin-bottom:6px}
+.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:6px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all .15s;font-size:13px}
+.quiz-option:hover{border-color:var(--amber);background:rgba(245,158,11,.04)}
+.quiz-option.correct{border-color:var(--green);background:rgba(34,197,94,.08);color:var(--green)}
+.quiz-option.wrong{border-color:var(--red);background:rgba(248,113,113,.08);color:var(--red)}
+.quiz-option.disabled{cursor:default;pointer-events:none}
+.quiz-option .opt-letter{font-weight:700;min-width:18px;color:var(--muted)}
+.quiz-explanation{background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.2);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--blue);margin-bottom:12px;display:none;line-height:1.6}
+.quiz-explanation.show{display:block}
+.quiz-next{padding:8px 20px;background:var(--amber);color:#000;font-weight:700;font-size:13px;border:none;border-radius:6px;cursor:pointer;display:none}
+.quiz-next.show{display:inline-block}
+.quiz-result{text-align:center;padding:20px 0}
+.quiz-score{font-size:48px;font-weight:700;color:var(--amber);margin-bottom:8px}
+.quiz-score-label{font-size:14px;color:var(--muted);margin-bottom:20px}
+.quiz-retry{padding:10px 24px;background:transparent;color:var(--amber);border:1px solid var(--amber);border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}
+
+/* CASE STUDY */
+.case{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:14px}
+.case-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.case-title{font-size:14px;font-weight:700}
+.case-date{font-size:11px;color:var(--muted)}
+.case-body{font-size:13px;color:var(--muted);line-height:1.7}
+.case-body strong{color:var(--text)}
+
+/* NUMBER CARDS */
+.num-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;text-align:center}
+.num-val{font-size:22px;font-weight:700;color:var(--amber);margin-bottom:2px}
+.num-label{font-size:11px;color:var(--muted)}
+
+/* FORMULA */
+.formula{background:#010409;border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-family:'Courier New',monospace;font-size:12px;color:var(--green);margin:8px 0}
+
+/* SCROLL BEHAVIOR */
+html{scroll-behavior:smooth}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  #sidebar{display:none}
+  #main{margin-left:0;padding:16px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div id="sidebar-header">
+    <h1>MO Gas — Houston</h1>
+    <p>Interview Preparation Guide</p>
+  </div>
+  <nav>
+    <div class="nav-group">Foundation</div>
+    <a href="#mindset">🧠 Mindset & MO Role</a>
+    <a href="#fundamentals">⛽ Gas Market Fundamentals</a>
+    <a href="#texas">🤠 Texas Gas Market</a>
+    <div class="nav-group">Risk & Valuation</div>
+    <a href="#var">📊 VaR & Risk Metrics</a>
+    <a href="#mtm">💹 MtM & P&L</a>
+    <a href="#positions">↕️ Positions & Hedging</a>
+    <div class="nav-group">Analysis</div>
+    <a href="#market-view">🔭 Market View Construction</a>
+    <a href="#stress">⚡ Stress Testing & Ext. Risks</a>
+    <a href="#value">💎 Value Capture & Optimization</a>
+    <div class="nav-group">Preparation</div>
+    <a href="#interview">🎯 Interview Q&A Masterlist</a>
+    <a href="#cases">📋 Case Studies</a>
+    <a href="#quiz">🏆 MCQ Quizzes</a>
+    <a href="#numbers">🔢 Quick Reference Numbers</a>
+  </nav>
+  <div id="sidebar-footer">Houston, TX · 2025</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <h2>Middle Office Gas Trading — Houston Interview Prep</h2>
+  <p>Comprehensive preparation covering gas fundamentals, Texas market dynamics, VaR/MtM, hedging strategies, market view construction, stress testing, and value optimization. All in English.</p>
+  <div class="tags">
+    <span class="tag amber">VaR & Risk</span>
+    <span class="tag amber">MtM & P&L</span>
+    <span class="tag green">Texas Gas Markets</span>
+    <span class="tag green">ERCOT Nodal</span>
+    <span class="tag blue">Hedging Strategies</span>
+    <span class="tag blue">Stress Testing</span>
+    <span class="tag amber">MCQ Quizzes</span>
+    <span class="tag green">Case Studies</span>
+  </div>
+</div>
+
+<!-- SECTION 1: MINDSET -->
+<section id="mindset">
+  <h2><span class="icon">🧠</span> Mindset & The MO Role</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">What Middle Office Does Daily</div>
+      <ul class="clean">
+        <li>Compute and report daily P&L to traders and management</li>
+        <li>Validate and reconcile trade bookings (vs front office)</li>
+        <li>Monitor risk limits (VaR, Delta, position limits)</li>
+        <li>Produce VaR, Greeks, and sensitivities reports</li>
+        <li>Investigate and explain unexpected P&L moves</li>
+        <li>Mark forward curves and verify market data</li>
+        <li>Coordinate between traders, risk, finance, and IT</li>
+        <li>Support regulatory reporting (CFTC, FERC)</li>
+        <li>Run scenario analysis and stress tests</li>
+        <li>Manage trade lifecycle events (expirations, settlements)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Key Soft Skills Interviewers Are Testing</div>
+      <ul class="clean">
+        <li><strong style="color:var(--amber)">Attention to detail</strong> — small errors cause large P&L misstatements</li>
+        <li><strong style="color:var(--amber)">Commercial awareness</strong> — understand what drives gas prices today</li>
+        <li><strong style="color:var(--amber)">Communication</strong> — explain complex risk metrics to non-experts</li>
+        <li><strong style="color:var(--amber)">Analytical rigor</strong> — data-driven, hypothesis-driven thinking</li>
+        <li><strong style="color:var(--amber)">Speed under pressure</strong> — MO works on tight EOD deadlines</li>
+        <li><strong style="color:var(--amber)">Escalation instinct</strong> — know when to flag, not just fix silently</li>
+        <li><strong style="color:var(--amber)">Collaboration</strong> — MO sits between traders and back office</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl amber">
+    <p><strong>Mindset mantra:</strong> "I validate, explain, and protect." MO is the control layer between trading and the world. Every number you report is a decision input. Own it.</p>
+  </div>
+
+  <h3>A Typical MO Day (Gas Desk)</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Time</th><th>Activity</th></tr>
+      <tr><td>7:00 AM</td><td>Review overnight market moves — natural gas futures, weather forecasts, EIA projections</td></tr>
+      <tr><td>7:30 AM</td><td>Load market data into ETRM system; mark curves; validate closing prices from ICE/CME</td></tr>
+      <tr><td>8:00 AM</td><td>Run preliminary P&L; identify large movers; reconcile vs. previous day positions</td></tr>
+      <tr><td>9:00 AM</td><td>Morning risk report — VaR, Greek sensitivities, position summary — distributed to risk management</td></tr>
+      <tr><td>10:00 AM</td><td>EIA weekly storage report (Thursday) — update model, communicate price impact to traders</td></tr>
+      <tr><td>11:00 AM</td><td>Trade capture validation — verify new trades booked by traders match confirms/term sheets</td></tr>
+      <tr><td>2:00 PM</td><td>Intraday P&L estimate; monitor limit utilization; flag any approaching breaches</td></tr>
+      <tr><td>4:00 PM</td><td>Final EOD mark-to-market; P&L attribution by desk, product, tenor</td></tr>
+      <tr><td>5:00 PM</td><td>EOD risk report; prepare P&L flash for senior management; escalate any issues</td></tr>
+    </table>
+  </div>
+
+  <h3>How to Frame Your Answers</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Technical Questions</div>
+      <p style="font-size:13px;color:var(--muted)">Lead with the definition, then the formula/method, then real-world application, then limitations. Show you know both the theory AND where it breaks down. Interviewers in energy respect candidates who know the limitations of their models.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Market Questions</div>
+      <p style="font-size:13px;color:var(--muted)">Always anchor to a fundamental framework (supply/demand), then add current-year specifics. Know 2024-2025 key events: LNG export growth, Permian associated gas surge, storage trajectory. Don't just describe — have a view.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: GAS FUNDAMENTALS -->
+<section id="fundamentals">
+  <h2><span class="icon">⛽</span> Gas Market Fundamentals</h2>
+
+  <h3>Supply & Demand Framework</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">Supply Drivers</div>
+      <ul class="clean">
+        <li><strong>Dry gas production</strong> — ~105 Bcf/d in 2024 (record high)</li>
+        <li><strong>Associated gas</strong> — produced with crude oil (Permian, Eagle Ford). Not price-responsive to gas prices — driven by oil economics</li>
+        <li><strong>Canadian imports</strong> — ~7-8 Bcf/d via northern pipelines</li>
+        <li><strong>Storage withdrawals</strong> — ~30-40 Bcf/d during winter peak</li>
+        <li><strong>LNG re-gasification</strong> — minimal (US is net exporter)</li>
+        <li><strong>Rig count</strong> (Baker Hughes) — leading indicator for future production</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--red)">Demand Drivers</div>
+      <ul class="clean">
+        <li><strong>Power generation</strong> — largest and most volatile (~40 Bcf/d); competes with renewables</li>
+        <li><strong>Residential/Commercial</strong> — highly weather-sensitive; driven by HDDs</li>
+        <li><strong>Industrial</strong> — relatively stable; includes petrochemical feedstocks</li>
+        <li><strong>LNG exports</strong> — ~14 Bcf/d in 2024; structural floor to US prices</li>
+        <li><strong>Mexico pipeline exports</strong> — ~6-7 Bcf/d and growing</li>
+        <li><strong>Storage injections</strong> — April–October; ~10-15 Bcf/d average</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Key Market Indicators (Watch These)</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Indicator</th><th>Source</th><th>Release</th><th>Market Impact</th></tr>
+      <tr><td><strong>EIA Weekly Gas Storage Report</strong></td><td>EIA</td><td>Thursday 10:30 AM ET</td><td><span class="badge amber">Very High</span></td></tr>
+      <tr><td>National Weather Service 6-14 day outlook</td><td>NWS/Maxar</td><td>Daily</td><td><span class="badge amber">Very High</span></td></tr>
+      <tr><td>LNG feed gas nominations</td><td>Bloomberg/Platts</td><td>Daily</td><td><span class="badge green">High</span></td></tr>
+      <tr><td>Baker Hughes Rig Count</td><td>Baker Hughes</td><td>Friday</td><td><span class="badge blue">Medium</span></td></tr>
+      <tr><td>EIA Monthly Dry Gas Production</td><td>EIA</td><td>Monthly</td><td><span class="badge blue">Medium</span></td></tr>
+      <tr><td>Pipeline constraint / force majeure notices</td><td>FERC/Operators</td><td>Ad hoc</td><td><span class="badge amber">High (acute)</span></td></tr>
+      <tr><td>CFTC Commitments of Traders (COT)</td><td>CFTC</td><td>Friday</td><td><span class="badge blue">Medium</span></td></tr>
+    </table>
+  </div>
+
+  <h3>Forward Curve Shape — Seasonality</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Typical Annual Pattern</div>
+      <ul class="clean">
+        <li><strong>Winter peak</strong> (Nov–Feb): highest prices, heating demand + storage withdrawal</li>
+        <li><strong>Spring trough</strong> (Mar–Apr): demand falls, injection season begins</li>
+        <li><strong>Summer shoulder</strong> (May–Jun): moderate; power burn ramps as AC demand rises</li>
+        <li><strong>Late summer peak</strong> (Jul–Aug): air conditioning = power burn = gas demand in the South</li>
+        <li><strong>Fall shoulder</strong> (Sep–Oct): storage nearly full, prices soft</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Key Relationships to Know</div>
+      <ul class="clean">
+        <li><strong>Gas–Power nexus:</strong> High gas prices → gas-to-coal switching in power → demand destruction → price cap</li>
+        <li><strong>Storage vs. Price:</strong> Storage above 5-yr avg → bearish; below → bullish</li>
+        <li><strong>Spark spread:</strong> Power price – (gas price × heat rate). Indicates gas plant profitability</li>
+        <li><strong>Basis = location spread:</strong> Hub X price – Henry Hub price</li>
+        <li><strong>Calendar spread:</strong> Price Month A – Price Month B</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl green">
+    <p><strong>Price formation summary:</strong> Storage levels set the medium-term tone. Weather sets the short-term volatility. LNG exports set the structural floor. Associated gas growth sets the ceiling pressure. Pipeline constraints create regional dislocations.</p>
+  </div>
+</section>
+
+<!-- SECTION 3: TEXAS GAS MARKET -->
+<section id="texas">
+  <h2><span class="icon">🤠</span> Texas Gas Market Deep Dive</h2>
+
+  <h3>Key Hubs in Texas & Gulf Coast</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Hub</th><th>Location</th><th>Typical vs. HH</th><th>Key Driver</th></tr>
+      <tr><td><strong>Henry Hub</strong></td><td>Erath, Louisiana (benchmark)</td><td>= 0 (reference)</td><td>9 pipelines intersect; physical delivery point for NYMEX futures</td></tr>
+      <tr><td><strong>Waha Hub</strong></td><td>West Texas / Permian Basin</td><td><span class="badge red">-$0.50 to -$10+</span></td><td>Associated gas from Permian; pipeline takeaway constraints</td></tr>
+      <tr><td><strong>Houston Ship Channel</strong></td><td>Greater Houston area</td><td><span class="badge green">+$0.10 to +$0.80</span></td><td>LNG export demand; petrochemical industry; proximity to demand centers</td></tr>
+      <tr><td><strong>Katy Hub</strong></td><td>West Houston suburbs</td><td>~flat to slight premium</td><td>Storage hub; distribution point for south/central Texas</td></tr>
+      <tr><td><strong>Agua Dulce</strong></td><td>South Texas</td><td>near HH</td><td>Pipeline interconnection; Corpus Christi LNG access</td></tr>
+    </table>
+  </div>
+
+  <div class="hl red">
+    <p><strong>Waha basis — critical concept for Houston interviews:</strong> Waha has traded at extreme discounts to Henry Hub — reaching <strong>-$9/MMBtu in 2019</strong> and even <strong>negative prices</strong> during pipeline outages. The Permian drills for oil; associated gas is a by-product that must move. If pipes are full, producers pay to get rid of gas.</p>
+  </div>
+
+  <h3>Key Texas/Permian Pipelines to Know</h3>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-title">Permian Export Pipes</div>
+      <ul class="clean">
+        <li>Permian Highway Pipeline (PHP) — 2.1 Bcf/d</li>
+        <li>Whistler Pipeline — 2.5 Bcf/d</li>
+        <li>Waha-to-Katy pipes (El Paso, etc.)</li>
+        <li>ADCG to Agua Dulce</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">LNG Access Lines</div>
+      <ul class="clean">
+        <li>Freeport LNG (Quintana Island) — 2.38 Bcf/d capacity</li>
+        <li>Corpus Christi LNG — 2.1 Bcf/d</li>
+        <li>Cameron LNG (Louisiana) — accessed via Texas pipes</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Mexico Export Lines</div>
+      <ul class="clean">
+        <li>Sur de Texas–Tuxpan pipeline</li>
+        <li>Valley Crossing (Brownsville area)</li>
+        <li>Los Ramones system</li>
+        <li>~6-7 Bcf/d total cross-border flow</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>ERCOT & Nodal Pricing — Explained</h3>
+  <div class="card">
+    <div class="card-title">What is ERCOT?</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px">ERCOT (Electric Reliability Council of Texas) is the grid operator covering ~90% of Texas. It operates as an <strong style="color:var(--text)">island</strong> — mostly disconnected from the eastern and western US grids. This means Texas electricity prices are entirely determined by Texas supply/demand dynamics.</p>
+    <div class="grid2">
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:6px">Nodal Pricing (since 2011)</p>
+        <ul class="clean">
+          <li>~900+ settlement points (nodes) across the grid</li>
+          <li>Each node has its own LMP (Locational Marginal Price)</li>
+          <li>LMP = Energy component + Congestion component + Loss component</li>
+          <li>Congestion occurs when transmission lines are constrained</li>
+          <li>Node prices can diverge massively during stress events</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:6px">Day-Ahead vs Real-Time Market</p>
+        <ul class="clean">
+          <li><strong>Day-Ahead Market (DAM):</strong> Settled the previous day; financial clearing</li>
+          <li><strong>Real-Time Market (RTM):</strong> 5-minute dispatch; settles imbalances</li>
+          <li>Power traders manage DAM exposure + real-time basis</li>
+          <li>Gas-to-power relationship: gas price × heat rate = approximate power price</li>
+          <li>Heat rate: typically 7,000–9,500 BTU/kWh for gas plants</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="hl blue">
+    <p><strong>Gas–Power nexus in ERCOT:</strong> In summer, Texas air conditioning demand drives power prices to $100–$500/MWh during peak afternoon hours. Gas-fired plants set the marginal price ~60% of the time. A spike in gas prices directly flows through to power prices, and vice versa. The MO trader must understand both the gas forward curve AND the spark spread at key Texas hubs.</p>
+  </div>
+
+  <h3>Winter Storm Uri — The Defining Texas Gas Event</h3>
+  <div class="case">
+    <div class="case-header">
+      <div class="case-title">Winter Storm Uri — February 10-19, 2021</div>
+      <div class="case-date">Largest energy price spike in US history</div>
+    </div>
+    <div class="case-body">
+      <strong>What happened:</strong> An Arctic polar vortex sent temperatures in Texas to -2°F (record lows). Approximately 45 GW of generation went offline — both gas plants and wind turbines — due to freeze-offs, equipment failure, and fuel supply disruptions.
+      <br><br>
+      <strong>Gas price impact:</strong> Spot gas at Waha spiked to <strong>$400+/MMBtu</strong> (from ~$3 normal). Some intraday trades cleared at >$1,000/MMBtu. Henry Hub hit $23/MMBtu.
+      <br><br>
+      <strong>Power price impact:</strong> ERCOT real-time prices hit the administrative cap of <strong>$9,000/MWh</strong> for approximately 32 hours.
+      <br><br>
+      <strong>Cause of gas disruption:</strong> Wellhead freeze-offs at ~15 Bcf/d of production. Inadequate winterization of equipment. Pipeline instruments froze. Processing plants tripped offline.
+      <br><br>
+      <strong>Lessons for MO:</strong> Tail risk is real. VaR models based on historical data would have dramatically underestimated Uri losses. Stress scenarios must include polar vortex / infrastructure freeze events. Position limits matter — firms without limits faced massive uncapped losses.
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: VaR -->
+<section id="var">
+  <h2><span class="icon">📊</span> VaR & Risk Metrics</h2>
+
+  <div class="hl amber">
+    <p><strong>VaR Definition:</strong> Value at Risk is the maximum loss expected over a given time horizon at a given confidence level, under normal market conditions.<br>
+    e.g., "1-day 99% VaR = $2M" means: there is a 1% probability that the portfolio loses more than $2M in a single day.</p>
+  </div>
+
+  <h3>The Three VaR Methods</h3>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">Historical Simulation</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Most common in energy trading</p>
+      <ul class="clean">
+        <li>Apply historical P&L scenarios (e.g., last 500 days) to current portfolio</li>
+        <li>No distributional assumption</li>
+        <li>Captures fat tails and non-linearity naturally</li>
+        <li>Depends on look-back period chosen</li>
+        <li>Misses scenarios not in history</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">Parametric (Delta-Normal)</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Fast, analytical approach</p>
+      <ul class="clean">
+        <li>Assumes normal distribution of returns</li>
+        <li>VaR = Position × σ × z-score (1.645 for 95%, 2.33 for 99%)</li>
+        <li>Fast to compute; good for linear positions</li>
+        <li>Underestimates tail risk (gas returns are NOT normal)</li>
+        <li>Poor for options (non-linear payoffs)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">Monte Carlo</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Most flexible, most expensive</p>
+      <ul class="clean">
+        <li>Simulate thousands of price paths based on statistical model</li>
+        <li>Can model complex correlations and non-linearities</li>
+        <li>Best for complex options books</li>
+        <li>Computationally intensive</li>
+        <li>Garbage in, garbage out — model risk!</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>VaR Order of Magnitude — Gas Trading</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Desk Type</th><th>Typical 1-Day 95% VaR</th><th>Comment</th></tr>
+      <tr><td>Junior trader / prop desk (small)</td><td><span class="badge green">$100K – $1M</span></td><td>Tight risk limits, learning environment</td></tr>
+      <tr><td>Mid-size gas trading desk</td><td><span class="badge amber">$1M – $10M</span></td><td>Typical MO reporting context in Houston</td></tr>
+      <tr><td>Large energy company (Shell, BP, Total)</td><td><span class="badge red">$10M – $100M</span></td><td>Aggregated across gas, power, LNG books</td></tr>
+      <tr><td>Major commodity trading house</td><td><span class="badge red">$50M – $500M+</span></td><td>Includes physical and financial books</td></tr>
+    </table>
+  </div>
+
+  <h3>VaR Limitations — Always Mention These</h3>
+  <div class="grid2">
+    <div class="card">
+      <ul class="clean">
+        <li><strong>Does not capture tail risk</strong> beyond the confidence level (the 1% can be catastrophic)</li>
+        <li><strong>Assumes normal/historical conditions</strong> — breaks down in crises (Uri, 2008)</li>
+        <li><strong>Look-back period bias</strong> — calm period → low VaR → false comfort</li>
+        <li><strong>Correlation instability</strong> — correlations spike to 1 in crises</li>
+      </ul>
+    </div>
+    <div class="card">
+      <ul class="clean">
+        <li><strong>Liquidity risk ignored</strong> — VaR assumes you CAN exit at market price</li>
+        <li><strong>Not sub-additive</strong> in all cases — portfolio VaR can exceed sum of parts</li>
+        <li><strong>Doesn't capture model risk</strong> — the model itself can be wrong</li>
+        <li><strong>Static snapshot</strong> — doesn't account for position changes during the day</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Key Formulas</h3>
+  <div class="formula">Parametric VaR = Position_Value × σ × z × √(holding_period)</div>
+  <div class="formula">10-day VaR ≈ 1-day VaR × √10  (≈ 3.16 × 1-day VaR)</div>
+  <div class="formula">CVaR (Expected Shortfall) = E[Loss | Loss > VaR]  → average loss in the tail</div>
+
+  <h3>CVaR / Expected Shortfall</h3>
+  <div class="hl blue">
+    <p><strong>CVaR</strong> answers: "Given that I've breached VaR, how bad is it on average?" It captures the magnitude of tail losses, not just their probability. Regulators (Basel III/IV) prefer CVaR. For gas traders, CVaR is critical — tail events like Uri are extreme AND frequent enough that the tail matters enormously.</p>
+  </div>
+
+  <h3>Backtesting VaR</h3>
+  <div class="card">
+    <ul class="clean">
+      <li><strong>Purpose:</strong> Verify that realized losses exceed VaR with the expected frequency (e.g., ~1% of days at 99% confidence)</li>
+      <li><strong>Exceptions:</strong> Days when actual loss > VaR estimate. Expected: ~2-3 exceptions/year at 99% daily VaR</li>
+      <li><strong>Basel traffic light system:</strong> Green (0-4 exceptions/250 days), Yellow (5-9), Red (10+)</li>
+      <li><strong>Kupiec test:</strong> Statistical test for whether exception frequency is consistent with confidence level</li>
+      <li><strong>If too few exceptions:</strong> VaR is too conservative (capital inefficient)</li>
+      <li><strong>If too many exceptions:</strong> VaR underestimates risk; model needs recalibration</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SECTION 5: MTM -->
+<section id="mtm">
+  <h2><span class="icon">💹</span> Mark-to-Market & P&L</h2>
+
+  <div class="hl green">
+    <p><strong>MtM Definition:</strong> Mark-to-Market is the process of valuing open positions at current market prices (the forward curve), regardless of cost basis. The difference between current market value and book value = unrealized P&L.</p>
+  </div>
+
+  <h3>P&L Attribution — Breaking Down Daily P&L</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Component</th><th>Explanation</th><th>Typical Sign</th></tr>
+      <tr><td><strong>New Trades P&L</strong></td><td>Day-1 P&L on trades booked today (bid-offer capture or cost)</td><td>Can be + or –</td></tr>
+      <tr><td><strong>Price P&L (Delta P&L)</strong></td><td>P&L from changes in forward prices × delta (position size)</td><td>Depends on position</td></tr>
+      <tr><td><strong>Theta (Time Decay)</strong></td><td>P&L from the passage of time — mainly affects options, storage</td><td>Usually – for long options</td></tr>
+      <tr><td><strong>Gamma P&L</strong></td><td>P&L from non-linear price moves (curvature of options)</td><td>+ for long gamma</td></tr>
+      <tr><td><strong>Vega P&L</strong></td><td>P&L from changes in implied volatility</td><td>+ if long volatility</td></tr>
+      <tr><td><strong>Curve P&L</strong></td><td>P&L from changes in curve shape (not parallel shifts)</td><td>Depends on position</td></tr>
+      <tr><td><strong>Basis P&L</strong></td><td>P&L from changes in location spreads (e.g., Waha vs. HH)</td><td>Depends on position</td></tr>
+    </table>
+  </div>
+
+  <h3>Daily P&L Explain Process</h3>
+  <div class="card">
+    <ul class="clean">
+      <li><strong>Step 1:</strong> Compare today's P&L to yesterday's P&L — identify the delta</li>
+      <li><strong>Step 2:</strong> Break down by product and tenor (prompt month, winter strip, summer, etc.)</li>
+      <li><strong>Step 3:</strong> Map price moves on the forward curve to position Greeks</li>
+      <li><strong>Step 4:</strong> Identify any "unexplained" P&L — model errors, booking errors, missing trades</li>
+      <li><strong>Step 5:</strong> Reconcile with trader's own P&L estimate (traders keep their own books)</li>
+      <li><strong>Step 6:</strong> Document and distribute; escalate discrepancies >threshold (e.g., $100K unexplained)</li>
+    </ul>
+  </div>
+
+  <h3>Option Greeks — Summary Table</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Greek</th><th>Measures</th><th>Unit</th><th>Gas Context</th></tr>
+      <tr><td><strong>Delta (Δ)</strong></td><td>Sensitivity of option value to underlying price change</td><td>$ per $1 price move</td><td>A $0.10/MMBtu move × 10,000 MMBtu × delta = P&L</td></tr>
+      <tr><td><strong>Gamma (Γ)</strong></td><td>Rate of change of delta; convexity</td><td>Delta per $1 move</td><td>Long gamma = P&L accelerates as price moves; good in volatile markets</td></tr>
+      <tr><td><strong>Theta (Θ)</strong></td><td>Time decay; value lost per day with no price change</td><td>$ per day</td><td>Long options lose value daily — must be offset by price moves</td></tr>
+      <tr><td><strong>Vega (ν)</strong></td><td>Sensitivity to implied volatility</td><td>$ per 1% vol change</td><td>Long options benefit from vol spikes (e.g., winter storms)</td></tr>
+      <tr><td><strong>Rho (ρ)</strong></td><td>Sensitivity to interest rates</td><td>$ per 1bp move</td><td>Minor for short-dated gas options; more relevant for multi-year contracts</td></tr>
+    </table>
+  </div>
+
+  <h3>Realized vs Unrealized P&L</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">Realized P&L</div>
+      <ul class="clean">
+        <li>P&L from trades that have been settled or expired</li>
+        <li>Cash has changed hands (or will shortly)</li>
+        <li>Locked in — cannot change</li>
+        <li>Drives accounting income</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--amber)">Unrealized (MtM) P&L</div>
+      <ul class="clean">
+        <li>Open positions valued at current market prices</li>
+        <li>Can swing dramatically with market moves</li>
+        <li>Does NOT represent cash until position is closed</li>
+        <li>Management focus — tracks trader performance daily</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: POSITIONS & HEDGING -->
+<section id="positions">
+  <h2><span class="icon">↕️</span> Positions & Hedging Strategies</h2>
+
+  <h3>Long vs Short — The Fundamentals</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">Long Position</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Profit if price rises. Lose if price falls.</p>
+      <ul class="clean">
+        <li><strong>Physical:</strong> Gas in storage; gas purchased forward; pipeline capacity to receive</li>
+        <li><strong>Financial:</strong> Long NYMEX futures; long call options; long swap (receive floating)</li>
+        <li><strong>Risk:</strong> Exposed to price decline; storage costs; time decay on options</li>
+        <li><strong>Hedging:</strong> Sell futures, buy put options, enter fixed-for-floating swap as fixed receiver</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--red)">Short Position</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Profit if price falls. Lose if price rises.</p>
+      <ul class="clean">
+        <li><strong>Physical:</strong> Committed to deliver gas at fixed price; sold forward without owning supply</li>
+        <li><strong>Financial:</strong> Short NYMEX futures; long put options; short swap (pay floating)</li>
+        <li><strong>Risk:</strong> Exposed to price spike; unlimited upside risk if short and unhedged</li>
+        <li><strong>Hedging:</strong> Buy futures, buy call options, enter swap as fixed payer</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Hedging Instruments — Comparison</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Instrument</th><th>Type</th><th>Advantages</th><th>Limitations</th></tr>
+      <tr><td><strong>NYMEX Futures</strong></td><td>Exchange</td><td>Liquid, standardized, daily margin, HH delivery</td><td>Only hedges HH price; basis risk for other locations</td></tr>
+      <tr><td><strong>Fixed-for-Float Swap</strong></td><td>OTC</td><td>Flexible tenor; any hub; no exchange margin; locks in fixed price</td><td>Counterparty credit risk; less liquid long-dated</td></tr>
+      <tr><td><strong>Basis Swap</strong></td><td>OTC</td><td>Hedges location spread (e.g., Waha vs HH); very specific</td><td>Less liquid; bid/offer can be wide in stressed markets</td></tr>
+      <tr><td><strong>Put Option (buy)</strong></td><td>OTC/Exchange</td><td>Downside protection; unlimited upside retained; pays premium upfront</td><td>Costs premium; time decay; requires vol forecast</td></tr>
+      <tr><td><strong>Call Option (buy)</strong></td><td>OTC/Exchange</td><td>Upside exposure while limiting cost; used by consumers</td><td>Costs premium; limited use for producers</td></tr>
+      <tr><td><strong>Collar</strong></td><td>OTC</td><td>Buy put + sell call = zero/low net cost; locks price band</td><td>Gives up upside above call strike; premium may not offset</td></tr>
+      <tr><td><strong>Calendar Spread</strong></td><td>Exchange/OTC</td><td>Hedge time-based price differentials; storage optimization</td><td>Requires view on term structure; rolling costs</td></tr>
+    </table>
+  </div>
+
+  <h3>Basis Risk — Critical Concept</h3>
+  <div class="hl amber">
+    <p><strong>Basis risk</strong> arises when your hedge instrument doesn't perfectly match your exposure. Example: You have physical gas at Waha but hedge with NYMEX Henry Hub futures. If Waha basis widens from -$1 to -$5/MMBtu, you have a $4 unhedged loss even though HH prices were flat. Basis swaps exist specifically to hedge this risk.</p>
+  </div>
+
+  <h3>Building a Hedging Strategy — Example</h3>
+  <div class="card">
+    <div class="card-title">Scenario: You hold 1 Bcf of gas in Texas storage (long physical gas)</div>
+    <table class="data">
+      <tr><th>Risk</th><th>Hedge</th><th>Instrument</th></tr>
+      <tr><td>Henry Hub price falls</td><td>Short HH forward equivalent</td><td>Sell NYMEX NG futures for withdrawal months</td></tr>
+      <tr><td>Waha basis widens (more negative)</td><td>Short Waha basis</td><td>Pay fixed Waha/HH basis swap</td></tr>
+      <tr><td>Volatility falls (options component)</td><td>Short vega if long options</td><td>Sell calendar spreads or straddles</td></tr>
+      <tr><td>Demand destruction scenario</td><td>Buy puts for protection</td><td>Buy HH put options — insurance against price crash</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 7: MARKET VIEW -->
+<section id="market-view">
+  <h2><span class="icon">🔭</span> Market View Construction</h2>
+
+  <h3>Framework: How to Build a Fundamental Gas View</h3>
+  <div class="card">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">A rigorous market view combines <strong style="color:var(--text)">fundamental supply/demand analysis</strong> with <strong style="color:var(--text)">technical/positioning signals</strong>. Never trade on one alone in gas markets.</p>
+    <table class="data">
+      <tr><th>Step</th><th>Action</th><th>Key Data Source</th></tr>
+      <tr><td>1. Storage vs. 5-yr avg</td><td>Are we over/under-supplied? This sets the base bullish/bearish bias</td><td>EIA Weekly Storage Report</td></tr>
+      <tr><td>2. Weather outlook (14-day)</td><td>How do HDDs/CDDs compare to normal? Weather-driven demand swing</td><td>Maxar, Weather.com, NWS</td></tr>
+      <tr><td>3. LNG export nominations</td><td>Is US gas demand from LNG high/low? Structural pull</td><td>Bloomberg, Wood Mackenzie</td></tr>
+      <tr><td>4. Production trajectory</td><td>Is supply growing? Associated gas from Permian accelerating?</td><td>EIA 914, Enverus drilling data</td></tr>
+      <tr><td>5. Power burn outlook</td><td>What's ERCOT generation mix? Is coal/renewables displacing gas?</td><td>ERCOT reports, EIA Electric Power Monthly</td></tr>
+      <tr><td>6. Technical levels</td><td>Key support/resistance on HH futures; RSI; open interest trends</td><td>CME charts, Bloomberg</td></tr>
+      <tr><td>7. COT positioning</td><td>Are speculators net long or short? Crowded trades are vulnerable</td><td>CFTC Commitments of Traders</td></tr>
+      <tr><td>8. Implied volatility</td><td>Is the options market pricing in more or less uncertainty than you see?</td><td>CME options; NYMEX vol surface</td></tr>
+    </table>
+  </div>
+
+  <h3>Expressing the View</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Bullish (expect price to rise)</div>
+      <ul class="clean">
+        <li>Buy NYMEX NG futures (long delta)</li>
+        <li>Buy call options (limited downside, leverage upside)</li>
+        <li>Enter swap as floating receiver (receive floating = receive market price)</li>
+        <li>Long calendar spread (if bullish on near-term vs. deferred)</li>
+        <li>Long Waha/HH basis (if bullish on Permian takeaway improving)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Bearish (expect price to fall)</div>
+      <ul class="clean">
+        <li>Sell NYMEX NG futures (short delta)</li>
+        <li>Buy put options (protection + speculation)</li>
+        <li>Enter swap as fixed receiver / floating payer</li>
+        <li>Short calendar spread (near vs deferred)</li>
+        <li>Short HSC/HH basis (if LNG disruption expected)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl blue">
+    <p><strong>Interview tip:</strong> When asked "What's your view on gas markets?" — give a structured answer: (1) current storage position, (2) near-term weather, (3) structural LNG/production outlook, (4) key risk to your view. Always name the risk to your view — it shows intellectual honesty and risk awareness.</p>
+  </div>
+</section>
+
+<!-- SECTION 8: STRESS TESTING -->
+<section id="stress">
+  <h2><span class="icon">⚡</span> Stress Testing & External Risks</h2>
+
+  <h3>Categories of External Risk</h3>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-title" style="color:var(--red)">Weather & Climate</div>
+      <ul class="clean">
+        <li>Polar vortex / freeze events (Uri-type)</li>
+        <li>Gulf Coast hurricane season (Aug–Oct)</li>
+        <li>Extreme summer heat → power demand spike</li>
+        <li>La Niña / El Niño patterns affecting seasonal demand</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--amber)">Infrastructure</div>
+      <ul class="clean">
+        <li>LNG terminal fire/outage (Freeport 2022)</li>
+        <li>Pipeline rupture or force majeure</li>
+        <li>Processing plant explosion</li>
+        <li>Compressor station failure</li>
+        <li>Permian oil well shut-in (→ less associated gas)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">Regulatory & Geopolitical</div>
+      <ul class="clean">
+        <li>FERC pipeline approval/rejection</li>
+        <li>LNG export permit changes</li>
+        <li>Global LNG market shock (Russia/Ukraine → European demand for US LNG)</li>
+        <li>Mexico demand disruption</li>
+        <li>Fracking bans / environmental regulation</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Stress Test Methodologies</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Method</th><th>Description</th><th>Example (Gas)</th></tr>
+      <tr><td><strong>Historical Scenario</strong></td><td>Replay a past extreme event on current portfolio</td><td>Apply Winter Storm Uri price moves to today's book</td></tr>
+      <tr><td><strong>Hypothetical Scenario</strong></td><td>Construct a plausible but not yet observed scenario</td><td>"Permian shut-in for 2 weeks + cold snap"</td></tr>
+      <tr><td><strong>Sensitivity Analysis</strong></td><td>Shock individual risk factors by ±N standard deviations</td><td>+3σ parallel shift in forward curve; +5 HDD/day for 30 days</td></tr>
+      <tr><td><strong>Reverse Stress Test</strong></td><td>Ask: "What scenario would break this book?"</td><td>Find the combination of price moves that causes a $50M loss</td></tr>
+      <tr><td><strong>Correlation Stress</strong></td><td>Assume correlations move to crisis levels (→1 or →0)</td><td>Waha/HH correlation breaks down; basis explodes</td></tr>
+      <tr><td><strong>Liquidity Stress</strong></td><td>Assume bid-ask spreads widen dramatically; forced exit at worse prices</td><td>Physical gas market freezes during winter storm; cannot close position</td></tr>
+    </table>
+  </div>
+
+  <h3>Risk Limit Framework</h3>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:6px">Typical Limits for a Gas Desk</p>
+        <ul class="clean">
+          <li><strong>Daily VaR limit</strong> — e.g., $5M at 99% 1-day</li>
+          <li><strong>Delta limit</strong> — max open delta (e.g., ±100,000 MMBtu/day)</li>
+          <li><strong>Stop-loss limit</strong> — e.g., -$10M cumulative P&L triggers forced review</li>
+          <li><strong>Tenor/maturity limit</strong> — limit on long-dated positions (illiquid)</li>
+          <li><strong>Basis limit</strong> — max open basis exposure per location</li>
+          <li><strong>Stress loss limit</strong> — max loss under defined stress scenarios</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:6px">MO Role in Limit Monitoring</p>
+        <ul class="clean">
+          <li>Compute limits utilization at EOD (and intraday for critical limits)</li>
+          <li>Alert risk managers when limit is >80% utilized (yellow flag)</li>
+          <li>Escalate breaches immediately — do NOT wait for EOD report</li>
+          <li>Document all limit exceptions with trader explanation</li>
+          <li>Track trend: is utilization growing toward limits?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="hl red">
+    <p><strong>Key interview point:</strong> "How do you handle a VaR breach?" Answer: (1) Verify the data — is it a real breach or a data error? (2) Notify risk management immediately. (3) Engage the trader on cause and remediation plan. (4) Document everything. (5) Determine if temporary limit override is needed or if position must be reduced. Never sit on a breach.</p>
+  </div>
+</section>
+
+<!-- SECTION 9: VALUE CAPTURE -->
+<section id="value">
+  <h2><span class="icon">💎</span> Value Capture & Optimization</h2>
+
+  <h3>Storage Optimization — The Core Value Machine</h3>
+  <div class="card">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Gas storage value comes from the ability to buy cheap gas (summer/off-peak) and sell expensive gas (winter/peak). The theoretical value of storage = winter price – summer price – injection/withdrawal costs – carrying costs.</p>
+    <div class="grid2">
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:6px">Intrinsic Value</p>
+        <ul class="clean">
+          <li>Value from locking in current calendar spread (winter–summer)</li>
+          <li>Deterministic — calculated from forward curve today</li>
+          <li>Can be hedged immediately (sell winter, buy summer)</li>
+          <li>Safe, lower return — fully hedged</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:6px">Extrinsic (Optionality) Value</p>
+        <ul class="clean">
+          <li>Value from flexibility to inject/withdraw based on future price evolution</li>
+          <li>Storage is a real option — ability to respond to price changes</li>
+          <li>Higher potential return if market is volatile</li>
+          <li>Requires active trading and risk management</li>
+          <li>Valued using option pricing models (binomial, Monte Carlo)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>Other Value Capture Strategies</h3>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-title">Geographic Arbitrage</div>
+      <ul class="clean">
+        <li>Buy gas at Waha (cheap), transport to HSC (expensive)</li>
+        <li>Value = HSC – Waha – transport tariff</li>
+        <li>Requires pipeline capacity (firm or interruptible)</li>
+        <li>Waha discount creates persistent arb opportunities</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Calendar Spread Trading</div>
+      <ul class="clean">
+        <li>Trade the spread between two delivery months</li>
+        <li>e.g., Long Jan – Short Apr (long winter/short spring)</li>
+        <li>Profit from relative supply/demand shifts</li>
+        <li>Less directional risk than outright positions</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Swing / Flexibility Options</div>
+      <ul class="clean">
+        <li>Contract gives flexibility in volumes taken</li>
+        <li>Value = premium for flexibility vs. firm contract</li>
+        <li>Common in industrial supply contracts</li>
+        <li>Valued via Monte Carlo over delivery period</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl green">
+    <p><strong>Key MO insight:</strong> The MO role in value capture is to accurately measure whether the trading strategy is capturing the expected value. This means tracking realized calendar spread vs. theoretical storage value, monitoring transport margin, and flagging when the book is underperforming vs. the model.</p>
+  </div>
+</section>
+
+<!-- SECTION 10: INTERVIEW Q&A -->
+<section id="interview">
+  <h2><span class="icon">🎯</span> Interview Q&A Masterlist</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Click any question to reveal the model answer. Organized by category.</p>
+
+  <h3>Technical — Risk & Valuation</h3>
+  <div id="qa-technical"></div>
+
+  <h3>Market Knowledge</h3>
+  <div id="qa-market"></div>
+
+  <h3>Middle Office Specific</h3>
+  <div id="qa-mo"></div>
+
+  <h3>Scenario / Situational</h3>
+  <div id="qa-scenario"></div>
+</section>
+
+<!-- SECTION 11: CASE STUDIES -->
+<section id="cases">
+  <h2><span class="icon">📋</span> US Gas Case Studies</h2>
+
+  <div class="case">
+    <div class="case-header">
+      <div class="case-title">Case 1 — Winter Storm Uri: February 2021</div>
+      <div class="case-date">The Black Swan That Wasn't</div>
+    </div>
+    <div class="case-body">
+      <strong>Context:</strong> Polar vortex delivers record cold to Texas. ~45 GW of generation offline. ~15 Bcf/d of gas production frozen at the wellhead.<br><br>
+      <strong>Price action:</strong> Spot Waha gas → <strong>$400+/MMBtu</strong>. Henry Hub → $23/MMBtu. ERCOT power → <strong>$9,000/MWh cap</strong> for 32+ hours.<br><br>
+      <strong>What went wrong:</strong> Gas wells, pipelines, and power plant instruments lacked winterization. ERCOT's island grid had no emergency imports available. Gas-fired plants couldn't get fuel; wind turbines froze.<br><br>
+      <strong>Risk management lesson:</strong> Historical VaR based on 2017-2020 data = near zero tail risk for this scenario. It wasn't in the data. Reverse stress testing and hypothetical scenario analysis would have flagged this. Firms without extreme weather stress scenarios were unprepared.<br><br>
+      <strong>Aftermath:</strong> Texas passed SB 3 (2021) requiring weatherization of power plants and gas wells. ERCOT reformed its market design. Ongoing debate about adequacy payments.
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-header">
+      <div class="case-title">Case 2 — Freeport LNG Explosion: June 2022</div>
+      <div class="case-date">LNG Export Outage → Domestic Price Crash</div>
+    </div>
+    <div class="case-body">
+      <strong>Context:</strong> Freeport LNG (Quintana Island, TX) — one of the largest LNG export terminals in the US at ~2 Bcf/d — suffered a pipeline explosion and fire on June 8, 2022.<br><br>
+      <strong>Immediate price action:</strong> HH prices fell ~<strong>$2/MMBtu overnight</strong> (from ~$9 to ~$7). The market immediately priced in ~2 Bcf/d of demand being removed from the domestic market.<br><br>
+      <strong>Duration:</strong> Terminal was offline for ~90 days (restarted partially in October 2022).<br><br>
+      <strong>Key takeaway:</strong> LNG exports are now a structural part of US gas demand. Any disruption to export capacity immediately affects domestic prices — and the relationship is inverse: LNG outage = domestic price bearish. This is the opposite of traditional supply disruptions.<br><br>
+      <strong>MO relevance:</strong> Positions with LNG exposure (HSC basis, forward gas) required immediate re-marking and stress test updates. Risk teams had to rapidly assess which books were long LNG exposure vs. domestic.
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-header">
+      <div class="case-title">Case 3 — Permian Waha Basis Collapse: 2019</div>
+      <div class="case-date">Associated Gas Overwhelms Pipeline Takeaway</div>
+    </div>
+    <div class="case-body">
+      <strong>Context:</strong> Permian Basin oil production boomed in 2018-2019. Associated gas production rose ~10 Bcf/d. Pipeline takeaway capacity out of the Permian had NOT kept pace with production growth.<br><br>
+      <strong>Price action:</strong> Waha Hub basis collapsed from roughly -$0.50 to <strong>-$9/MMBtu</strong> in mid-2019. Prices turned briefly negative (producers paid to get rid of gas, as they couldn't shut wells — they were drilling for oil).<br><br>
+      <strong>Why it matters:</strong> This is a structural feature of Permian gas economics: oil producers drill regardless of gas prices. Gas is a by-product. When pipes are full, prices crash. New pipelines (PHP, Whistler) eventually resolved the constraint.<br><br>
+      <strong>Trading lesson:</strong> Waha basis is a key risk factor for any Texas gas book. It can move 5-10× faster than HH. Basis swaps are essential for Permian exposure. Any firm with unhedged Waha exposure in 2019 suffered massive losses.
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-header">
+      <div class="case-title">Case 4 — US LNG Export Boom & HH Surge: 2022</div>
+      <div class="case-date">Russia's Ukraine Invasion Reshapes Global Gas</div>
+    </div>
+    <div class="case-body">
+      <strong>Context:</strong> Russia invaded Ukraine in February 2022. Europe scrambled to replace Russian pipeline gas with US LNG. US LNG exporters ran at maximum capacity. European TTF prices hit €300/MWh equivalent.<br><br>
+      <strong>Henry Hub impact:</strong> HH reached <strong>$9.70/MMBtu in August 2022</strong> — its highest level in 14 years. The LNG pull was the dominant driver alongside hot summer temperatures.<br><br>
+      <strong>Key mechanics:</strong> When TTF (European gas) >> HH × liquefaction cost → all US LNG goes to Europe → US domestic supply tightens → HH rises. This arbitrage linkage is now permanent given US export capacity.<br><br>
+      <strong>LNG netback pricing:</strong> HH should theoretically = TTF – liquefaction cost (~$3/MMBtu) – shipping (~$1-3/MMBtu). If HH is below this, more cargoes divert to Europe.<br><br>
+      <strong>2024 onwards:</strong> With LNG export capacity at ~14 Bcf/d and growing (new terminals under construction), HH has a structural floor set by global LNG markets.
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-header">
+      <div class="case-title">Case 5 — COVID Demand Destruction: 2020</div>
+      <div class="case-date">When Demand Collapsed Faster Than Supply Could Adjust</div>
+    </div>
+    <div class="case-body">
+      <strong>Context:</strong> COVID-19 lockdowns in spring 2020 crushed industrial and commercial gas demand globally. US gas production continued at elevated levels, while LNG demand also fell (global shipping disruption + lower LNG demand in Asia).<br><br>
+      <strong>Price action:</strong> HH fell to <strong>$1.40-$1.50/MMBtu</strong> in mid-2020 — near the lowest level in 25 years. Storage quickly filled to near-record levels.<br><br>
+      <strong>Recovery:</strong> Production eventually curtailed as rigs dropped. LNG exports partially recovered. HH recovered to ~$3 by late 2020.<br><br>
+      <strong>Risk management takeaway:</strong> Demand shocks can be sudden and extreme. Scenarios should include rapid demand destruction events. 2020 also demonstrated that even near-record low prices don't quickly reduce supply when many wells are already drilled and low-cost to operate.
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 12: QUIZZES -->
+<section id="quiz">
+  <h2><span class="icon">🏆</span> MCQ Quizzes — Test Your Knowledge</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">5 themed quizzes · 8-10 questions each · Immediate feedback with explanations</p>
+  <div>
+    <button class="quiz-btn" onclick="startQuiz('fundamentals')">⛽ Gas Fundamentals</button>
+    <button class="quiz-btn" onclick="startQuiz('var')">📊 VaR & Risk Metrics</button>
+    <button class="quiz-btn" onclick="startQuiz('texas')">🤠 Texas Gas Market</button>
+    <button class="quiz-btn" onclick="startQuiz('hedging')">🔀 Hedging & Derivatives</button>
+    <button class="quiz-btn" onclick="startQuiz('scenarios')">⚡ Market Scenarios</button>
+  </div>
+</section>
+
+<!-- SECTION 13: QUICK REFERENCE -->
+<section id="numbers">
+  <h2><span class="icon">🔢</span> Quick Reference Numbers</h2>
+  <div class="grid3">
+    <div class="num-card"><div class="num-val">10,000</div><div class="num-label">MMBtu per NYMEX NG contract</div></div>
+    <div class="num-card"><div class="num-val">~105</div><div class="num-label">Bcf/d US dry gas production (2024)</div></div>
+    <div class="num-card"><div class="num-val">~14</div><div class="num-label">Bcf/d US LNG export capacity (2024)</div></div>
+    <div class="num-card"><div class="num-val">4.5 Tcf</div><div class="num-label">US working gas storage capacity</div></div>
+    <div class="num-card"><div class="num-val">Thu 10:30</div><div class="num-label">EIA storage report (weekly, ET)</div></div>
+    <div class="num-card"><div class="num-val">Apr–Oct</div><div class="num-label">Gas storage injection season</div></div>
+    <div class="num-card"><div class="num-val">√10 ≈ 3.16</div><div class="num-label">Scaling factor: 1-day → 10-day VaR</div></div>
+    <div class="num-card"><div class="num-val">7,000–9,500</div><div class="num-label">BTU/kWh heat rate for gas plants</div></div>
+    <div class="num-card"><div class="num-val">$400+</div><div class="num-label">Waha spot gas peak (Uri, Feb 2021)</div></div>
+    <div class="num-card"><div class="num-val">$9,000</div><div class="num-label">ERCOT power price cap ($/MWh)</div></div>
+    <div class="num-card"><div class="num-val">$9.70</div><div class="num-label">HH peak price Aug 2022 ($/MMBtu)</div></div>
+    <div class="num-card"><div class="num-val">~$1.50</div><div class="num-label">HH trough 2020 COVID low ($/MMBtu)</div></div>
+    <div class="num-card"><div class="num-val">99% / 95%</div><div class="num-label">Standard VaR confidence levels</div></div>
+    <div class="num-card"><div class="num-val">~900+</div><div class="num-label">Settlement nodes in ERCOT</div></div>
+    <div class="num-card"><div class="num-val">~6-7</div><div class="num-label">Bcf/d US gas exports to Mexico</div></div>
+  </div>
+</section>
+
+</div><!-- end #main -->
+
+<!-- QUIZ MODAL -->
+<div id="quiz-modal">
+  <div id="quiz-box">
+    <div class="quiz-header">
+      <span class="quiz-title" id="quiz-modal-title"></span>
+      <button class="quiz-close" onclick="closeQuiz()">×</button>
+    </div>
+    <div class="quiz-progress"><div class="quiz-progress-bar" id="quiz-progress-bar"></div></div>
+    <div id="quiz-content"></div>
+  </div>
+</div>
+
+<script>
+// ===== NAVIGATION ACTIVE STATE =====
+const navLinks = document.querySelectorAll('#sidebar nav a');
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+// ===== Q&A DATA =====
+const qaData = {
+  technical: [
+    { q: "What is VaR and what are its key limitations?",
+      a: "VaR is the maximum loss expected over a given time horizon at a given confidence level under normal market conditions. E.g., 1-day 99% VaR = $2M means there's a 1% probability of losing more than $2M in a day. Key limitations: (1) Doesn't capture the magnitude of tail losses beyond the threshold — the '1%' can be catastrophic. (2) Based on historical data — misses novel scenarios (Uri-type events). (3) Assumes correlations are stable — they break down in crises. (4) Ignores liquidity risk. (5) Look-back period dependency. Always pair VaR with CVaR/Expected Shortfall and stress testing." },
+    { q: "What is the difference between VaR and CVaR (Expected Shortfall)?",
+      a: "VaR says: 'With X% probability, losses won't exceed $Y.' CVaR says: 'Given that we've exceeded VaR, the average loss is $Z.' CVaR (also called Expected Shortfall or ES) captures the magnitude and shape of the tail, not just a threshold. It's always ≥ VaR. CVaR is preferred by regulators (Basel III/IV) and risk managers in energy because energy markets have fat tails — the tail events (like Winter Storm Uri) are what actually destroy firms." },
+    { q: "How do you calculate MtM for a natural gas forward contract?",
+      a: "MtM = (Current Forward Price for delivery month – Trade Price) × Volume × Discount Factor. The discount factor accounts for the time value of money between today and the settlement date. For a long forward: if market price has risen above trade price → positive MtM (unrealized gain). The forward curve must be marked to current liquid market prices — for prompt months (ICE/CME closing prices), for deferred months you interpolate using broker quotes and model assumptions." },
+    { q: "Explain delta, gamma, and theta in the context of a gas options book.",
+      a: "Delta: sensitivity of option value to a $1 change in underlying gas price. A delta of 0.5 means a $1 HH move → $0.50 option value change. Gamma: how fast delta changes — a long gamma position accelerates P&L as prices move (convexity benefit). Theta: time decay — an option loses value each day with no price change. For a gas trader long call options: (1) profits from large price moves (positive gamma), (2) loses value each day the market doesn't move (negative theta). Managing the theta/gamma tradeoff is central to options portfolio management." },
+    { q: "What is basis risk and why is it especially relevant for Texas gas?",
+      a: "Basis risk is the risk that your hedge instrument doesn't perfectly offset your physical exposure. In Texas, physical gas is often at Waha or HSC, but most financial hedges use NYMEX Henry Hub futures. If you hedge a Waha long position with HH futures and Waha basis collapses from -$1 to -$5, you have a $4/MMBtu unhedged loss — even if HH was flat. This is precisely what happened in 2019 for firms with unhedged Permian exposure. Solution: use basis swaps to hedge location differential separately from price level." },
+    { q: "What is a fixed-for-floating gas swap and who uses it?",
+      a: "A fixed-for-floating swap is an OTC agreement where one party pays a fixed price and receives the floating (market) price (or vice versa) for a specified volume over a period. Example: A gas producer pays floating (market price) and receives fixed $3.50/MMBtu for 10,000 MMBtu/day for 12 months — locking in revenue regardless of where HH trades. The bank/trading house takes the other side. Swap value = PV of (fixed – floating) cash flows. Mark-to-market: if HH rises above $3.50, the swap has negative value for the fixed receiver (producer)." },
+    { q: "How do you scale VaR from 1-day to 10-day?",
+      a: "The standard approximation is: N-day VaR = 1-day VaR × √N. So 10-day VaR ≈ 1-day VaR × √10 ≈ 3.162 × 1-day VaR. This assumes: (1) daily returns are independent and identically distributed, (2) portfolio is static (no trading during the period). Both assumptions are approximations — in reality gas markets have autocorrelation and traders actively manage positions. Regulators use this formula for capital calculations. More sophisticated approaches use multi-day historical simulation directly." }
+  ],
+  market: [
+    { q: "What are the main drivers of Henry Hub natural gas prices?",
+      a: "The key drivers: (1) Storage levels vs. 5-year average — the primary medium-term signal. Below average = bullish, above = bearish. (2) Weather — HDDs in winter, CDDs in summer. Texas summer AC demand is enormous. (3) LNG exports — now ~14 Bcf/d, creating a structural floor. If HH falls too low, US LNG becomes attractive globally and demand rises. (4) Associated gas production from Permian — supply that is insensitive to gas prices, creating structural ceiling pressure. (5) Power burn — competition from renewables and coal in power generation. (6) Pipeline constraints — regional dislocations (Waha basis)." },
+    { q: "Explain the EIA Weekly Natural Gas Storage Report and why it moves markets.",
+      a: "The EIA publishes weekly data on US working gas in underground storage every Thursday at 10:30 AM ET. The report shows the change in storage (build or draw) vs the prior week and vs the 5-year average. Markets trade the 'surprise' — the difference between the actual number and consensus expectations. A larger-than-expected build (bearish supply signal) → price falls. A larger-than-expected draw (bullish demand signal) → price rises. Typical market move: ±$0.10-$0.30/MMBtu per standard deviation surprise. During winter shortages or summer heat waves, reactions can be $0.50+ per MMBtu." },
+    { q: "What happened during Winter Storm Uri and what are the key lessons?",
+      a: "February 10-19, 2021: A polar vortex brought -2°F temperatures to Texas. Approximately 45 GW of generation went offline. Gas wellhead freeze-offs removed ~15 Bcf/d of supply. Spot Waha gas hit $400+/MMBtu, Henry Hub $23/MMBtu. ERCOT power hit the $9,000/MWh price cap for 32+ hours. Root cause: equipment not winterized; ERCOT's isolated grid couldn't import power from neighbors. Lessons: (1) Tail risks not in VaR history can materialize. (2) Stress tests must include polar vortex scenarios. (3) Physical gas supply chain is fragile in extreme cold. (4) Firms without position limits faced catastrophic losses." },
+    { q: "Why does the Waha Hub trade at a discount to Henry Hub, and when does it go deeply negative?",
+      a: "Waha (West Texas/Permian Basin) is surrounded by oil-driven associated gas production. Permian operators drill for oil — gas is a byproduct. When pipeline takeaway capacity out of the Permian is insufficient for the volume of associated gas produced, prices crash. In 2019, Waha traded at -$9/MMBtu as pipe capacity maxed out. Prices went negative because producers had to pay someone to take their gas rather than shut in oil wells. New pipelines (PHP, Whistler) have partially resolved this, but the dynamic returns whenever Permian production growth outpaces new pipe construction." },
+    { q: "How do LNG exports from the US affect Henry Hub prices?",
+      a: "US LNG exports (~14 Bcf/d in 2024) create a structural floor for Henry Hub. The mechanism: if HH falls below the LNG netback price (TTF price – liquefaction cost ~$3/MMBtu – shipping ~$1-2/MMBtu), US LNG becomes cheap globally and demand for US gas rises, pushing HH back up. Conversely, if global LNG demand surges (as in 2022 post-Russia/Ukraine), LNG pull drives HH up. Key event: Freeport LNG outage in June 2022 — terminal went offline, removing ~2 Bcf/d of LNG demand → HH fell ~$2/MMBtu immediately, demonstrating the direct price linkage." },
+    { q: "What is a spark spread and why does it matter for gas markets?",
+      a: "Spark spread = Power price ($/MWh) – [Gas price ($/MMBtu) × Heat rate (BTU/kWh ÷ 1,000)]. It measures the profit margin of a gas-fired power plant. If spark spread is positive, burning gas to generate power is profitable. If negative, gas plants run at a loss (or shut down). For gas markets: high power prices → high spark spread → more gas power burn → bullish gas. Low spark spread (e.g., from cheap renewables) → gas plants run less → bearish gas. In ERCOT during summer afternoons, spark spreads can be $50-$200/MWh due to AC demand, driving massive gas power burn." },
+    { q: "What is ERCOT and how does its nodal pricing work?",
+      a: "ERCOT (Electric Reliability Council of Texas) operates ~90% of Texas's power grid as an island (minimal connections to neighboring grids). Nodal pricing (implemented 2011) sets prices at ~900+ individual nodes based on local supply, demand, and transmission constraints. Each node's LMP = Energy cost + Congestion component + Loss component. When transmission lines are congested between nodes, prices diverge — a node on the 'wrong' side of a congested line can be $50-$100/MWh cheaper or more expensive than a neighboring node. This creates basis trading opportunities and requires careful hedge mapping for gas-to-power positions." }
+  ],
+  mo: [
+    { q: "Walk me through the daily P&L explain process.",
+      a: "1) Pull EOD positions and today's market closing prices from ETRM system. 2) Calculate today's MtM P&L — sum of all positions × price change. 3) Compare to yesterday's total P&L to get the daily change. 4) Decompose by product, tenor, and Greek (delta P&L, gamma, theta, vega, new trades). 5) Identify any 'unexplained' residual — could be missing trades, data errors, model issues. 6) Cross-check with trader's own P&L estimate (traders run their own books). 7) Reconcile differences >threshold with trader. 8) Document findings and distribute P&L flash to risk management. Escalate any unexplained P&L >$X immediately." },
+    { q: "How do you handle a discrepancy between the MO P&L and the trader's P&L?",
+      a: "First, don't assume either side is wrong — discrepancies are common and often have innocent explanations. Step 1: Check for missing or late-booked trades. Step 2: Verify that both are using the same market prices for marking. Step 3: Check option model parameters (vol, discount curves) are consistent. Step 4: Verify position quantities are identical — missed trade legs, settlement differences. Step 5: Communicate with the trader — they often know the reason. Step 6: If unresolved after investigation, escalate to head of risk or senior MO. Never release P&L with a known unexplained discrepancy above threshold without escalation." },
+    { q: "What is the trade life cycle in energy trading?",
+      a: "1) Trade execution: Trader agrees terms (price, volume, delivery period, location) with counterparty. 2) Trade capture: Trade entered into ETRM system (Endur, Allegro, Aspect, etc.) by front office or MO. 3) Confirmation: Legal confirmation issued and matched with counterparty. 4) MO validation: MO checks trade terms vs. confirmation, risk limits, credit limits. 5) Back office settlement: Invoice generation, payment, physical scheduling. 6) Mark-to-market: Position valued daily against forward curve. 7) Expiry/Settlement: Physical delivery or financial cash settlement at expiry. MO touches every stage — validation, daily MtM, limit monitoring, and settlement support." },
+    { q: "What ETRM systems do you know, and what is their role in MO?",
+      a: "Common ETRM (Energy Trading & Risk Management) systems: OpenLink Endur, Openlink OPIS, Allegro, Aspect Enterprise/CTRM, Brady, SXC (now ION). In MO, the ETRM system is the source of truth for: (1) trade positions, (2) P&L calculation, (3) risk metrics (VaR, Greeks), (4) forward curves, (5) counterparty credit exposure. MO relies on ETRM for daily workflows — if data is missing or misconfigured, P&L and risk reports are wrong. Key skill: knowing how to investigate ETRM data quality issues and trace errors back to their source." },
+    { q: "How do you monitor and report on risk limit utilization?",
+      a: "Process: 1) Pull current position reports and risk metrics from ETRM at EOD (and intraday for volatile days). 2) Calculate limit utilization: actual metric ÷ limit = % utilized. 3) Produce a limit utilization report showing each limit, current level, and % used. 4) Apply traffic light system: green (<70%), amber (70-90%), red (>90% or breach). 5) Escalate amber/red flags to risk management with explanatory note. 6) For confirmed breaches: notify risk immediately, engage trader on remediation, document in exception log. 7) Track trends — if utilization has been climbing toward limits for several days, flag proactively before the breach occurs." }
+  ],
+  scenario: [
+    { q: "It's Thursday morning. EIA storage comes in +30 Bcf vs. expectations of +20 Bcf. What happens and what do you do?",
+      a: "A +10 Bcf surprise build is bearish — more gas stored than expected means the market is better supplied. Expect HH to sell off ~$0.10-$0.25/MMBtu in the 30 minutes after the 10:30 AM release. MO actions: (1) Monitor real-time P&L impact on positions — assess whether delta-exposed positions need attention. (2) Recompute intraday VaR estimate — increased price movement → potentially higher realized volatility. (3) Communicate the impact to traders if any limit thresholds are approaching. (4) Update any fundamental models with the new storage data point. (5) Document the market move and P&L attribution for the daily report." },
+    { q: "A trader has a large long Waha position. Permian Highway Pipeline announces a force majeure. What are the risks and steps?",
+      a: "Force majeure on PHP removes takeaway capacity from the Permian, meaning Waha gas has fewer ways to exit → Waha basis widens (more negative). The long Waha position loses money as Waha price falls vs HH. Risk: this can be sudden and extreme — Waha can move $2-5/MMBtu in a day on such news. MO steps: (1) Immediately assess the trader's Waha exposure and its VaR/delta impact. (2) Recompute VaR with widened basis assumption (stress scenario). (3) Check whether VaR limits or delta limits are breached or approaching. (4) Alert risk management immediately with size of exposure and estimated loss. (5) Coordinate with trader on hedge options (basis swap, reduce position). (6) Monitor pipeline operator notices for duration/scope updates." },
+    { q: "Your overnight P&L is $5M higher than expected. The forward curve barely moved. How do you investigate?",
+      a: "An unexpectedly large positive P&L with minimal price moves is a red flag — likely a data or booking error, not genuine P&L. Investigation: (1) Check if a new large trade was booked with an off-market price (trade input error — e.g., wrong sign, extra zero). (2) Check if a large position was incorrectly added or duplicated. (3) Verify forward curve data — was a price used in marking that doesn't reflect the actual market? (4) Check for expired trades that should have been settled but are still marked open. (5) Review option model inputs — vol or rate parameter change? (6) Cross-check with trader — do they see the same? If discrepancy, work together to find source. Never book unexplained gains without understanding their source." },
+    { q: "Texas is forecast to hit record heat next week — 110°F forecast for 5 days. How do you prepare the risk report?",
+      a: "Extreme heat → massive AC demand → power prices spike → gas power burn surges → short-term gas prices spike (esp. HSC and prompt months). MO preparation: (1) Run a stress scenario: model the price impact of +X HDDs over the forecast period on the current book. (2) Identify which positions are most exposed — long prompt gas, long ERCOT power, long HSC basis. (3) Check position limits and VaR are comfortable to absorb potential moves. (4) Prepare a heat stress scenario report for risk management and senior leadership. (5) Flag the scenario to traders so they can assess whether to adjust positions. (6) Monitor weather model updates daily — the 7-10 day forecast can change significantly." },
+    { q: "Management asks you to cut the VaR report from daily to weekly to save time. How do you respond?",
+      a: "Push back diplomatically but firmly. Daily VaR is a critical control: gas markets can move 5-15% in a single day (especially near EIA reports, winter weather events). Weekly reporting means a risk limit breach could persist for up to 5 days undetected. Counter-proposal: automate the daily report to reduce the time burden — the value of daily monitoring far outweighs the cost. Reference specific examples: the Freeport LNG outage (June 2022) moved HH $2/MMBtu in hours; a weekly risk report would have missed critical limit utilization changes. Offer to streamline the report format if the issue is presentation complexity, not frequency." }
+  ]
+};
+
+// ===== RENDER Q&A =====
+function renderQA(containerId, items) {
+  const container = document.getElementById(containerId);
+  items.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'qa-item';
+    div.innerHTML = `
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span>${i+1}. ${item.q}</span>
+        <span class="arrow">›</span>
+      </div>
+      <div class="qa-a">${item.a}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+function toggleQA(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+renderQA('qa-technical', qaData.technical);
+renderQA('qa-market', qaData.market);
+renderQA('qa-mo', qaData.mo);
+renderQA('qa-scenario', qaData.scenario);
+
+// ===== QUIZ DATA =====
+const quizzes = {
+  fundamentals: {
+    title: "⛽ Gas Market Fundamentals",
+    questions: [
+      { q: "What is the primary benchmark for US natural gas prices?", opts: ["Waha Hub", "Henry Hub", "Chicago City Gate", "Houston Ship Channel"], a: 1, exp: "Henry Hub (Erath, Louisiana) is the benchmark where 9 major pipelines intersect. It is the delivery point for NYMEX NG futures contracts." },
+      { q: "The EIA Weekly Natural Gas Storage Report is published:", opts: ["Monday 9 AM", "Wednesday 2 PM", "Thursday 10:30 AM ET", "Friday 3 PM"], a: 2, exp: "The EIA storage report is published every Thursday at 10:30 AM Eastern Time. It is the most market-moving weekly data release for gas traders." },
+      { q: "Which factor has become the most important structural floor for US gas prices?", opts: ["Canadian imports", "Industrial demand", "LNG export demand", "Nuclear plant retirements"], a: 2, exp: "US LNG exports (~14 Bcf/d in 2024) create a structural floor. If HH falls too low, it becomes cheap for global LNG buyers, increasing demand and pushing prices back up." },
+      { q: "HDD stands for:", opts: ["Hub Delivery Date", "Heating Degree Days", "Historical Daily Demand", "Hub Delta Differential"], a: 1, exp: "HDD = Heating Degree Days = max(0, 65°F – average daily temperature). High HDDs mean cold weather and high heating demand. CDDs are the summer equivalent." },
+      { q: "Associated gas refers to:", opts: ["Gas stored in aquifer formations", "Gas produced alongside crude oil as a byproduct", "Gas imported from Canada", "Gas used in industrial chemical processes"], a: 1, exp: "Associated gas is produced alongside crude oil. In the Permian Basin, it's a byproduct of oil drilling. Operators drill for oil regardless of gas prices, so associated gas supply is NOT price-responsive to gas markets." },
+      { q: "Gas storage injection season typically runs from:", opts: ["January to March", "April to October", "November to March", "July to December"], a: 1, exp: "Injection season is roughly April–October when gas is injected into storage. Withdrawal season is November–March when cold weather drives heating demand. Storage at the start of winter is a key bullish/bearish indicator." },
+      { q: "When US natural gas storage levels are significantly above the 5-year average, the market is:", opts: ["Bullish — prices should rise", "Bearish — prices tend to fall", "Unaffected — storage doesn't drive prices", "Volatile but directionally unclear"], a: 1, exp: "Above-average storage = over-supplied market → bearish for prices. The weekly EIA storage report is watched closely for surprises vs. the 5-year average baseline." },
+      { q: "Which regulator oversees US interstate natural gas pipelines?", opts: ["ERCOT", "EIA", "FERC", "CFTC"], a: 2, exp: "FERC (Federal Energy Regulatory Commission) regulates interstate natural gas pipelines, including approving new pipelines, setting tariffs, and overseeing market conduct." },
+      { q: "The 'basis' in gas trading refers to:", opts: ["The interest rate used to discount cash flows", "The price difference between two locations or time periods", "The minimum tick size for a futures contract", "The initial margin required by the exchange"], a: 1, exp: "Basis = price at Hub X – price at Henry Hub. Waha basis, for example, is typically negative (Waha < HH). Basis reflects transport costs, local supply/demand imbalances, and infrastructure constraints." },
+      { q: "The 'spark spread' measures:", opts: ["The bid-offer spread for gas futures", "The profit margin of a gas-fired power plant", "The spread between gas and oil prices", "The difference between spot and forward prices"], a: 1, exp: "Spark spread = Power price ($/MWh) – [Gas price × Heat rate / 1000]. It represents the net margin of generating electricity from gas. High spark spreads → more gas power burn → bullish gas." }
+    ]
+  },
+  var: {
+    title: "📊 VaR & Risk Metrics",
+    questions: [
+      { q: "1-day 99% VaR = $2M means:", opts: ["You will definitely lose $2M tomorrow", "There is a 99% probability losses won't exceed $2M in one day", "The average loss on all bad days is $2M", "Maximum possible loss is $2M"], a: 1, exp: "VaR at 99% confidence means: in 99% of trading days, losses will be less than $2M. The 1% scenario (worst ~2-3 days per year) can exceed $2M — possibly by a large margin." },
+      { q: "Which VaR method is most commonly used in energy trading?", opts: ["Delta-Normal (Parametric)", "Historical Simulation", "Monte Carlo", "Extreme Value Theory"], a: 1, exp: "Historical Simulation is most common in energy — it applies actual historical market moves to the current portfolio, makes no distributional assumptions, and naturally captures the fat tails and non-linearities of energy returns." },
+      { q: "If 1-day 99% VaR = $1M, the approximate 10-day VaR is:", opts: ["$10M", "$3.16M", "$1.1M", "$100M"], a: 1, exp: "10-day VaR ≈ 1-day VaR × √10 ≈ $1M × 3.162 = $3.16M. This assumes independent daily returns and a static portfolio." },
+      { q: "CVaR (Conditional VaR / Expected Shortfall) vs. VaR:", opts: ["CVaR is always lower than VaR", "CVaR is the average loss in the tail beyond VaR", "CVaR only applies to equity portfolios", "CVaR ignores losses beyond the confidence level"], a: 1, exp: "CVaR answers: 'Given that we've breached VaR, what is the average loss?' It captures tail severity, not just probability. CVaR ≥ VaR always. Preferred by regulators under Basel III/IV and by risk managers in energy." },
+      { q: "A major limitation of VaR is:", opts: ["It is too conservative", "It doesn't capture tail risk beyond the confidence level", "It requires too much computation", "It's not recognized by regulators"], a: 1, exp: "VaR only tells you the threshold, not what happens beyond it. The 1% scenario can be catastrophically large. This is why CVaR and stress testing are essential complements. Uri-type events sit in the tail that VaR ignores." },
+      { q: "In VaR backtesting, an 'exception' is:", opts: ["A trade excluded from risk calculations", "A day when actual loss exceeds the VaR estimate", "A regulatory exemption", "A model recalibration event"], a: 1, exp: "Exception = day when actual P&L loss > VaR estimate. At 99% confidence, we expect ~2-3 exceptions per year (1% × 250 trading days). Too few = model too conservative. Too many = model underestimates risk." },
+      { q: "Delta in options measures:", opts: ["Time decay", "Sensitivity to volatility changes", "Rate of change of option value relative to underlying price", "Sensitivity to interest rate changes"], a: 2, exp: "Delta = ∂V/∂S = change in option value per $1 change in underlying price. A call option delta of 0.5 means a $1 HH rise → $0.50 option value increase. Delta is the primary hedge ratio for options." },
+      { q: "The parametric VaR formula uses which z-score for 99% confidence?", opts: ["1.28", "1.645", "2.33", "3.09"], a: 2, exp: "Z-score for 99% one-tailed confidence = 2.33. For 95% = 1.645. Parametric VaR = Position × σ × 2.33 (daily). Remember: assuming normal distribution, which underestimates gas market tail risk." }
+    ]
+  },
+  texas: {
+    title: "🤠 Texas Gas Market",
+    questions: [
+      { q: "ERCOT stands for:", opts: ["Energy Research Corporation of Texas", "Electric Reliability Council of Texas", "Eastern Regional Committee on Trading", "Energy Regulation Control of Texas"], a: 1, exp: "ERCOT = Electric Reliability Council of Texas. It operates ~90% of Texas's power grid as an island grid with minimal connections to neighboring US grids (Eastern and Western Interconnections)." },
+      { q: "The Waha Hub is located in:", opts: ["East Texas near Louisiana border", "North Texas near Oklahoma", "West Texas / Permian Basin", "Gulf Coast near Corpus Christi"], a: 2, exp: "Waha is in West Texas, in the heart of the Permian Basin — the largest oil and gas producing basin in the US. Its price is dominated by associated gas production dynamics." },
+      { q: "Why did Waha basis trade at -$9/MMBtu in 2019?", opts: ["Low regional demand due to mild weather", "Pipeline takeaway constraints from the Permian Basin", "Mexican imports flooding the market", "FERC regulatory changes on pipeline tariffs"], a: 1, exp: "Permian oil production surged in 2018-2019. Associated gas grew rapidly but pipeline capacity out of Permian didn't keep pace. With full pipes, gas couldn't exit → prices crashed. Permian operators wouldn't shut oil wells for gas economics." },
+      { q: "ERCOT nodal pricing means:", opts: ["One price for all of Texas", "Four main pricing zones", "Prices at ~900+ individual nodes based on local supply/demand and congestion", "Prices set by federal regulators"], a: 2, exp: "Nodal pricing (implemented in ERCOT in 2011) sets LMPs (Locational Marginal Prices) at hundreds of individual nodes. Each LMP = Energy + Congestion + Loss components. Congestion creates price divergence between nodes." },
+      { q: "During Winter Storm Uri, Texas spot gas prices:", opts: ["Fell due to reduced industrial demand", "Spiked to $400+/MMBtu due to freeze-offs and demand surge", "Remained flat due to FERC price caps", "Only moved after the storm ended"], a: 1, exp: "Waha spot gas hit $400+/MMBtu during Uri (vs ~$3 normal) as ~15 Bcf/d of production froze at the wellhead while heating demand surged. ERCOT power hit the $9,000/MWh administrative cap for 32+ hours." },
+      { q: "The Houston Ship Channel hub typically trades at a PREMIUM to Henry Hub because:", opts: ["It is far from production areas", "High LNG export demand and large petrochemical industrial load", "Less underground storage capacity", "Pipeline tariffs are higher at HSC"], a: 1, exp: "HSC has massive industrial demand (petrochemicals, refineries) and proximity to LNG export terminals (Freeport, Corpus Christi). This demand pull creates a consistent premium vs. HH, especially when LNG terminals run at full capacity." },
+      { q: "Which LNG export terminals are located in Texas?", opts: ["Sabine Pass and Cove Point", "Freeport LNG and Corpus Christi LNG", "Elba Island and Cameron LNG", "Golden Pass and Lake Charles LNG"], a: 1, exp: "Freeport LNG (Quintana Island, ~2.4 Bcf/d) and Corpus Christi LNG (~2.1 Bcf/d) are the two major Texas LNG export terminals. Sabine Pass is in Louisiana (though connected via Texas pipe systems)." },
+      { q: "An LMP in ERCOT consists of:", opts: ["Only the energy generation cost", "Energy + Congestion + Loss components", "Only the congestion cost", "Energy + fuel cost adjustment"], a: 1, exp: "LMP (Locational Marginal Price) = Energy component (system lambda) + Congestion component (shadow price of binding constraints) + Loss component (marginal cost of electrical losses). Congestion is the most volatile component." },
+      { q: "The 'Permian Discount' to Waha basis is structurally driven by:", opts: ["Low quality gas requiring more processing", "Insufficient takeaway pipeline capacity relative to associated gas production", "State tax differences vs. Louisiana", "Lower demand from local industrial users"], a: 1, exp: "The Permian produces massive amounts of associated gas as a byproduct of oil production. When pipeline capacity cannot absorb this volume, Waha prices fall. New pipelines (PHP, Whistler) have partially relieved the constraint." }
+    ]
+  },
+  hedging: {
+    title: "🔀 Hedging & Derivatives",
+    questions: [
+      { q: "A natural gas producer wanting to protect against falling prices would:", opts: ["Buy call options", "Sell futures or buy put options", "Buy futures", "Enter an interest rate swap"], a: 1, exp: "A producer is naturally long gas (they produce it). To hedge price decline, they SHORT futures (lock in sale price) or buy put options (right to sell at strike). This offsets losses if market price falls below their production cost." },
+      { q: "A 'collar' strategy in gas hedging involves:", opts: ["Only buying put options", "Only selling call options", "Buying a put option AND selling a call option to create a price band", "Buying both a put and a call at the same strike"], a: 2, exp: "A collar = buy put (floor protection) + sell call (cap upside, generates premium to offset put cost). Net cost is often near zero. Result: price is 'collared' between the put strike and call strike. Common for producers who want protection but can't afford put premiums." },
+      { q: "A basis swap allows a trader to:", opts: ["Swap fixed interest rates for floating rates", "Exchange the price differential between two locations for a fixed spread", "Convert physical positions to financial positions", "Trade gas across different time zones"], a: 1, exp: "A basis swap fixes the spread between two price points (e.g., Waha vs. HH). Party A pays (Waha – HH) floating and receives a fixed negative spread. This hedges the basis risk when you have physical exposure at Waha but financial hedges at HH." },
+      { q: "The NYMEX Henry Hub natural gas futures contract represents:", opts: ["1,000 MMBtu", "10,000 MMBtu", "100,000 MMBtu", "1,000,000 MMBtu"], a: 1, exp: "One NYMEX NG futures contract = 10,000 MMBtu delivered at Henry Hub, Louisiana. At $3/MMBtu, one contract = $30,000 notional. Minimum price tick = $0.001/MMBtu = $10 per contract." },
+      { q: "A fixed-for-floating gas swap where you PAY FIXED will profit when:", opts: ["Gas prices rise above the fixed rate (you receive floating which is higher)", "Gas prices fall below the fixed rate", "Volatility increases", "The yield curve steepens"], a: 0, exp: "As the fixed payer: you pay fixed, receive floating (market price). If market price (floating) rises above your fixed rate, you receive more than you pay → profit. Think of it as being effectively LONG gas through the swap." },
+      { q: "'Contango' in gas futures markets means:", opts: ["Spot prices are higher than futures (upward sloping)", "Futures prices are higher than spot (upward sloping curve)", "All maturities trade at the same price", "The curve shape inverts seasonally"], a: 1, exp: "Contango = futures > spot = upward sloping forward curve. In gas, this is typical going into summer (low demand season) when storage is full. It incentivizes storing gas today to sell forward. The opposite is backwardation (spot > futures)." },
+      { q: "Vega in options measures sensitivity to:", opts: ["Changes in the underlying price", "Time passage (decay)", "Changes in implied volatility", "Changes in interest rates"], a: 2, exp: "Vega = ∂V/∂σ = change in option value per 1% change in implied volatility. Long options have positive vega — they benefit from vol spikes (like winter storms). Short options have negative vega — hurt by vol increases." },
+      { q: "Open interest in NYMEX gas futures refers to:", opts: ["Total trading volume that day", "Total number of outstanding contracts not yet settled or closed", "The number of registered market makers", "The price where most trading occurred (volume-weighted average)"], a: 1, exp: "Open interest = total number of outstanding (not yet settled/closed) futures contracts. Rising open interest + rising price = bulls adding longs (bullish signal). Rising open interest + falling price = bears adding shorts (bearish signal). Falling open interest = positions being closed." }
+    ]
+  },
+  scenarios: {
+    title: "⚡ Market Scenarios & Case Studies",
+    questions: [
+      { q: "In summer 2022, Henry Hub prices surged to ~$9.70/MMBtu. The primary driver was:", opts: ["US domestic supply disruption", "LNG export demand surge driven by European gas crisis post-Ukraine invasion", "Nuclear plant retirements increasing gas demand", "Coal mine closures reducing gas-coal switching"], a: 1, exp: "Russia's invasion of Ukraine caused European gas prices to spike to €300+/MWh equivalent. The US became the critical LNG supplier to Europe, running export terminals at maximum capacity. This pulled HH prices to a 14-year high." },
+      { q: "When Freeport LNG had a major fire and outage in June 2022, the immediate effect on HH was:", opts: ["Prices rose because of supply disruption", "Prices fell ~$2/MMBtu as domestic LNG demand was removed", "Prices were unchanged (priced in)", "Only winter futures were affected"], a: 1, exp: "Freeport LNG (2+ Bcf/d) going offline removed that demand from the US domestic market → domestic supply surplus → HH fell ~$2/MMBtu immediately. This is opposite to a supply disruption and illustrates how LNG exports are now structural demand." },
+      { q: "If the EIA storage report shows a surprise BUILD of +15 Bcf vs. +5 Bcf expected, what happens?", opts: ["Prices rise (more supply stored = better)", "Prices fall (over-supplied signal)", "No effect (weekly noise)", "Only summer contracts affected"], a: 1, exp: "A larger-than-expected build is bearish — it signals the market is better supplied than expected. Typically causes a $0.10-$0.30/MMBtu selloff immediately after the 10:30 AM release. In volatile markets, the move can be $0.50+." },
+      { q: "Henry Hub prices crashed to ~$1.50/MMBtu in 2020 primarily due to:", opts: ["OPEC production cuts reducing associated gas", "COVID demand destruction combined with record US gas production", "Pipeline overcapacity from new builds", "Australia LNG flooding global markets"], a: 1, exp: "COVID lockdowns crashed industrial/commercial gas demand. Meanwhile US dry gas production remained near record levels. Storage quickly built above the 5-year average. The demand shock overwhelmed the market, sending HH to 25-year lows." },
+      { q: "The 'gas-to-coal switching' dynamic means that when gas prices rise:", opts: ["Coal prices automatically fall in sympathy", "Power generators may switch back to coal, reducing gas demand and capping price upside", "Coal companies immediately buy gas derivatives", "Gas pipeline flows reverse direction"], a: 1, exp: "When gas is expensive enough, coal-capable power plants switch from gas to coal (approximately when gas > $3.50-4.50/MMBtu depending on coal prices and plant efficiency). This switching demand elasticity creates a natural ceiling on gas prices in power markets." },
+      { q: "During Winter Storm Uri (Feb 2021), the primary cause of gas supply disruption was:", opts: ["LNG import terminal failures", "Wellhead freeze-offs and equipment failures due to extreme cold", "FERC ordering pipeline shutdowns", "A major pipeline explosion in East Texas"], a: 1, exp: "The root cause was inadequate winterization of gas wells, pipes, and processing equipment. At -2°F, instruments froze, liquids in gas froze (hydrates), and wellhead equipment failed. ~15 Bcf/d of production went offline. This was predictable but operators had no winterization mandate." },
+      { q: "Permian Basin associated gas production is unique because:", opts: ["It is only produced in summer months", "Production continues regardless of gas prices — driven by oil economics", "It has higher BTU content than other US gas", "It requires special processing unavailable in Texas"], a: 1, exp: "Permian operators drill for oil. Gas is a byproduct. They will not shut in oil wells because gas prices are low — the economics are driven by oil (WTI), not gas (HH). This means Permian gas supply is price-inelastic to gas markets, creating structural oversupply risk." }
+    ]
+  }
+};
+
+// ===== QUIZ ENGINE =====
+let currentQuiz = null, currentQ = 0, score = 0, answered = false;
+
+function startQuiz(quizId) {
+  currentQuiz = quizzes[quizId];
+  currentQ = 0; score = 0; answered = false;
+  document.getElementById('quiz-modal-title').textContent = currentQuiz.title;
+  document.getElementById('quiz-modal').classList.add('open');
+  renderQuestion();
+}
+function closeQuiz() {
+  document.getElementById('quiz-modal').classList.remove('open');
+}
+function renderQuestion() {
+  const q = currentQuiz.questions[currentQ];
+  const total = currentQuiz.questions.length;
+  const pct = (currentQ / total) * 100;
+  document.getElementById('quiz-progress-bar').style.width = pct + '%';
+  answered = false;
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-q-num">Question ${currentQ+1} of ${total}</div>
+    <div class="quiz-q-text">${q.q}</div>
+    ${q.opts.map((opt, i) => `
+      <div class="quiz-option" onclick="selectAnswer(${i})" id="opt-${i}">
+        <span class="opt-letter">${['A','B','C','D'][i]}</span>
+        <span>${opt}</span>
+      </div>
+    `).join('')}
+    <div class="quiz-explanation" id="quiz-exp">${q.exp}</div>
+    <button class="quiz-next" id="quiz-next-btn" onclick="nextQuestion()">
+      ${currentQ < total-1 ? 'Next Question →' : 'See Results'}
+    </button>
+  `;
+}
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = currentQuiz.questions[currentQ];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach(o => o.classList.add('disabled'));
+  if (idx === q.a) {
+    opts[idx].classList.add('correct');
+    score++;
+  } else {
+    opts[idx].classList.add('wrong');
+    opts[q.a].classList.add('correct');
+  }
+  document.getElementById('quiz-exp').classList.add('show');
+  document.getElementById('quiz-next-btn').classList.add('show');
+}
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= currentQuiz.questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+function showResults() {
+  const total = currentQuiz.questions.length;
+  const pct = Math.round((score / total) * 100);
+  const msg = pct >= 80 ? '🎯 Excellent! You\'re ready.' : pct >= 60 ? '📚 Good. Review the missed questions.' : '⚡ Keep studying — review the relevant sections above.';
+  document.getElementById('quiz-progress-bar').style.width = '100%';
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-result">
+      <div class="quiz-score">${score}/${total}</div>
+      <div class="quiz-score-label">${pct}% correct — ${msg}</div>
+      <button class="quiz-retry" onclick="startQuiz('${Object.keys(quizzes).find(k => quizzes[k] === currentQuiz)}')">↺ Retry Quiz</button>
+    </div>
+  `;
+}
+// Close modal on background click
+document.getElementById('quiz-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeQuiz();
+});
+</script>
+</body>
+</html>
