@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MO Gas Houston — Interview Prep</title>
+<title>MO Houston — Gas & Power Interview Prep</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -131,13 +131,23 @@ table.data tr:hover td{background:rgba(255,255,255,.02)}
 /* FORMULA */
 .formula{background:#010409;border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-family:'Courier New',monospace;font-size:12px;color:var(--green);margin:8px 0}
 
+/* TABS */
+#tab-bar{position:fixed;top:0;left:var(--sidebar);right:0;height:44px;background:#010409;border-bottom:1px solid var(--border);z-index:90;display:flex;align-items:flex-end;gap:0;padding:0 32px}
+.tab-btn{padding:10px 22px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .2s;letter-spacing:.2px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--amber);border-bottom-color:var(--amber)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+#main{padding-top:60px}
+
 /* SCROLL BEHAVIOR */
 html{scroll-behavior:smooth}
 
 /* RESPONSIVE */
 @media(max-width:768px){
   #sidebar{display:none}
-  #main{margin-left:0;padding:16px}
+  #tab-bar{left:0}
+  #main{margin-left:0;padding:16px;padding-top:60px}
   .grid2,.grid3{grid-template-columns:1fr}
 }
 </style>
@@ -172,9 +182,17 @@ html{scroll-behavior:smooth}
   <div id="sidebar-footer">Houston, TX · 2025</div>
 </div>
 
+<!-- TAB BAR -->
+<div id="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('gas')">⛽ Gas Markets</button>
+  <button class="tab-btn" onclick="switchTab('power')">⚡ Power / ERCOT</button>
+  <button class="tab-btn" onclick="switchTab('softskills')">🎤 Interview Skills</button>
+</div>
+
 <!-- MAIN CONTENT -->
 <div id="main">
 
+<div id="tab-gas" class="tab-content active">
 <!-- HERO -->
 <div class="hero">
   <h2>Middle Office Gas Trading — Houston Interview Prep</h2>
@@ -985,6 +1003,332 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
+</div><!-- end tab-gas -->
+
+<!-- ===================== POWER TAB ===================== -->
+<div id="tab-power" class="tab-content">
+
+<div class="hero" style="background:linear-gradient(135deg,#1a2e1a 0%,#161b22 100%)">
+  <h2 style="color:var(--green)">Texas Power Markets — ERCOT Deep Dive</h2>
+  <p>Complete preparation on ERCOT market structure, nodal pricing, power trading, risk metrics, and gas-power nexus. Essential for any Houston energy MO role.</p>
+  <div class="tags">
+    <span class="tag green">ERCOT Structure</span>
+    <span class="tag green">Nodal Pricing / LMP</span>
+    <span class="tag amber">Spark Spread</span>
+    <span class="tag blue">Power Derivatives</span>
+    <span class="tag amber">Ancillary Services</span>
+    <span class="tag green">Renewable Integration</span>
+  </div>
+</div>
+
+<section id="ercot-structure">
+  <h2><span class="icon">🔌</span> ERCOT Market Structure</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">What is ERCOT?</div>
+      <ul class="clean">
+        <li><strong>Electric Reliability Council of Texas</strong> — ISO/RTO operating ~90% of Texas grid</li>
+        <li>~26 million customers, ~85 GW of installed capacity</li>
+        <li><strong>Islanded grid</strong> — minimal AC connections to Eastern/Western US interconnections (only ~1,100 MW DC ties)</li>
+        <li>Consequence: no emergency imports from neighbors — Texas prices are 100% set by Texas supply/demand</li>
+        <li>Regulated by the <strong>Public Utility Commission of Texas (PUCT)</strong>, not FERC</li>
+        <li>Unique in the US: competitive wholesale market with no capacity market</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Market Design — Energy-Only</div>
+      <ul class="clean">
+        <li>ERCOT is an <strong>energy-only market</strong> — no separate capacity payments (unlike PJM, MISO, ISO-NE)</li>
+        <li>Generators recover all fixed costs through energy prices</li>
+        <li>Result: prices can spike to very high levels during scarcity (this is by design)</li>
+        <li>Administrative price cap: <strong>$5,000/MWh</strong> (HCAP) up to <strong>$9,000/MWh</strong> (VOLL) during emergencies</li>
+        <li>ORDC (Operating Reserve Demand Curve) adder: when reserves are tight, an adder is applied to real-time price</li>
+        <li>Key debate: should Texas add a capacity market? (ongoing PUCT discussion)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>ERCOT Market Timeline (Daily)</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Market</th><th>Window</th><th>Description</th></tr>
+      <tr><td><strong>Day-Ahead Market (DAM)</strong></td><td>Clears ~10 AM day before</td><td>Financial market; sets hourly day-ahead prices at each settlement point; ancillary services procured</td></tr>
+      <tr><td><strong>Real-Time Market (RTM)</strong></td><td>5-minute intervals</td><td>Physical dispatch; settles imbalances vs. DAM; most volatile prices here</td></tr>
+      <tr><td><strong>Ancillary Services</strong></td><td>Day-ahead + real-time</td><td>Regulation Up/Down, Responsive Reserve (RRS), Non-Spin reserve</td></tr>
+      <tr><td><strong>Capacity Credit (ECRS)</strong></td><td>Post-Uri addition (2023)</td><td>ERCOT Contingency Reserve Service — new product post-Uri to improve reliability</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="nodal-lmp">
+  <h2><span class="icon">📍</span> Nodal Pricing & LMP</h2>
+  <div class="hl green">
+    <p><strong>LMP = Locational Marginal Price</strong> = the cost of serving an additional MWh at a specific node. It breaks down into:<br>
+    <strong>LMP = Energy Component + Congestion Component + Loss Component</strong></p>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">Energy Component</div>
+      <ul class="clean">
+        <li>The system-wide marginal cost (lambda)</li>
+        <li>Same for all nodes when no congestion</li>
+        <li>Set by the most expensive dispatched generator</li>
+        <li>Gas plants often set the marginal price (~60% of hours)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--amber)">Congestion Component</div>
+      <ul class="clean">
+        <li>Arises when transmission lines hit their capacity limit</li>
+        <li>Shadow price of the binding constraint</li>
+        <li>Can be positive or negative at different nodes</li>
+        <li>Downstream of a constraint → higher price; upstream → lower</li>
+        <li>Creates massive intra-day price divergence between nodes</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">Loss Component</div>
+      <ul class="clean">
+        <li>Marginal cost of electrical losses in transmission</li>
+        <li>Nodes far from load centers pay a loss "penalty"</li>
+        <li>Relatively small vs. energy and congestion</li>
+        <li>Can be positive or negative depending on location</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Settlement Points — Key ERCOT Locations</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Hub / Zone</th><th>Type</th><th>Description</th></tr>
+      <tr><td><strong>Houston Hub</strong></td><td>Load Zone</td><td>Major load center; high AC demand in summer; often highest prices during heat events</td></tr>
+      <tr><td><strong>North Hub</strong></td><td>Load Zone</td><td>DFW area; large industrial and residential load</td></tr>
+      <tr><td><strong>South Hub</strong></td><td>Load Zone</td><td>San Antonio area; Corpus Christi industrial corridor</td></tr>
+      <tr><td><strong>West Hub</strong></td><td>Load Zone</td><td>Wind-rich area (Permian, Panhandle); often lowest prices due to wind generation</td></tr>
+      <tr><td><strong>ERCOT Hub (HUB)</strong></td><td>Virtual Hub</td><td>Weighted average of 4 load zones; most liquid financial product</td></tr>
+      <tr><td><strong>~900+ Physical Nodes</strong></td><td>Node</td><td>Individual generator/substation nodes; massive price divergence possible</td></tr>
+    </table>
+  </div>
+
+  <h3>Financial Transmission Rights (FTRs)</h3>
+  <div class="card">
+    <p style="font-size:13px;color:var(--muted)">FTRs (called CRRs — Congestion Revenue Rights — in ERCOT) are financial instruments that entitle the holder to a stream of revenue (or obligation) based on the congestion component of LMPs between two nodes. They are used to <strong style="color:var(--text)">hedge congestion risk</strong>. A generator at Node A selling power at Node B buys an FTR from A→B to lock in the congestion price. FTR value = (LMP_B – LMP_A) × MWh. FTRs are auctioned periodically by ERCOT.</p>
+  </div>
+</section>
+
+<section id="power-fundamentals">
+  <h2><span class="icon">⚡</span> Power Market Fundamentals</h2>
+
+  <h3>Supply Stack (Merit Order)</h3>
+  <div class="card">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px">The merit order determines which plants run. ERCOT dispatches cheapest available generation first. The price is set by the <strong style="color:var(--text)">most expensive unit needed to meet demand</strong> (marginal unit).</p>
+    <table class="data">
+      <tr><th>Technology</th><th>Approximate Marginal Cost</th><th>Role in ERCOT</th></tr>
+      <tr><td>Wind / Solar</td><td>~$0/MWh (no fuel cost)</td><td>Dispatched first; depress prices when running; ~40%+ of generation capacity</td></tr>
+      <tr><td>Nuclear</td><td>~$20-30/MWh</td><td>~5 GW baseload (South Texas Project, Comanche Peak); rarely sets price</td></tr>
+      <tr><td>Coal</td><td>~$25-50/MWh</td><td>Declining; ~15 GW remaining; typically mid-merit</td></tr>
+      <tr><td>Combined Cycle Gas (CCGT)</td><td>~$30-70/MWh</td><td>~40 GW; workhorse of the system; sets price ~40% of hours</td></tr>
+      <tr><td>Gas Peakers (OCGT)</td><td>~$80-200/MWh</td><td>Only run in high-demand periods; set price during summer peaks</td></tr>
+      <tr><td>Demand Response</td><td>Varies</td><td>Industrial customers curtail for payment; last resort before load shedding</td></tr>
+    </table>
+  </div>
+
+  <h3>Key Texas Power Demand Drivers</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title" style="color:var(--red)">Summer (Peak Season)</div>
+      <ul class="clean">
+        <li><strong>Air conditioning</strong> is the dominant driver — Texas summer = aggressive AC</li>
+        <li>Peak demand typically 70-85 GW on hottest days (vs ~30 GW overnight)</li>
+        <li>CDD (Cooling Degree Days) key metric: each degree above 65°F adds ~1 GW demand</li>
+        <li>Peak hour typically 3-6 PM when solar begins to ramp down and AC is full</li>
+        <li>Weather-driven price spikes of $500-$9,000/MWh on extreme days</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">Winter (Growing Risk)</div>
+      <ul class="clean">
+        <li>Post-Uri, winter is now a serious risk season for ERCOT</li>
+        <li>Electric heating demand grows each year (less gas heating, more heat pumps)</li>
+        <li>HDDs drive heating demand; polar vortex = massive sudden spike</li>
+        <li>Solar generation minimal in winter; wind less reliable during freeze</li>
+        <li>Storage (batteries) playing growing role in winter reliability</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Renewable Integration in ERCOT</h3>
+  <div class="hl blue">
+    <p><strong>ERCOT has the most wind capacity of any US grid (~40 GW)</strong> and rapidly growing solar (~20+ GW). This creates a "duck curve" problem: solar generation mid-day depresses prices, then ramps down sharply in late afternoon just as AC demand peaks — requiring fast-ramping gas plants (CCGT, OCGT) to fill the gap. Negative prices now occur in West Texas during windy/sunny low-demand periods (wind curtailment zone). This has major implications for gas-to-power relationships and spark spread trading.</p>
+  </div>
+</section>
+
+<section id="spark-spread">
+  <h2><span class="icon">🔥</span> Spark Spread & Gas-Power Nexus</h2>
+
+  <div class="hl amber">
+    <p><strong>Spark Spread = Power Price ($/MWh) – [Gas Price ($/MMBtu) × Heat Rate (MMBtu/MWh)]</strong><br>
+    Measures the gross margin of generating electricity from natural gas. Positive = profitable to run the plant. Negative = plant shuts down (if variable cost exceeds power price).</p>
+  </div>
+
+  <div class="formula">Spark Spread = P_power – (P_gas × HR)
+Example: $80/MWh – ($3.00/MMBtu × 8.0 MMBtu/MWh) = $80 – $24 = $56/MWh gross margin</div>
+
+  <div class="grid3">
+    <div class="card">
+      <div class="card-title">CCGT (Efficient)</div>
+      <ul class="clean">
+        <li>Heat rate: 6,500–7,500 BTU/kWh</li>
+        <li>Runs most hours — competitive against wind/coal</li>
+        <li>Large positive spark spreads available in summer peaks</li>
+        <li>At $3 gas: breakeven power ~$20-22/MWh</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">OCGT Peaker</div>
+      <ul class="clean">
+        <li>Heat rate: 9,000–12,000 BTU/kWh</li>
+        <li>Only economic at high power prices</li>
+        <li>Runs <5% of hours; sets marginal price on hot days</li>
+        <li>At $3 gas: breakeven power ~$27-36/MWh</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Clean Spark Spread</div>
+      <ul class="clean">
+        <li>Adjusts for carbon cost (if applicable)</li>
+        <li>= Spark Spread – (CO2_intensity × carbon_price)</li>
+        <li>Less relevant in Texas (no carbon price currently)</li>
+        <li>Important for firms with global portfolios</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Gas-Power Price Relationship — The Feedback Loop</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Scenario</th><th>Effect on Gas</th><th>Effect on Power</th></tr>
+      <tr><td>Gas price spikes (+$2/MMBtu)</td><td>Higher fuel cost for generators</td><td>Power prices rise (gas sets marginal cost)</td></tr>
+      <tr><td>High wind generation</td><td>Less gas burned → bearish gas</td><td>Power prices fall; negative prices in West Texas possible</td></tr>
+      <tr><td>Heat wave (+10°F vs normal)</td><td>Power burn surges → bullish gas</td><td>Power prices spike to hundreds of $/MWh</td></tr>
+      <tr><td>Nuclear plant outage</td><td>More gas needed → slightly bullish</td><td>Higher prices, less baseload cushion</td></tr>
+      <tr><td>LNG export disruption</td><td>Domestic gas price falls</td><td>Lower power prices (gas plants cheaper to run)</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="power-trading">
+  <h2><span class="icon">💱</span> Power Trading Instruments</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Financial Products</div>
+      <ul class="clean">
+        <li><strong>ERCOT Hub Forward (ICE)</strong> — most liquid; ERCOT HUB or zone; on-peak / off-peak / flat</li>
+        <li><strong>On-peak block</strong> — Hours Ending 7-22 Monday–Friday (16 hours/day)</li>
+        <li><strong>Off-peak block</strong> — all other hours (nights, weekends)</li>
+        <li><strong>Spark spread swap</strong> — buys or sells the spark spread directly; separates power and gas risk</li>
+        <li><strong>Heat rate option</strong> — option on the spark spread; used for peaker asset optimization</li>
+        <li><strong>CRR/FTR</strong> — hedges nodal congestion risk</td></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Physical / Operational</div>
+      <ul class="clean">
+        <li><strong>Day-ahead energy bids</strong> — submit offer stack into DAM by 10 AM</li>
+        <li><strong>Real-time dispatch</strong> — ERCOT dispatches units via SCED every 5 minutes</li>
+        <li><strong>Ancillary services</strong> — Reg Up/Down, RRS, ECRS, Non-Spin; separate revenue stream</li>
+        <li><strong>Tolling agreement</strong> — right to dispatch a third-party plant; pay fuel + fixed fee, receive power</li>
+        <li><strong>PPA (Power Purchase Agreement)</strong> — long-term fixed-price contracts for renewable offtake</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Ancillary Services — Critical for ERCOT</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Service</th><th>Description</th><th>Providers</th></tr>
+      <tr><td><strong>Regulation Up (RegUp)</strong></td><td>Fast upward energy to correct frequency deviations; must respond in seconds</td><td>CCGTs, batteries, hydro</td></tr>
+      <tr><td><strong>Regulation Down (RegDn)</strong></td><td>Fast downward energy; absorbs excess frequency</td><td>Same + demand response</td></tr>
+      <tr><td><strong>Responsive Reserve (RRS)</strong></td><td>10-min spinning reserve; protects against sudden large generator trip</td><td>Spinning generators, demand response</td></tr>
+      <tr><td><strong>ECRS</strong></td><td>New post-Uri product (2023); 10-min reserve for contingency events</td><td>Gas peakers, batteries</td></tr>
+      <tr><td><strong>Non-Spin Reserve</strong></td><td>30-min reserve; can be offline units</td><td>Quick-start OCGTs</td></tr>
+    </table>
+  </div>
+
+  <div class="hl amber">
+    <p><strong>MO tip:</strong> Ancillary service revenues can be as valuable as energy revenues for flexible gas assets. A CCGT earning $10/MWh in energy but $15/MW-h in ancillary services is often better valued via its combined capacity. Track AS revenues separately in your P&L attribution.</p>
+  </div>
+</section>
+
+<section id="power-risk">
+  <h2><span class="icon">📊</span> Power Risk Management</h2>
+
+  <h3>Key Risk Metrics for Power Books</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Metric</th><th>Definition</th><th>Typical Range (mid-size desk)</th></tr>
+      <tr><td><strong>Delta (MWh delta)</strong></td><td>Net open position in MWh per hour; sensitivity to $1 power price move</td><td>±500 to ±5,000 MWh/hr</td></tr>
+      <tr><td><strong>Heat Rate Risk</strong></td><td>Sensitivity to changes in heat rate (spark spread)</td><td>Key for peaker/CCGT books</td></tr>
+      <tr><td><strong>Nodal Basis Risk</strong></td><td>Exposure to price divergence between nodes and hub</td><td>Hedged via FTR/CRR</td></tr>
+      <tr><td><strong>VaR (1-day 95%)</strong></td><td>Max loss from power price moves at 95% confidence</td><td>$500K–$10M depending on book size</td></tr>
+      <tr><td><strong>Congestion P&L</strong></td><td>P&L from nodal price divergence vs. hub</td><td>Largest source of surprise P&L in ERCOT</td></tr>
+      <tr><td><strong>Shape Risk</strong></td><td>Exposure to changes in hourly price profile (on-peak vs off-peak)</td><td>Managed via block vs. hourly trades</td></tr>
+    </table>
+  </div>
+
+  <h3>P&L Attribution for Power</h3>
+  <div class="card">
+    <ul class="clean">
+      <li><strong>Energy P&L</strong> — flat price move on net delta position (hub price × MWh delta)</li>
+      <li><strong>Congestion P&L</strong> — nodal price vs. hub divergence on physical positions</li>
+      <li><strong>Spark Spread P&L</strong> — change in gas-to-power ratio; occurs when gas and power move differently</li>
+      <li><strong>Ancillary Revenue</strong> — settlement of ancillary service awards; reconciled vs. Day-Ahead awards</li>
+      <li><strong>Shape P&L</strong> — difference between actual hourly prices and block position (on-peak vs. all hours)</li>
+      <li><strong>Settlement P&L</strong> — DAM vs. RTM settlement differences (imbalance charges)</li>
+    </ul>
+  </div>
+
+  <h3>Post-Uri Changes to ERCOT (Key for Interviews)</h3>
+  <div class="card">
+    <table class="data">
+      <tr><th>Change</th><th>Detail</th></tr>
+      <tr><td>Weatherization mandate (SB 3, 2021)</td><td>Power plants and gas infrastructure must meet winterization standards; PUCT/RRC enforcement</td></tr>
+      <tr><td>ECRS ancillary service (2023)</td><td>New reserve product to provide contingency reserves; improves real-time reliability</td></tr>
+      <tr><td>Price cap reform</td><td>HCAP reduced from $9,000 to $5,000/MWh in normal conditions; $9,000 only in declared emergencies</td></tr>
+      <tr><td>Demand Response expansion</td><td>More industrial customers enrolled in interruptible programs</td></tr>
+      <tr><td>Battery storage growth</td><td>~5 GW+ of battery storage added post-Uri; provides fast frequency response</td></tr>
+    </table>
+  </div>
+
+  <h3>Power MCQ Quiz</h3>
+  <button class="quiz-btn" onclick="startQuiz('power')">⚡ Take the Power / ERCOT Quiz</button>
+</section>
+
+</div><!-- end tab-power -->
+
+<!-- ===================== SOFT SKILLS TAB ===================== -->
+<div id="tab-softskills" class="tab-content">
+
+<div class="hero" style="background:linear-gradient(135deg,#1e1a2e 0%,#161b22 100%)">
+  <h2 style="color:var(--purple)">Non-Technical Interview Questions</h2>
+  <p>15 behavioral and situational questions with model answers. These test your mindset, communication, collaboration, and commercial awareness — equally important as technical knowledge.</p>
+  <div class="tags">
+    <span class="tag" style="color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08)">Behavioral</span>
+    <span class="tag" style="color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08)">Situational</span>
+    <span class="tag amber">Mindset</span>
+    <span class="tag blue">Communication</span>
+  </div>
+</div>
+
+<section id="soft-questions">
+  <h2><span class="icon">🎤</span> 15 Non-Technical Interview Questions</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Click each question to reveal the model answer. Adapt to your own experience — the structure matters more than the exact words.</p>
+  <div id="qa-soft"></div>
+</section>
+
+</div><!-- end tab-softskills -->
+
 </div><!-- end #main -->
 
 <!-- QUIZ MODAL -->
@@ -1000,6 +1344,68 @@ html{scroll-behavior:smooth}
 </div>
 
 <script>
+// ===== TAB SWITCHING =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+  // update sidebar visibility
+  document.getElementById('sidebar').style.display = (tab === 'gas') ? 'flex' : 'none';
+  document.getElementById('main').style.marginLeft = (tab === 'gas') ? 'var(--sidebar)' : '0';
+}
+
+// ===== SOFT SKILLS Q&A =====
+const softQA = [
+  { q: "Tell me about yourself.",
+    a: "Keep it to 90 seconds. Structure: (1) Academic/professional background in 1-2 sentences focused on energy/finance. (2) What drew you specifically to commodity trading and the MO function. (3) Why Houston / this company specifically. End with: 'I'm excited about this role because [specific reason tied to the desk's activities].' Avoid life story — stay focused on your energy trajectory." },
+  { q: "Why do you want to work in Middle Office rather than Front Office?",
+    a: "Don't be defensive. Reframe it as a deliberate choice: 'MO gives me the depth I want. I'm drawn to owning the numbers — being the person who validates that every P&L figure is accurate and every risk limit is respected. I want to understand the full picture: what's in the book, how it's valued, where the risks are. That control and analytical rigor is what excites me.' You can add that MO is often the best path to becoming a senior risk manager or eventually moving to a trading role with real credibility." },
+  { q: "Describe a time you found and corrected an error under pressure.",
+    a: "Use STAR format. Ideal story: you spotted a discrepancy in data/output, investigated systematically, identified root cause, corrected it, and communicated clearly. Key elements to hit: (1) You caught it proactively (not someone else). (2) You stayed calm and methodical. (3) You escalated appropriately when needed. (4) You documented the fix to prevent recurrence. Even if you don't have a trading floor example, a rigorous analytical mistake-finding story from any quantitative context works." },
+  { q: "How do you prioritize when you have multiple deadlines at the same time?",
+    a: "Show structure: 'I first assess urgency and impact — what breaks if I miss it? In MO, the EOD risk report is non-negotiable, so that takes priority. For everything else, I communicate proactively: I'd flag to my manager early if something is at risk, propose a revised timeline, and ask for help if needed. I'd rather raise the issue at 2 PM than surprise someone at 5 PM.' Then give a concrete example of managing competing priorities." },
+  { q: "Describe a time you had to explain something technical to a non-expert.",
+    a: "Good answer: pick a situation where you translated complex analysis (risk metric, financial model, market move) into plain language for a manager, client, or colleague without a technical background. Show you: (1) understood your audience, (2) used analogies and avoided jargon, (3) checked for understanding. In energy MO, this is constant — explaining to traders why their P&L changed, or to management why VaR spiked." },
+  { q: "How do you stay informed about energy markets?",
+    a: "Give specific, credible sources: 'Daily I check Natural Gas Intelligence, EIA reports, Platts/OPIS price assessments, and CME/ICE settlement prices. I follow the CFTC COT report on Fridays to track speculative positioning. I read Bloomberg energy briefs and track the EIA storage report every Thursday. For Texas specifically, I follow ERCOT's daily market reports and generation mix data.' Show you have a routine, not just passive awareness." },
+  { q: "What is your biggest weakness?",
+    a: "Pick something real but not disqualifying for MO. Good options: 'I can be too thorough — I want to understand every detail before signing off, which sometimes slows me down. I've learned to calibrate: for routine tasks I trust the process; for unusual items I go deep.' Or: 'Early on I was reluctant to escalate — I wanted to solve problems myself. I've learned that in a control function, escalating early is a strength, not a weakness.' Avoid clichés ('I work too hard')." },
+  { q: "Tell me about a time you disagreed with a colleague or manager. How did you handle it?",
+    a: "Show intellectual confidence + professionalism. Structure: (1) State the disagreement clearly — what was the issue and what was your view. (2) How you raised it — directly, privately, with facts/data. (3) What happened — either they convinced you or you convinced them, or you escalated appropriately. Key message: 'I'm comfortable challenging ideas when I have a reasoned basis, but I do it respectfully and with data, not emotion. I know when to escalate and when to accept a decision and move on.'" },
+  { q: "Why this company specifically?",
+    a: "Research the firm before the interview. Know: (1) What commodities they trade (gas, power, LNG, crude). (2) Any recent deals, expansions, or hires in Houston. (3) Their market position (are they a major, a trading house, a utility?). Structure: 'I'm drawn to [Company] because of [specific reason — e.g., your LNG book, your Permian exposure, your technology investment in real-time risk]. I want to be part of a team that is [commercial/technically rigorous/expanding]. I've followed [recent event] which showed me [what it says about their culture/strategy].' Generic answers get filtered out." },
+  { q: "Where do you see yourself in 5 years?",
+    a: "Be honest and ambitious but grounded: 'In the near term, I want to master the MO function — become the expert on our risk systems, P&L attribution, and limit frameworks. Medium term, I'd like to expand into more complex products: options, storage, or structured deals. In 5 years, I see myself either as a senior risk manager or — if the opportunity arises — closer to the trading function, with a role that bridges commercial and risk responsibilities. I want depth first, then breadth.'" },
+  { q: "How do you handle working under pressure during volatile market periods?",
+    a: "Energy markets can move violently — EIA reports, winter storms, pipeline outages. Show you thrive in this: 'I find I'm actually most focused under pressure — when markets are moving fast, I shift into a systematic mode: what are the positions, what are the exposures, what limits are at risk. I've practiced staying calm by having clear checklists and escalation paths in my head before the crisis hits. I'd rather prepare the stress scenario the day before than scramble when it happens.' Give an example if possible." },
+  { q: "Describe a time you worked across teams or functions.",
+    a: "MO sits between traders, risk, finance, IT, and legal. Show you can collaborate across silos: 'In [project/role], I needed input from [functions] to [achieve outcome]. I made sure to communicate clearly about what I needed and why, respect their timelines, and close the loop with results. The key is understanding what each team cares about — finance wants clean numbers, IT wants clear specs, traders want fast answers.' Show relationship-building, not just task execution." },
+  { q: "What would you do on your first 30 days in this role?",
+    a: "Show initiative and humility: '(1) Listen first — understand the book, the systems, the workflows, and the team dynamics before suggesting changes. (2) Map the data flows — how trades flow from booking to risk report to P&L. (3) Build relationships with traders — understand how they think about risk and what information they need from me. (4) Learn the ETRM system thoroughly. (5) Identify any gaps or manual processes that could be improved — then propose, not impose.' Interviewers want someone who hits the ground running but doesn't bulldoze.'" },
+  { q: "What excites you about the energy transition and how does it relate to this role?",
+    a: "Show commercial awareness of structural change: 'The energy transition is the most interesting structural story in commodity markets right now. In Texas specifically, the rapid growth of wind and solar is reshaping the power price curve — creating new volatility patterns, negative prices, and spark spread dynamics that didn't exist 10 years ago. For MO, that means new products (storage, PPAs, firming contracts), new risk factors, and new valuation challenges. I find that intellectually exciting — the models and frameworks need to evolve with the market.' Show you see opportunity, not just disruption." },
+  { q: "How do you ensure accuracy in your work?",
+    a: "MO is a control function — accuracy is the job. Give a structured answer: '(1) I always verify inputs before trusting outputs — source data quality is the root of most errors. (2) I build in cross-checks: does the P&L sum reconcile with position changes and price moves? If not, why? (3) I document assumptions clearly so that a second person can review my work. (4) For critical outputs, I do a sanity check — does this number make intuitive sense given what the market did today? (5) I escalate unexplained items immediately rather than letting them ride.' Give a concrete example." }
+];
+
+// ===== POWER QUIZ DATA =====
+const powerQuiz = {
+  title: "⚡ Power / ERCOT Quiz",
+  questions: [
+    { q: "ERCOT's energy-only market design means:", opts: ["Generators receive capacity payments in addition to energy revenues", "Generators recover all fixed costs through energy prices only — no capacity payments", "Only renewable generators can participate", "FERC sets all energy prices"], a: 1, exp: "ERCOT is unique in the US as an energy-only market. There are no separate capacity payments (unlike PJM or ISO-NE). Generators must recover all costs from energy and ancillary service revenues. This design allows prices to spike to $9,000/MWh during scarcity — by design." },
+    { q: "LMP stands for:", opts: ["Locational Marginal Price", "Load Matching Protocol", "Least-cost Marginal Plant", "Liquidity Market Position"], a: 0, exp: "LMP = Locational Marginal Price. It is the cost of supplying one more MWh at a specific location, accounting for transmission constraints and losses. LMP = Energy + Congestion + Loss components." },
+    { q: "In ERCOT, the West Hub typically has the LOWEST prices because:", opts: ["It has the lowest industrial demand", "Wind generation is abundant in West Texas, frequently depressing prices", "It is closest to Henry Hub gas supply", "PUCT regulates prices lower in West Texas"], a: 1, exp: "The Panhandle and Permian areas of West Texas have massive wind generation capacity. When wind runs strong during low-demand periods, prices can turn negative in West Texas as generators must pay to export power through constrained transmission." },
+    { q: "A spark spread of -$5/MWh means:", opts: ["The gas plant is profitable and should run", "The gas plant's fuel cost exceeds the power price — it should shut down", "Gas prices are $5 below the forward curve", "Power prices are $5 above average"], a: 1, exp: "Negative spark spread = power price < fuel cost. A rational generator shuts down rather than run at a loss (unless it has must-run obligations). At -$5/MWh, each MWh produced loses $5 before any fixed costs. Gas peakers frequently face negative spark spreads during low-demand overnight hours." },
+    { q: "What is the ERCOT administrative price cap in normal (non-emergency) conditions?", opts: ["$1,000/MWh", "$3,000/MWh", "$5,000/MWh", "$9,000/MWh"], a: 2, exp: "Post-Uri reforms set the High Systemwide Offer Cap (HCAP) at $5,000/MWh in normal conditions. The $9,000/MWh VOLL (Value of Lost Load) cap only applies during declared emergencies. This was reduced from the previous flat $9,000/MWh cap." },
+    { q: "CRRs (Congestion Revenue Rights) in ERCOT are used to:", opts: ["Hedge against gas price volatility", "Hedge nodal congestion price risk between two locations", "Reserve physical transmission capacity", "Guarantee ancillary service payments"], a: 1, exp: "CRRs (equivalent to FTRs in other markets) entitle the holder to the congestion component of the LMP between two nodes. A generator at Node A selling power at Hub B buys a CRR to lock in the expected congestion cost/revenue." },
+    { q: "The 'duck curve' in ERCOT refers to:", opts: ["The shape of the gas demand curve in winter", "The pattern where solar mid-day generation depresses prices, then sharp ramp-up is needed in the evening", "Duck-typed programming in ERCOT's dispatch software", "The spread between on-peak and off-peak power prices"], a: 1, exp: "The duck curve is caused by high solar generation mid-day (low prices) followed by solar ramp-down in the late afternoon just as AC demand peaks. The resulting net load curve looks like a duck. It requires fast-ramping gas plants and batteries to fill the evening ramp." },
+    { q: "Responsive Reserve Service (RRS) in ERCOT must be:", opts: ["Available within 30 minutes", "Spinning and able to respond within 10 minutes to a frequency deviation", "Offline but capable of starting within 1 hour", "Only provided by wind turbines"], a: 1, exp: "RRS is a spinning reserve that must respond within 10 minutes to protect against sudden large generator trips. It must be online (spinning) so it can respond instantly. Gas CCGTs, gas peakers, and batteries typically provide RRS." },
+    { q: "After Winter Storm Uri, Texas passed legislation requiring:", opts: ["ERCOT to connect to the Eastern Interconnection", "Weatherization of power plants and gas infrastructure", "A capacity market similar to PJM", "FERC oversight of Texas electricity markets"], a: 1, exp: "SB 3 (2021) mandated weatherization standards for electric generators and gas infrastructure serving power plants. The lack of winterization was the primary cause of the 45 GW generation outage during Uri. PUCT and the Railroad Commission enforce compliance." },
+    { q: "On-peak power in ERCOT typically refers to:", opts: ["All hours when temperature exceeds 95°F", "Hours Ending 7–22 Monday through Friday (16 hours/day, weekdays only)", "Peak demand hours in December and January only", "Any hour when ERCOT issues an emergency alert"], a: 1, exp: "ERCOT on-peak = HE 7 through HE 22 (6 AM to 10 PM), Monday through Friday, excluding NERC holidays. This is the standard block for financial products (ICE traded ERCOT on-peak swaps). Off-peak covers all other hours including nights and weekends." }
+  ]
+};
+
 // ===== NAVIGATION ACTIVE STATE =====
 const navLinks = document.querySelectorAll('#sidebar nav a');
 const sections = document.querySelectorAll('section[id]');
@@ -1095,6 +1501,7 @@ renderQA('qa-technical', qaData.technical);
 renderQA('qa-market', qaData.market);
 renderQA('qa-mo', qaData.mo);
 renderQA('qa-scenario', qaData.scenario);
+renderQA('qa-soft', softQA);
 
 // ===== QUIZ DATA =====
 const quizzes = {
@@ -1153,6 +1560,7 @@ const quizzes = {
       { q: "Open interest in NYMEX gas futures refers to:", opts: ["Total trading volume that day", "Total number of outstanding contracts not yet settled or closed", "The number of registered market makers", "The price where most trading occurred (volume-weighted average)"], a: 1, exp: "Open interest = total number of outstanding (not yet settled/closed) futures contracts. Rising open interest + rising price = bulls adding longs (bullish signal). Rising open interest + falling price = bears adding shorts (bearish signal). Falling open interest = positions being closed." }
     ]
   },
+  power: powerQuiz,
   scenarios: {
     title: "⚡ Market Scenarios & Case Studies",
     questions: [
