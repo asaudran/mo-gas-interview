@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MO Desk Simulator — TexGas Trading</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b10;--surface:#0d1117;--card:#111820;--border:#1e2733;
+  --text:#e6edf3;--muted:#7a8899;
+  --amber:#f59e0b;--green:#22c55e;--blue:#60a5fa;--red:#f87171;--purple:#a78bfa;--cyan:#22d3ee;
+}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* TICKER */
+#ticker{height:32px;background:#010409;border-bottom:1px solid var(--border);display:flex;align-items:center;overflow:hidden;position:fixed;top:0;left:0;right:0;z-index:100}
+.ticker-inner{display:flex;gap:0;animation:tick 40s linear infinite;white-space:nowrap}
+.ticker-inner:hover{animation-play-state:paused}
+.tick-item{padding:0 20px;font-size:11px;font-weight:600;letter-spacing:.3px;border-right:1px solid var(--border)}
+.tick-up{color:var(--green)}.tick-dn{color:var(--red)}.tick-flat{color:var(--muted)}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* TOP BAR */
+#topbar{position:fixed;top:32px;left:0;right:0;height:52px;background:rgba(8,11,16,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);z-index:90;display:flex;align-items:center;justify-content:space-between;padding:0 24px;gap:16px}
+#game-title{font-size:13px;font-weight:700;color:var(--amber);letter-spacing:.5px;white-space:nowrap}
+#hud{display:flex;align-items:center;gap:20px}
+.hud-item{display:flex;align-items:center;gap:6px;font-size:12px}
+.hud-label{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.hud-val{font-weight:700;font-size:14px}
+#pnl-display{font-weight:700;font-size:16px;transition:all .4s;min-width:90px;text-align:right}
+.pnl-pos{color:var(--green)}
+.pnl-neg{color:var(--red)}
+.pnl-zero{color:var(--muted)}
+#score-display{color:var(--amber)}
+#level-display{color:var(--blue)}
+
+/* LEVEL BAR */
+#level-bar{position:fixed;top:84px;left:0;right:0;height:3px;background:var(--border);z-index:89}
+#level-bar-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--green));transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+/* MAIN */
+#main{padding-top:110px;min-height:100vh;display:flex;align-items:flex-start;justify-content:center}
+#game-wrap{width:100%;max-width:760px;padding:24px 16px 80px}
+
+/* SCREENS */
+.screen{display:none;animation:fadeIn .3s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* INTRO SCREEN */
+#screen-intro{text-align:center;padding:40px 20px}
+.intro-logo{font-size:48px;margin-bottom:16px;display:block}
+.intro-title{font-size:28px;font-weight:800;color:var(--amber);margin-bottom:6px;letter-spacing:-1px}
+.intro-sub{font-size:15px;color:var(--muted);margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6}
+.intro-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:480px;margin:0 auto 28px}
+.intro-stat{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px}
+.intro-stat-val{font-size:20px;font-weight:700;color:var(--amber);margin-bottom:2px}
+.intro-stat-lbl{font-size:11px;color:var(--muted)}
+.start-btn{padding:14px 40px;background:var(--amber);color:#000;font-weight:800;font-size:15px;border:none;border-radius:8px;cursor:pointer;letter-spacing:.3px;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.start-btn:hover{background:#fbbf24;transform:translateY(-1px);box-shadow:0 8px 20px rgba(245,158,11,.3)}
+
+/* LEVEL SCREEN */
+#level-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+#scenario-title{font-size:20px;font-weight:800;margin-bottom:6px;line-height:1.3}
+#timer-bar-wrap{height:4px;background:var(--border);border-radius:2px;margin-bottom:18px;overflow:hidden}
+#timer-bar{height:100%;background:var(--amber);border-radius:2px;transition:width .1s linear}
+#timer-bar.warn{background:var(--red)}
+
+/* CONTEXT PANEL */
+#context-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:14px}
+#context-time{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+#context-text{font-size:13px;color:var(--muted);line-height:1.7}
+#context-text strong{color:var(--text)}
+
+/* DATA PANEL */
+#data-panel{display:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:14px;overflow:hidden}
+#data-panel table{width:100%;border-collapse:collapse}
+#data-panel th{background:#010409;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:7px 14px;text-align:left;border-bottom:1px solid var(--border)}
+#data-panel td{padding:7px 14px;font-size:12px;border-bottom:1px solid rgba(30,39,51,.6)}
+#data-panel tr:last-child td{border-bottom:none}
+#data-panel .val-up{color:var(--green);font-weight:600}
+#data-panel .val-dn{color:var(--red);font-weight:600}
+#data-panel .val-neutral{color:var(--amber);font-weight:600}
+
+/* NPC DIALOGUE */
+.npc-bubble{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.npc-avatar{width:40px;height:40px;border-radius:50%;background:var(--card);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.npc-content{flex:1}
+.npc-name{font-size:11px;font-weight:700;color:var(--amber);margin-bottom:4px;letter-spacing:.3px;text-transform:uppercase}
+.npc-text{background:var(--card);border:1px solid var(--border);border-radius:0 8px 8px 8px;padding:10px 14px;font-size:13px;line-height:1.6;color:var(--text)}
+
+/* QUESTION */
+#question-text{font-size:15px;font-weight:700;line-height:1.5;margin:18px 0 14px;color:var(--text)}
+
+/* CHOICES */
+#choices{display:grid;gap:8px}
+.choice-btn{width:100%;text-align:left;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;font-size:13px;display:flex;align-items:flex-start;gap:10px;transition:all .15s;color:var(--text)}
+.choice-btn:hover{border-color:var(--amber);background:rgba(245,158,11,.04)}
+.choice-letter{font-weight:800;color:var(--amber);min-width:20px;padding-top:1px}
+.choice-btn.correct{border-color:var(--green)!important;background:rgba(34,197,94,.08)!important;color:var(--green)}
+.choice-btn.correct .choice-letter{color:var(--green)}
+.choice-btn.wrong{border-color:var(--red)!important;background:rgba(248,113,113,.08)!important;color:var(--red)}
+.choice-btn.wrong .choice-letter{color:var(--red)}
+.choice-btn.disabled{cursor:default;pointer-events:none;opacity:.7}
+
+/* RESULT PANEL */
+#result-panel{display:none;margin-top:16px;animation:fadeIn .4s ease}
+.result-correct{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.25);border-radius:8px;padding:14px 18px}
+.result-wrong{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.25);border-radius:8px;padding:14px 18px}
+.result-head{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.result-head.ok{color:var(--green)}.result-head.ko{color:var(--red)}
+.result-body{font-size:12px;color:var(--muted);line-height:1.7}
+.result-body strong{color:var(--text)}
+.result-pnl{margin-top:10px;padding:8px 12px;border-radius:6px;background:rgba(0,0,0,.3);font-size:13px;font-weight:700}
+#next-btn{margin-top:14px;padding:10px 28px;background:var(--amber);color:#000;font-weight:800;font-size:13px;border:none;border-radius:6px;cursor:pointer;transition:all .2s}
+#next-btn:hover{background:#fbbf24}
+
+/* SCORE SCREEN */
+#screen-score{text-align:center;padding:30px 20px}
+.score-ring{width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--amber) var(--pct),var(--border) 0);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;position:relative}
+.score-inner{width:90px;height:90px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column}
+.score-num{font-size:22px;font-weight:800;color:var(--amber)}
+.score-denom{font-size:11px;color:var(--muted)}
+.score-title{font-size:22px;font-weight:800;margin-bottom:6px}
+.score-subtitle{font-size:13px;color:var(--muted);margin-bottom:24px}
+.rank-badge{display:inline-block;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:24px}
+.rank-A{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.rank-B{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.rank-C{background:rgba(96,165,250,.15);color:var(--blue);border:1px solid rgba(96,165,250,.3)}
+.rank-D{background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.3)}
+#score-breakdown{background:var(--card);border:1px solid var(--border);border-radius:10px;text-align:left;max-width:500px;margin:0 auto 24px;overflow:hidden}
+.sb-row{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-bottom:1px solid var(--border);font-size:13px}
+.sb-row:last-child{border-bottom:none}
+.sb-lv{color:var(--muted)}.sb-ok{color:var(--green);font-weight:700}.sb-ko{color:var(--red);font-weight:700}
+.final-pnl{font-size:32px;font-weight:800;margin-bottom:4px}
+.final-pnl-lbl{font-size:12px;color:var(--muted);margin-bottom:20px}
+.replay-btn{padding:12px 32px;background:var(--amber);color:#000;font-weight:800;font-size:14px;border:none;border-radius:8px;cursor:pointer;margin-right:10px}
+.back-btn{padding:12px 24px;background:transparent;color:var(--amber);font-weight:700;font-size:13px;border:1px solid var(--amber);border-radius:8px;cursor:pointer;text-decoration:none;display:inline-block}
+
+/* PARTICLES */
+.particle{position:fixed;pointer-events:none;font-size:20px;z-index:999;animation:flyUp 1.2s ease forwards}
+@keyframes flyUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-150px) scale(.5)}}
+
+/* MOBILE */
+@media(max-width:600px){
+  #game-wrap{padding:16px 12px 80px}
+  .intro-stats{grid-template-columns:1fr 1fr}
+  #hud{gap:10px}
+  .hud-item:nth-child(3){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- LIVE TICKER -->
+<div id="ticker">
+  <div class="ticker-inner" id="ticker-content"></div>
+</div>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div id="game-title">⚡ MO DESK SIMULATOR — TEXGAS TRADING, HOUSTON</div>
+  <div id="hud">
+    <div class="hud-item">
+      <span class="hud-label">Level</span>
+      <span class="hud-val" id="level-display">—</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label">Score</span>
+      <span class="hud-val" id="score-display">0</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label">Desk P&L</span>
+      <span class="hud-val pnl-zero" id="pnl-display">$0</span>
+    </div>
+  </div>
+</div>
+<div id="level-bar"><div id="level-bar-fill" style="width:0%"></div></div>
+
+<!-- GAME -->
+<div id="main"><div id="game-wrap">
+
+<!-- INTRO -->
+<div id="screen-intro" class="screen active">
+  <span class="intro-logo">🏢</span>
+  <div class="intro-title">MO Desk Simulator</div>
+  <div class="intro-sub">You are <strong>Alex</strong>, newly hired Middle Office Analyst at <strong>TexGas Trading</strong> in Houston. It's your first month on the gas & power desk.<br><br>8 real scenarios. Traders under pressure. Markets moving. <br>Every decision you make affects the desk P&L and your reputation.</div>
+  <div class="intro-stats">
+    <div class="intro-stat"><div class="intro-stat-val">8</div><div class="intro-stat-lbl">Scenarios</div></div>
+    <div class="intro-stat"><div class="intro-stat-val">800</div><div class="intro-stat-lbl">Max Points</div></div>
+    <div class="intro-stat"><div class="intro-stat-val">~12 min</div><div class="intro-stat-lbl">Play time</div></div>
+  </div>
+  <button class="start-btn" onclick="startGame()">▶ Start your shift</button>
+  <p style="font-size:11px;color:var(--muted);margin-top:16px">Each scenario includes full pedagogical explanation · Real market numbers · Immediate feedback</p>
+</div>
+
+<!-- LEVEL -->
+<div id="screen-level" class="screen">
+  <div id="level-badge">🎯 LEVEL <span id="lv-num"></span> / 8 &nbsp;·&nbsp; <span id="lv-tag"></span></div>
+  <div id="scenario-title"></div>
+  <div id="timer-bar-wrap"><div id="timer-bar" style="width:100%"></div></div>
+  <div id="context-panel">
+    <div id="context-time"></div>
+    <div id="context-text"></div>
+  </div>
+  <div id="data-panel"></div>
+  <div id="npc-container"></div>
+  <div id="question-text"></div>
+  <div id="choices"></div>
+  <div id="result-panel"></div>
+</div>
+
+<!-- SCORE -->
+<div id="screen-score" class="screen">
+  <div style="font-size:36px;margin-bottom:12px">📊</div>
+  <div class="score-title">Shift Complete — Performance Review</div>
+  <div class="score-subtitle">Here's how you performed today at TexGas Trading</div>
+  <div class="score-ring" id="score-ring">
+    <div class="score-inner"><div class="score-num" id="final-score-num"></div><div class="score-denom" id="final-score-denom"></div></div>
+  </div>
+  <div id="rank-display"></div>
+  <div class="final-pnl" id="final-pnl-num"></div>
+  <div class="final-pnl-lbl">Cumulative Desk P&L Impact</div>
+  <div id="score-breakdown"></div>
+  <button class="replay-btn" onclick="replayGame()">↺ Play Again</button>
+  <a href="index.html" class="back-btn">← Back to Study Guide</a>
+</div>
+
+</div></div>
+
+<script>
+// =================== TICKER ===================
+const tickerItems = [
+  {label:'HH Front Month',val:'$2.87',dir:'dn'},
+  {label:'Waha Basis',val:'-$1.24',dir:'dn'},
+  {label:'HSC Basis',val:'+$0.18',dir:'up'},
+  {label:'NYMEX NG Mar',val:'$2.91',dir:'up'},
+  {label:'ERCOT Houston On-Peak',val:'$48.20',dir:'up'},
+  {label:'ERCOT West Hub',val:'$12.40',dir:'dn'},
+  {label:'HH Cal Strip',val:'$3.15',dir:'up'},
+  {label:'TTF (Dutch Gas)',val:'€32.50',dir:'dn'},
+  {label:'EIA Storage',val:'+62 Bcf vs +55 exp',dir:'dn'},
+  {label:'WTI Crude',val:'$71.40',dir:'up'},
+  {label:'ERCOT Wind Gen',val:'14.2 GW',dir:'up'},
+  {label:'Baker Hughes Rig Ct',val:'102',dir:'dn'},
+];
+function buildTicker(){
+  const doubled = [...tickerItems,...tickerItems];
+  const inner = document.getElementById('ticker-content');
+  inner.innerHTML = doubled.map(t=>`
+    <span class="tick-item tick-${t.dir}">
+      ${t.label} <strong>${t.val}</strong>
+      ${t.dir==='up'?'▲':t.dir==='dn'?'▼':'—'}
+    </span>`).join('');
+}
+buildTicker();
+
+// Subtle ticker price drift
+setInterval(()=>{
+  const items = document.querySelectorAll('.tick-item');
+  const i = Math.floor(Math.random()*items.length);
+  items[i].style.opacity='0.5';
+  setTimeout(()=>items[i].style.opacity='1',400);
+},2000);
+
+// =================== GAME DATA ===================
+const levels = [
+  {
+    id:1,
+    title:"The Off-Market Trade",
+    tag:"Trade Capture & Validation",
+    time:null,
+    contextTime:"Monday 8:07 AM — Trade Capture",
+    context:"You've just opened your workstation. A new trade just appeared in the ETRM pending validation queue. It's a large forward gas swap booked 3 minutes ago by Jake.",
+    data:{
+      headers:["Field","Value","Market Reference"],
+      rows:[
+        ["Product","Henry Hub Gas Swap",""],
+        ["Direction","BUY (Long)",""],
+        ["Volume","50,000 MMBtu/day",""],
+        ["Delivery Period","January next year",""],
+        ["Trade Price","<span class='val-neutral'>$4.20/MMBtu</span>",""],
+        ["Current HH Market","<span class='val-dn'>$2.85/MMBtu</span>","Bloomberg, 8:05 AM"],
+        ["Difference","<span class='val-dn'>+$1.35 vs market</span>","⚠ Significant"],
+      ]
+    },
+    npc:{name:"Jake · Gas Trader",avatar:"👨‍💼",
+      msg:"Hey Alex, morning. I just booked that January deal. Can you validate it quickly? Counterparty is waiting for confirmation."},
+    question:"You see the trade is booked at $4.20/MMBtu, but HH is trading at $2.85/MMBtu — a $1.35 difference. Jake seems in a hurry. What do you do?",
+    choices:[
+      {text:"Validate immediately — Jake is a senior trader and knows the market better than me",correct:false,
+        feedback:"❌ Never. Off-market pricing ($1.35 above current market) is a major red flag. MO's entire purpose is to be an independent control layer. Validating blindly exposes the firm to booking errors, hidden losses, or unauthorized positions."},
+      {text:"Call Jake directly, show him the $1.35 discrepancy vs. market, and ask for written justification before validation",correct:true,
+        feedback:"✅ Exactly right. The MO must independently verify the trade price against market reference prices. A $1.35 discrepancy on 50,000 MMBtu/day = $67,500/day in potential misstatement. Call the trader, show the data, require explanation (e.g., 'was this an agreed off-market deal with a premium?') before approving."},
+      {text:"Approve but add an internal comment noting the discrepancy",correct:false,
+        feedback:"❌ Documenting and approving is not a control — it's rubber-stamping with extra steps. The whole point of validation is to catch errors BEFORE they enter the official books."},
+      {text:"Escalate directly to the Risk Manager without telling Jake",correct:false,
+        feedback:"❌ Going over the trader's head immediately — without first asking him — is premature and damages the relationship. The correct step is: ask the trader first, then escalate if his explanation is unsatisfactory."},
+    ],
+    explanation:"Off-market pricing is one of the key things MO validates daily. A price significantly away from market can indicate: (1) Input error (digit flipped, wrong currency), (2) Unauthorized deal, (3) Hidden loss transfer between books. The correct procedure: compare trade price to market reference → flag to trader → require written justification → only then validate or escalate. At $4.20 vs $2.85, the 'paper loss' on day-1 MtM of this trade would be 50,000 × $1.35 = <strong>$67,500 per day</strong>. That's not a typo you approve.",
+    pnlOnCorrect:50000,
+    pnlOnWrong:-80000,
+  },
+  {
+    id:2,
+    title:"EIA Storage — P&L Math",
+    tag:"P&L Calculation",
+    time:30,
+    contextTime:"Thursday 10:32 AM — Post-EIA Storage Report",
+    context:"The EIA Weekly Natural Gas Storage Report just dropped 2 minutes ago. The number surprised the market to the bullish side. HH futures spiked immediately.",
+    data:{
+      headers:["Metric","Value","Signal"],
+      rows:[
+        ["EIA Actual Draw","<span class='val-up'>-92 Bcf</span>","Larger than expected"],
+        ["Consensus Estimate","-78 Bcf",""],
+        ["Surprise","-14 Bcf more withdrawn","<span class='val-up'>Bullish ▲</span>"],
+        ["HH Front Month (Pre)","$3.15/MMBtu",""],
+        ["HH Front Month (Now)","<span class='val-up'>$3.42/MMBtu (+$0.27)</span>",""],
+        ["Desk Position","<span class='val-up'>Long 200,000 MMBtu</span>","Physical + Financial net"],
+      ]
+    },
+    npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",
+      msg:"Alex, quick — I need the P&L impact of this EIA move on the gas desk before the 10:45 call with management. How much did we make on the price spike?"},
+    question:"HH moved from $3.15 to $3.42 (+$0.27/MMBtu). The desk is long 200,000 MMBtu net. What is the estimated P&L from this price move?",
+    choices:[
+      {text:"A)  +$5,400",correct:false,
+        feedback:"❌ This would be 200,000 × $0.027 — you dropped a zero. Always double-check your decimal."},
+      {text:"B)  +$54,000 ✓",correct:true,
+        feedback:"✅ Correct. 200,000 MMBtu × $0.27/MMBtu = $54,000. The long position benefits from the bullish EIA surprise."},
+      {text:"C)  +$540,000",correct:false,
+        feedback:"❌ You multiplied by $2.70 instead of $0.27. Off by a factor of 10. In MO, an error like this in the P&L flash to management is a serious problem."},
+      {text:"D)  -$54,000",correct:false,
+        feedback:"❌ A long position profits when prices rise — the sign is wrong. -$54,000 would be the result if the desk was SHORT 200,000 MMBtu and prices went up."},
+    ],
+    explanation:"The core P&L formula for a linear position: <strong>P&L = Position (MMBtu) × Price Change ($/MMBtu)</strong>. Long 200,000 MMBtu × +$0.27 = <strong>+$54,000</strong>. This is the delta P&L — only the price move component. A bullish EIA surprise (larger-than-expected draw) means storage is tighter than the market thought → prices rise → long positions profit. On NYMEX, this represents 20 contracts (200,000 ÷ 10,000 MMBtu/contract) × $0.27 × 10,000 = $54,000.",
+    pnlOnCorrect:54000,
+    pnlOnWrong:-15000,
+  },
+  {
+    id:3,
+    title:"The VaR Breach",
+    tag:"Risk Limit Management",
+    time:null,
+    contextTime:"Monday 4:47 PM — End of Day Risk Report",
+    context:"It's end of day. You've finished running the risk report. Everything looks routine until you see the VaR number. The desk has been building positions all week ahead of a cold snap forecast.",
+    data:{
+      headers:["Risk Metric","Current Value","Limit","Status"],
+      rows:[
+        ["1-Day 99% VaR","<span class='val-dn'>$9.2M</span>","$8.0M","<span class='val-dn'>⚠ BREACH +$1.2M</span>"],
+        ["Delta Limit","$4.1M","$5.0M","<span class='val-up'>OK (82%)</span>"],
+        ["Stop-Loss MTD","$320K loss","$15M limit","<span class='val-up'>OK</span>"],
+        ["Waha Basis Limit","$1.8M","$2.0M","<span class='val-neutral'>Amber (90%)</span>"],
+      ]
+    },
+    npc:{name:"Jake · Gas Trader",avatar:"👨‍💼",
+      msg:"Come on Alex, it's 4:47 PM, markets close in 13 minutes. We can't reduce the position now — the bid-offer is terrible this late. It's just $1.2M over, can you just... note it and we fix it tomorrow? I'll owe you one."},
+    question:"VaR is $9.2M against an $8.0M limit — a confirmed breach. Jake is asking you to sit on it until tomorrow. What do you do?",
+    choices:[
+      {text:"Agree — markets are about to close, reducing the position now would be costly and the breach is minor",correct:false,
+        feedback:"❌ This is how careers end. Sitting on a limit breach is a fireable offense in most firms. The limit exists for a reason — to protect the firm's capital. 'Minor' breaches unaddressed become precedents."},
+      {text:"Document the breach, include it in tomorrow's morning report, and mention it to Marcus tomorrow",correct:false,
+        feedback:"❌ Wrong timing. Limit breaches must be escalated the same day they are discovered, not the following morning. Overnight the position could move further against you, compounding the breach."},
+      {text:"Immediately escalate to the Risk Manager (Marcus) tonight, document the breach in the exception log, and report it per protocol — separate from whether Jake reduces the position",correct:true,
+        feedback:"✅ Correct. Your job is to report accurately and escalate immediately — not to decide whether the position gets reduced (that's Risk Management's call). Escalate → document → let Marcus and Jake decide the remediation plan."},
+      {text:"Tell Jake he has 10 minutes to reduce the position to within limits before you file the report",correct:false,
+        feedback:"❌ You are giving the trader control over the risk reporting process — that is a fundamental control failure. The report and escalation happen regardless of whether the position is reduced. Sequence matters: report first, remediation second."},
+    ],
+    explanation:"A VaR limit breach is non-negotiable. The correct protocol: <strong>(1) Identify</strong> — confirmed breach of $9.2M vs $8.0M limit. <strong>(2) Escalate immediately</strong> — notify Risk Manager (Marcus) tonight via call + email. <strong>(3) Document</strong> — enter into the limit exception log with time, level, cause. <strong>(4) Remediation</strong> — Risk Manager decides: temporary waiver, position reduction, or both. Your role is NOT to decide — it's to report accurately and fast. The pressure from Jake is a test of your independence. Pass it.",
+    pnlOnCorrect:30000,
+    pnlOnWrong:-120000,
+  },
+  {
+    id:4,
+    title:"Freeport LNG Fire",
+    tag:"Market Event Impact",
+    time:20,
+    contextTime:"Wednesday 2:18 PM — Breaking News",
+    context:"A Bloomberg news alert just hit your screen. This is a major market-moving event. The desk has a large forward position in Houston Ship Channel gas.",
+    data:{
+      headers:["Breaking","Details",""],
+      rows:[
+        ["Event","<span class='val-dn'>Freeport LNG — Major fire at compressor station</span>","🔴 LIVE"],
+        ["Status","Terminal offline immediately; restart timeline unknown",""],
+        ["Capacity offline","~2.0 Bcf/day of LNG export capacity",""],
+        ["Desk Position","Long 5 Bcf HSC gas (6-month forward)",""],
+        ["HSC Basis Pre-Event","<span class='val-up'>+$0.22/MMBtu vs HH</span>",""],
+        ["HH Price","$3.10/MMBtu (unchanged so far)",""],
+      ]
+    },
+    npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",
+      msg:"Alex — Freeport just went offline. I need you to assess our HSC exposure immediately. What's the directional P&L impact on our long HSC position?"},
+    question:"Freeport LNG (2 Bcf/d of export capacity) just shut down unexpectedly. The desk is LONG HSC. What is the IMMEDIATE directional impact?",
+    choices:[
+      {text:"Prices rise — a disruption at Freeport means less supply reaching the export market, tightening global LNG supply",correct:false,
+        feedback:"❌ Careful — Freeport is an export terminal, not a gas production facility. Shutting it down does NOT reduce domestic gas supply. It removes demand from the domestic market."},
+      {text:"Prices fall — 2 Bcf/d of export demand is suddenly removed from the domestic gas market, leaving more gas available domestically, which is bearish",correct:true,
+        feedback:"✅ Exactly right. LNG export terminals are consumers of domestic gas. When one shuts down, that gas can no longer be exported — it stays in the US domestic market. More domestic supply = lower prices. Your LONG HSC position loses money."},
+      {text:"No meaningful impact — LNG export disruptions are priced in over weeks, not hours",correct:false,
+        feedback:"❌ Wrong. When Freeport LNG actually went offline in June 2022, HH fell approximately $2/MMBtu in the hours following. The market prices LNG demand instantaneously."},
+      {text:"Unpredictable — could go either way depending on global LNG demand at the time",correct:false,
+        feedback:"❌ The direction is clear and mechanical: less domestic demand (LNG off) = domestic prices fall. The magnitude may vary, but the direction is certain."},
+    ],
+    explanation:"This is exactly what happened on <strong>June 8, 2022</strong> when Freeport LNG had a real explosion. HH fell ~<strong>$2/MMBtu</strong> (from ~$9 to ~$7) in the following 24 hours. The mechanism: Freeport exports ~2 Bcf/d. That 2 Bcf/d is domestic gas demand. Remove it → domestic supply is suddenly ~2 Bcf/d larger → bearish. Long HSC position loses value as HSC prices fall. Key insight for interviews: <strong>LNG export outage = domestic bearish</strong>. The opposite of a supply disruption.",
+    pnlOnCorrect:40000,
+    pnlOnWrong:-200000,
+  },
+  {
+    id:5,
+    title:"The Waha Basis Explosion",
+    tag:"Basis Risk & P&L Math",
+    time:25,
+    contextTime:"Tuesday 11:05 AM — Pipeline Force Majeure",
+    context:"News just dropped: Permian Highway Pipeline (PHP) has declared force majeure — a major compressor failure has taken 800 MMBtu/h of capacity offline, effective immediately. The Waha basis is already moving violently.",
+    data:{
+      headers:["Metric","Before","After Event","Change"],
+      rows:[
+        ["HH Front Month","$2.90","<span class='val-flat'>$2.90</span>","$0.00 (unchanged)"],
+        ["Waha Basis vs HH","<span class='val-dn'>-$1.50/MMBtu</span>","<span class='val-dn'>-$4.00/MMBtu</span>","<span class='val-dn'>-$2.50 wider</span>"],
+        ["Waha Absolute Price","$1.40/MMBtu","<span class='val-dn'>-$1.10/MMBtu (negative!)</span>","<span class='val-dn'>-$2.50</span>"],
+        ["Desk Waha Position","Long 100,000 MMBtu/day","(still open)",""],
+      ]
+    },
+    npc:{name:"Jake · Gas Trader",avatar:"👨‍💼",
+      msg:"Alex, Waha just went to negative. I'm trying to figure out how bad this is. What's our daily MtM hit from the basis move alone?"},
+    question:"Waha basis has widened from -$1.50 to -$4.00/MMBtu (a $2.50 move) on 100,000 MMBtu/day long position. HH price is unchanged. What is the daily P&L impact?",
+    choices:[
+      {text:"A)  -$250,000",correct:true,
+        feedback:"✅ Correct. 100,000 MMBtu/day × $2.50 basis widening = $250,000 loss per day on the Waha long. HH is flat, so there is no delta P&L — this is pure basis P&L."},
+      {text:"B)  -$400,000",correct:false,
+        feedback:"❌ $400,000 would be 100,000 × $4.00 — that's using the full Waha absolute price, not the change in basis. P&L is always calculated on the change, not the absolute level."},
+      {text:"C)  $0 — HH didn't move so there's no P&L impact",correct:false,
+        feedback:"❌ This is the basis risk trap. HH is flat, but Waha fell vs HH. If your physical position is at WAHA (not HH), you have real P&L from the basis move. That's why basis swaps exist."},
+      {text:"D)  -$150,000",correct:false,
+        feedback:"❌ $150,000 would be 100,000 × $1.50 — that's the old basis level, not the change. Always use the delta."},
+    ],
+    explanation:"Basis P&L is invisible on a standard HH-hedged position but devastatingly real on physical exposure. The formula: <strong>Basis P&L = Position × ΔBasis = 100,000 × (-$2.50) = -$250,000/day</strong>. If this position runs for 30 days delivery, total exposure = -$7.5M. This is why Waha basis collapsed from -$0.50 to <strong>-$9/MMBtu in 2019</strong> and why Permian producers use basis swaps. Key MO lesson: always show HH delta P&L and basis P&L as separate line items in the attribution — they have different hedging solutions.",
+    pnlOnCorrect:35000,
+    pnlOnWrong:-250000,
+  },
+  {
+    id:6,
+    title:"The P&L Discrepancy",
+    tag:"P&L Investigation",
+    time:null,
+    contextTime:"Friday 5:35 PM — End of Day Reconciliation",
+    context:"You've distributed the EOD P&L flash. Total P&L shows +$100,000. But Jake's calling, and he's not happy.",
+    data:{
+      headers:["Item","MO System (ETRM)","Trader's Book","Gap"],
+      rows:[
+        ["HH Price Change","+$0.20/MMBtu","+$0.20/MMBtu","—"],
+        ["Net Position","500,000 MMBtu","600,000 MMBtu","<span class='val-dn'>-100,000 MMBtu</span>"],
+        ["P&L Calculated","<span class='val-up'>+$100,000</span>","<span class='val-up'>+$120,000</span>","<span class='val-dn'>-$20,000 gap</span>"],
+      ]
+    },
+    npc:{name:"Jake · Gas Trader",avatar:"👨‍💼",
+      msg:"Alex — your P&L shows $100K, mine shows $120K. $20,000 gap. I did everything by the book today. What's going on? I know every trade I put on."},
+    question:"MO shows 500,000 MMBtu, Jake shows 600,000 MMBtu — a 100,000 MMBtu gap creating a $20,000 P&L difference (+$0.20 × 100,000). What is the MOST likely root cause?",
+    choices:[
+      {text:"Jake is double-counting a position from yesterday",correct:false,
+        feedback:"❌ Possible but unlikely — traders track new trades carefully, especially the ones put on that day. A carryover error from yesterday would have shown up in previous days' reconciliations."},
+      {text:"A trade of 100,000 MMBtu was booked by Jake today but has not yet been captured in the ETRM system (late trade capture)",correct:true,
+        feedback:"✅ The most common cause of same-day discrepancies. Trades booked late in the day (e.g., after the ETRM batch cutoff) appear in the trader's blotter but not yet in the official ETRM — hence the position gap. The fix: identify the missing trade, validate and capture it, rerun the P&L."},
+      {text:"The ETRM marked the price at $0.18 instead of $0.20 — a curve marking error",correct:false,
+        feedback:"❌ A pricing error would affect all positions equally and wouldn't create a position quantity difference. Both systems use the same price move ($0.20) here — the gap is in the quantity, not the price."},
+      {text:"Jake entered the wrong delivery month for one trade — it's booked in the wrong period",correct:false,
+        feedback:"❌ A delivery month error might affect curve attribution but wouldn't cause a net quantity discrepancy within the same day's P&L unless it moved to a different pricing curve."},
+    ],
+    explanation:"Position mismatches almost always come from <strong>late trade capture</strong> — the most common cause of same-day P&L discrepancies. The investigation protocol: (1) Pull Jake's trade blotter for today. (2) Compare trade-by-trade against ETRM bookings. (3) Identify the missing 10 contracts (100,000 MMBtu = 10 NYMEX contracts). (4) Confirm the trade details with Jake and the counterparty confirm. (5) Capture in ETRM, rerun P&L, redistribute. Document the reason for late capture to prevent recurrence.",
+    pnlOnCorrect:25000,
+    pnlOnWrong:-20000,
+  },
+  {
+    id:7,
+    title:"Polar Vortex — Stress Test",
+    tag:"Stress Testing & Scenarios",
+    time:null,
+    contextTime:"Wednesday 3:15 PM — Risk Management Request",
+    context:"The 14-day weather model just updated. There's a polar vortex forming over Canada. 60% probability of extreme cold hitting Texas in 10 days. Your Risk Manager needs a stress test on the book before COB.",
+    data:{
+      headers:["Historical Reference","HH Price Before","HH Price Peak","Shock"],
+      rows:[
+        ["Winter Storm Uri (Feb 2021)","~$3.00","<span class='val-dn'>$23.00</span>","<span class='val-dn'>+$20/MMBtu</span>"],
+        ["Polar Vortex 2014","~$4.00","<span class='val-dn'>$10.00</span>","<span class='val-dn'>+$6/MMBtu</span>"],
+        ["Cold Snap Dec 2022","~$6.00","<span class='val-dn'>$23.00</span>","<span class='val-dn'>+$17/MMBtu</span>"],
+        ["Desk Net Long Position","1 Bcf (1,000,000 MMBtu)","(current)",""],
+      ]
+    },
+    npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",
+      msg:"Alex, I need a severe but plausible polar vortex stress scenario for the book. For the Henry Hub price shock, what range would you use and why?"},
+    question:"Which stress shock is most appropriate for a 'severe but plausible' polar vortex stress test on a gas MO desk?",
+    choices:[
+      {text:"A)  +$0.20/MMBtu — 2 standard deviations of daily HH moves",correct:false,
+        feedback:"❌ This is a regular VaR-type shock, not a stress test. A polar vortex is a tail event way beyond 2σ. This stress test would be meaningless."},
+      {text:"B)  +$5 to +$10/MMBtu — referencing the 2014 polar vortex and as a severe but plausible event (not Uri-max)",correct:true,
+        feedback:"✅ Correct framing. Uri was an extreme outlier (+$20). For a 'severe but plausible' stress, the 2014 vortex (+$6) is appropriate. A $5-10 range captures serious cold weather events that are realistic and have historical precedent, while Uri-level shocks are the absolute maximum scenario."},
+      {text:"C)  +$20/MMBtu — must use the worst historical event (Winter Storm Uri) for conservatism",correct:false,
+        feedback:"❌ Uri was a perfect storm: extreme cold + massive infrastructure failure + island grid. Using it as the base stress overestimates regular polar vortex risk. It belongs as a 'catastrophic scenario,' not the primary stress test number."},
+      {text:"D)  Use current 10-day VaR scaled up — that's the scientific approach",correct:false,
+        feedback:"❌ VaR scaled up is NOT a stress test. Stress tests are designed to capture scenarios OUTSIDE the VaR distribution. Scaling VaR still uses historical normal-market data."},
+    ],
+    explanation:"Stress tests must be <strong>severe but plausible</strong> — not so mild they're useless, not so extreme they're unbelievable. The framework: (1) Historical scenario: apply 2014 polar vortex to current book (HH +$6). (2) Hypothetical: polar vortex + partial Permian freeze-off (HH +$8-10). (3) Catastrophic: Uri-level event (HH +$20). Present all three to management. On 1 Bcf long: +$5 shock = +$5M gain (long book profits from cold). But if the desk had a SHORT position, +$5/MMBtu = -$5M loss. Always show P&L for both directions of the stress.",
+    pnlOnCorrect:45000,
+    pnlOnWrong:-30000,
+  },
+  {
+    id:8,
+    title:"Final Exam — The Trader Quiz",
+    tag:"Performance Review",
+    time:20,
+    contextTime:"Friday 5:55 PM — Monthly Performance Review",
+    context:"It's your one-month review with the Head of Trading. The room is watching. Sarah wraps up: 'One last test before I sign off on your probation review.'",
+    data:{
+      headers:["Trade","Details",""],
+      rows:[
+        ["Product","NYMEX Henry Hub Natural Gas Futures",""],
+        ["Direction","BUY (Long)",""],
+        ["Contracts","10 contracts","= 100,000 MMBtu"],
+        ["Trade Price","$3.50/MMBtu",""],
+        ["Current Mark","<span class='val-dn'>$3.35/MMBtu</span>","(-$0.15/MMBtu)"],
+      ]
+    },
+    npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",
+      msg:"Alex — simple question, and I want the answer in 20 seconds. A trader bought 10 NYMEX NG contracts this morning at $3.50. They're now at $3.35. What's the unrealized P&L? Show your work."},
+    question:"10 NYMEX NG contracts bought at $3.50/MMBtu, now marked at $3.35/MMBtu. What is the unrealized P&L?",
+    choices:[
+      {text:"A)  -$1,500 (10 contracts × $0.15 move)",correct:false,
+        feedback:"❌ You forgot the contract size. 1 NYMEX NG contract = 10,000 MMBtu, not 1 MMBtu."},
+      {text:"B)  -$15,000 ✓ (10 contracts × 10,000 MMBtu × -$0.15)",correct:true,
+        feedback:"✅ Perfect. 10 × 10,000 × -$0.15 = -$15,000. Delivered with confidence in under 5 seconds. This is the kind of mental arithmetic that separates a strong MO analyst from the crowd."},
+      {text:"C)  -$150,000 (10 contracts × 100,000 MMBtu × -$0.15)",correct:false,
+        feedback:"❌ You multiplied by 100,000 MMBtu per contract — it's 10,000 MMBtu per NYMEX NG contract. Off by a factor of 10."},
+      {text:"D)  -$15 (just the raw price change × 10)",correct:false,
+        feedback:"❌ You need to multiply by the full notional. The price change alone tells you nothing without volume."},
+    ],
+    explanation:"Drill this into memory: <strong>1 NYMEX NG contract = 10,000 MMBtu</strong>. So 10 contracts = 100,000 MMBtu. P&L = 100,000 × (3.35 – 3.50) = 100,000 × (-0.15) = <strong>-$15,000</strong>. In an interview or on the trading floor, this type of quick mental arithmetic is expected. The formula is always: <strong>Notional Volume × Price Change = P&L</strong>. Know your contract sizes: NYMEX NG = 10,000 MMBtu. ICE Brent Crude = 1,000 bbls. NYMEX WTI = 1,000 bbls.",
+    pnlOnCorrect:70000,
+    pnlOnWrong:-15000,
+  }
+];
+
+// =================== GAME STATE ===================
+let currentLevel = 0;
+let score = 0;
+let deskPnL = 0;
+let results = [];
+let timerInterval = null;
+let timerLeft = 0;
+let answered = false;
+
+// =================== UTILS ===================
+function fmtPnL(v){
+  const abs = Math.abs(v);
+  const s = abs >= 1000000 ? `$${(abs/1000000).toFixed(2)}M` : abs >= 1000 ? `$${(abs/1000).toFixed(0)}K` : `$${abs}`;
+  return (v >= 0 ? '+' : '-') + s;
+}
+function updateHUD(){
+  document.getElementById('level-display').textContent = currentLevel + ' / 8';
+  document.getElementById('score-display').textContent = score;
+  const pd = document.getElementById('pnl-display');
+  pd.textContent = fmtPnL(deskPnL);
+  pd.className = 'hud-val ' + (deskPnL > 0 ? 'pnl-pos' : deskPnL < 0 ? 'pnl-neg' : 'pnl-zero');
+  document.getElementById('level-bar-fill').style.width = ((currentLevel-1)/8*100)+'%';
+}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+function spawnParticle(emoji,x,y){
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.textContent = emoji;
+  p.style.left = x+'px';
+  p.style.top = y+'px';
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),1300);
+}
+function celebrate(correct){
+  const emojis = correct ? ['✅','💰','⭐','🎯','📈'] : ['❌','📉','⚠️'];
+  for(let i=0;i<(correct?6:3);i++){
+    setTimeout(()=>{
+      spawnParticle(emojis[Math.floor(Math.random()*emojis.length)],
+        Math.random()*window.innerWidth, Math.random()*window.innerHeight*0.7+100);
+    },i*120);
+  }
+}
+
+// =================== GAME FLOW ===================
+function startGame(){
+  currentLevel = 0;
+  score = 0;
+  deskPnL = 0;
+  results = [];
+  nextLevel();
+}
+function replayGame(){ startGame(); }
+
+function nextLevel(){
+  clearInterval(timerInterval);
+  if(currentLevel >= levels.length){
+    showFinalScore();
+    return;
+  }
+  const lv = levels[currentLevel];
+  currentLevel++;
+  answered = false;
+  updateHUD();
+  renderLevel(lv);
+  showScreen('level');
+}
+
+function renderLevel(lv){
+  document.getElementById('lv-num').textContent = lv.id;
+  document.getElementById('lv-tag').textContent = lv.tag;
+  document.getElementById('scenario-title').textContent = lv.title;
+  document.getElementById('context-time').textContent = lv.contextTime;
+  document.getElementById('context-text').innerHTML = lv.context;
+
+  // Data panel
+  const dp = document.getElementById('data-panel');
+  if(lv.data){
+    dp.style.display='block';
+    dp.innerHTML = `<table>
+      <tr>${lv.data.headers.map(h=>`<th>${h}</th>`).join('')}</tr>
+      ${lv.data.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}
+    </table>`;
+  } else { dp.style.display='none'; }
+
+  // NPC
+  document.getElementById('npc-container').innerHTML = `
+    <div class="npc-bubble">
+      <div class="npc-avatar">${lv.npc.avatar}</div>
+      <div class="npc-content">
+        <div class="npc-name">${lv.npc.name}</div>
+        <div class="npc-text">${lv.npc.msg}</div>
+      </div>
+    </div>`;
+
+  // Question
+  document.getElementById('question-text').innerHTML = `❓ ${lv.question}`;
+
+  // Choices
+  const letters = ['A','B','C','D'];
+  document.getElementById('choices').innerHTML = lv.choices.map((c,i)=>`
+    <button class="choice-btn" id="choice-${i}" onclick="selectChoice(${i})">
+      <span class="choice-letter">${letters[i]}</span>
+      <span>${c.text}</span>
+    </button>`).join('');
+
+  // Hide result
+  const rp = document.getElementById('result-panel');
+  rp.style.display='none';
+  rp.innerHTML='';
+
+  // Timer
+  const tb = document.getElementById('timer-bar');
+  const tbw = document.getElementById('timer-bar-wrap');
+  if(lv.time){
+    timerLeft = lv.time;
+    tb.style.width='100%';
+    tb.className='';
+    tbw.style.display='block';
+    timerInterval = setInterval(()=>{
+      timerLeft--;
+      const pct = (timerLeft/lv.time)*100;
+      tb.style.width = pct+'%';
+      if(pct < 30) tb.className = 'warn';
+      if(timerLeft <= 0){
+        clearInterval(timerInterval);
+        if(!answered) timeUp();
+      }
+    },1000);
+  } else {
+    tbw.style.display='none';
+    clearInterval(timerInterval);
+  }
+}
+
+function timeUp(){
+  answered = true;
+  const lv = levels[currentLevel-1];
+  document.querySelectorAll('.choice-btn').forEach(b=>b.classList.add('disabled'));
+  const corrIdx = lv.choices.findIndex(c=>c.correct);
+  document.getElementById('choice-'+corrIdx).classList.add('correct');
+  showResult(false, lv, -1);
+}
+
+function selectChoice(idx){
+  if(answered) return;
+  clearInterval(timerInterval);
+  answered = true;
+  const lv = levels[currentLevel-1];
+  const choice = lv.choices[idx];
+  document.querySelectorAll('.choice-btn').forEach((b,i)=>{
+    b.classList.add('disabled');
+    if(i===idx) b.classList.add(choice.correct?'correct':'wrong');
+    if(!choice.correct && lv.choices[i].correct) b.classList.add('correct');
+  });
+  showResult(choice.correct, lv, idx);
+  celebrate(choice.correct);
+}
+
+function showResult(correct, lv, idx){
+  const pnlChange = correct ? lv.pnlOnCorrect : lv.pnlOnWrong;
+  deskPnL += pnlChange;
+  if(correct) score += 100;
+  results.push({id:lv.id,title:lv.title,correct});
+  updateHUD();
+
+  const rp = document.getElementById('result-panel');
+  rp.style.display = 'block';
+  const choiceText = idx >= 0 ? lv.choices[idx].feedback : '⏱ Time ran out!';
+  rp.innerHTML = `
+    <div class="${correct?'result-correct':'result-wrong'}">
+      <div class="result-head ${correct?'ok':'ko'}">${correct?'✅ Correct':'❌ Incorrect'}</div>
+      <div class="result-body">${choiceText}</div>
+      <div class="result-pnl" style="color:${pnlChange>=0?'var(--green)':'var(--red)'}">
+        Desk P&L impact: ${fmtPnL(pnlChange)}
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px;padding:14px 18px;background:rgba(96,165,250,.05);border-color:rgba(96,165,250,.2)">
+      <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">📚 Full Explanation</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.75">${lv.explanation}</div>
+    </div>
+    <button id="next-btn" onclick="nextLevel()">${currentLevel >= levels.length ? '📊 See Final Results' : 'Next Scenario →'}</button>`;
+}
+
+function showFinalScore(){
+  clearInterval(timerInterval);
+  const maxScore = levels.length * 100;
+  const pct = Math.round((score/maxScore)*100);
+  let rank, rankClass, rankMsg;
+  if(pct >= 88){ rank='Head of MO'; rankClass='rank-A'; rankMsg='Outstanding. You have the instincts of a senior risk professional.'; }
+  else if(pct >= 62){ rank='Senior Analyst'; rankClass='rank-B'; rankMsg='Strong. Review the scenarios you missed — you are nearly ready.'; }
+  else if(pct >= 38){ rank='Junior Analyst'; rankClass='rank-C'; rankMsg='Good foundation. Deepen your P&L math and escalation protocols.'; }
+  else { rank='MO Intern'; rankClass='rank-D'; rankMsg='Keep studying — revisit the guide sections and try again.'; }
+
+  const pctCss = Math.round(pct * 3.6);
+  document.getElementById('score-ring').style.setProperty('--pct', pctCss+'deg');
+  document.getElementById('final-score-num').textContent = score;
+  document.getElementById('final-score-denom').textContent = '/ '+maxScore;
+  document.getElementById('rank-display').innerHTML = `<div class="rank-badge ${rankClass}">🏆 ${rank}</div><p style="font-size:13px;color:var(--muted);margin-bottom:20px">${rankMsg}</p>`;
+  const fpnl = document.getElementById('final-pnl-num');
+  fpnl.textContent = fmtPnL(deskPnL);
+  fpnl.style.color = deskPnL >= 0 ? 'var(--green)' : 'var(--red)';
+
+  const breakdown = document.getElementById('score-breakdown');
+  breakdown.innerHTML = results.map(r=>`
+    <div class="sb-row">
+      <span class="sb-lv">Level ${r.id} — ${r.title}</span>
+      <span class="${r.correct?'sb-ok':'sb-ko'}">${r.correct?'✅ +100':'❌ +0'}</span>
+    </div>`).join('') + `
+    <div class="sb-row" style="background:rgba(245,158,11,.05)">
+      <span style="font-weight:700">Total Score</span>
+      <span style="font-weight:700;color:var(--amber)">${score} / ${maxScore} (${pct}%)</span>
+    </div>`;
+
+  showScreen('score');
+  updateHUD();
+  if(pct >= 88) for(let i=0;i<15;i++) setTimeout(()=>spawnParticle('🎉',Math.random()*window.innerWidth,200),i*100);
+}
+</script>
+</body>
+</html>
