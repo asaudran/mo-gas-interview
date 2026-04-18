@@ -146,9 +146,11 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
 /* MODE SELECTOR */
 .mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:520px;margin:0 auto 28px}
 .mode-card{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:22px 18px;cursor:pointer;transition:all .2s;text-align:center}
-.mode-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
-.mode-card.gas:hover,.mode-card.gas.selected{border-color:var(--amber);box-shadow:0 0 20px rgba(245,158,11,.2)}
-.mode-card.power:hover,.mode-card.power.selected{border-color:var(--green);box-shadow:0 0 20px rgba(34,197,94,.2)}
+.mode-card:hover{transform:translateY(-2px)}
+.mode-card.gas.selected{border-color:var(--amber);background:rgba(245,158,11,.12);box-shadow:0 0 28px rgba(245,158,11,.35)}
+.mode-card.power.selected{border-color:var(--green);background:rgba(34,197,94,.12);box-shadow:0 0 28px rgba(34,197,94,.35)}
+.mode-card .check{display:none;font-size:18px;margin-bottom:4px}
+.mode-card.selected .check{display:block}
 .mode-icon{font-size:36px;margin-bottom:10px}
 .mode-title{font-size:15px;font-weight:800;margin-bottom:4px}
 .mode-card.gas .mode-title{color:var(--amber)}
@@ -202,11 +204,13 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
   <div class="intro-sub">You are <strong>Alex</strong>, newly hired Middle Office Analyst at <strong>TexGas Trading</strong> in Houston.<br>Choose your desk — every decision impacts the P&L and your reputation.</div>
   <div class="mode-cards">
     <div class="mode-card gas selected" id="mode-gas" onclick="selectMode('gas')">
+      <div class="check">✅</div>
       <div class="mode-icon">⛽</div>
       <div class="mode-title">Gas Desk</div>
       <div class="mode-desc">Henry Hub · Waha Basis · LNG exports · VaR breaches · P&L reconciliation</div>
     </div>
     <div class="mode-card power" id="mode-power" onclick="selectMode('power')">
+      <div class="check">✅</div>
       <div class="mode-icon">⚡</div>
       <div class="mode-title">Power Desk</div>
       <div class="mode-desc">ERCOT nodal · Spark spreads · Ancillary services · Real-time dispatch · Storm events</div>
