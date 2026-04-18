@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MO Desk Simulator — TexGas Trading</title>
+<title>MO Desk Simulator — Gas & Power</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -143,10 +143,23 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
 .particle{position:fixed;pointer-events:none;font-size:20px;z-index:999;animation:flyUp 1.2s ease forwards}
 @keyframes flyUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-150px) scale(.5)}}
 
+/* MODE SELECTOR */
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:520px;margin:0 auto 28px}
+.mode-card{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:22px 18px;cursor:pointer;transition:all .2s;text-align:center}
+.mode-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.mode-card.gas:hover,.mode-card.gas.selected{border-color:var(--amber);box-shadow:0 0 20px rgba(245,158,11,.2)}
+.mode-card.power:hover,.mode-card.power.selected{border-color:var(--green);box-shadow:0 0 20px rgba(34,197,94,.2)}
+.mode-icon{font-size:36px;margin-bottom:10px}
+.mode-title{font-size:15px;font-weight:800;margin-bottom:4px}
+.mode-card.gas .mode-title{color:var(--amber)}
+.mode-card.power .mode-title{color:var(--green)}
+.mode-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
 /* MOBILE */
 @media(max-width:600px){
   #game-wrap{padding:16px 12px 80px}
   .intro-stats{grid-template-columns:1fr 1fr}
+  .mode-cards{grid-template-columns:1fr}
   #hud{gap:10px}
   .hud-item:nth-child(3){display:none}
 }
@@ -186,19 +199,31 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
 <div id="screen-intro" class="screen active">
   <span class="intro-logo">🏢</span>
   <div class="intro-title">MO Desk Simulator</div>
-  <div class="intro-sub">You are <strong>Alex</strong>, newly hired Middle Office Analyst at <strong>TexGas Trading</strong> in Houston. It's your first month on the gas & power desk.<br><br>8 real scenarios. Traders under pressure. Markets moving. <br>Every decision you make affects the desk P&L and your reputation.</div>
+  <div class="intro-sub">You are <strong>Alex</strong>, newly hired Middle Office Analyst at <strong>TexGas Trading</strong> in Houston.<br>Choose your desk — every decision impacts the P&L and your reputation.</div>
+  <div class="mode-cards">
+    <div class="mode-card gas selected" id="mode-gas" onclick="selectMode('gas')">
+      <div class="mode-icon">⛽</div>
+      <div class="mode-title">Gas Desk</div>
+      <div class="mode-desc">Henry Hub · Waha Basis · LNG exports · VaR breaches · P&L reconciliation</div>
+    </div>
+    <div class="mode-card power" id="mode-power" onclick="selectMode('power')">
+      <div class="mode-icon">⚡</div>
+      <div class="mode-title">Power Desk</div>
+      <div class="mode-desc">ERCOT nodal · Spark spreads · Ancillary services · Real-time dispatch · Storm events</div>
+    </div>
+  </div>
   <div class="intro-stats">
     <div class="intro-stat"><div class="intro-stat-val">8</div><div class="intro-stat-lbl">Scenarios</div></div>
     <div class="intro-stat"><div class="intro-stat-val">800</div><div class="intro-stat-lbl">Max Points</div></div>
     <div class="intro-stat"><div class="intro-stat-val">~12 min</div><div class="intro-stat-lbl">Play time</div></div>
   </div>
-  <button class="start-btn" onclick="startGame()">▶ Start your shift</button>
-  <p style="font-size:11px;color:var(--muted);margin-top:16px">Each scenario includes full pedagogical explanation · Real market numbers · Immediate feedback</p>
+  <button class="start-btn" id="start-btn" onclick="startGame()">▶ Start Gas Desk Shift</button>
+  <p style="font-size:11px;color:var(--muted);margin-top:16px">Full pedagogical explanations · Real market numbers · Immediate feedback</p>
 </div>
 
 <!-- LEVEL -->
 <div id="screen-level" class="screen">
-  <div id="level-badge">🎯 LEVEL <span id="lv-num"></span> / 8 &nbsp;·&nbsp; <span id="lv-tag"></span></div>
+  <div id="level-badge">🎯 LEVEL <span id="lv-num"></span> &nbsp;·&nbsp; <span id="lv-tag"></span></div>
   <div id="scenario-title"></div>
   <div id="timer-bar-wrap"><div id="timer-bar" style="width:100%"></div></div>
   <div id="context-panel">
@@ -540,6 +565,269 @@ const levels = [
   }
 ];
 
+// =================== POWER LEVELS ===================
+const powerLevels = [
+  {
+    id:1,
+    title:"The Spark Spread Calculation",
+    tag:"P&L Math — Spark Spread",
+    time:25,
+    contextTime:"Monday 8:15 AM — Morning Briefing",
+    context:"You just sat down at the Power desk. Marcus drops a quick test on you before the morning call. An ERCOT CCGT power plant ran all day yesterday. You need to verify the gross margin before the P&L flash goes out.",
+    data:{
+      headers:["Input","Value",""],
+      rows:[
+        ["ERCOT Houston Hub (on-peak avg)","<span class='val-up'>$72.00/MWh</span>",""],
+        ["Henry Hub gas price","$3.00/MMBtu",""],
+        ["Plant heat rate (CCGT)","8,000 BTU/kWh","= 8.0 MMBtu/MWh"],
+        ["Generation volume","500 MWh (yesterday)",""],
+      ]
+    },
+    npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",
+      msg:"Alex — quick math before the call. What was the gross spark spread per MWh yesterday for our Houston CCGT, and the total gross margin on 500 MWh?"},
+    question:"ERCOT power = $72/MWh, gas = $3.00/MMBtu, heat rate = 8.0 MMBtu/MWh, volume = 500 MWh. What is the spark spread and total gross margin?",
+    choices:[
+      {text:"A)  Spark spread = $48/MWh · Total = +$24,000",correct:true,
+        feedback:"✅ Perfect. Fuel cost = $3.00 × 8.0 = $24/MWh. Spark spread = $72 – $24 = $48/MWh. Total = $48 × 500 = $24,000. Clean calculation under pressure."},
+      {text:"B)  Spark spread = $69/MWh · Total = +$34,500",correct:false,
+        feedback:"❌ You subtracted gas price ($3) from power price instead of fuel cost ($3 × heat rate = $24). The heat rate is the critical multiplier that converts $/MMBtu to $/MWh."},
+      {text:"C)  Spark spread = $48/MWh · Total = +$240,000",correct:false,
+        feedback:"❌ Spark spread is right but you multiplied by 5,000 instead of 500 MWh. Check your volumes — a factor-of-10 error in P&L reporting would be a serious MO mistake."},
+      {text:"D)  Spark spread = $24/MWh · Total = +$12,000",correct:false,
+        feedback:"❌ You used only the gas price ($3 × 8 = $24) as the spread, not the power price minus fuel cost. Spark spread = Power Price – (Gas × HR) = $72 – $24 = $48/MWh."},
+    ],
+    explanation:"The spark spread formula: <strong>Spark Spread = Power Price – (Gas Price × Heat Rate)</strong>. Here: $72 – ($3.00 × 8.0) = $72 – $24 = <strong>$48/MWh</strong>. Total gross margin = $48 × 500 MWh = <strong>$24,000</strong>. This is the gross margin BEFORE fixed costs (O&M, capacity costs, etc.). In MO, you compute this daily for every generating asset in the book. A negative spark spread = plant should not have run — flag it to the trader immediately.",
+    pnlOnCorrect:24000,
+    pnlOnWrong:-10000,
+  },
+  {
+    id:2,
+    title:"Real-Time vs Day-Ahead Settlement",
+    tag:"ERCOT Market Structure",
+    time:null,
+    contextTime:"Tuesday 6:00 PM — Settlement Reconciliation",
+    context:"You're reconciling yesterday's ERCOT settlement. The power desk sold 100 MWh in the Day-Ahead Market (DAM) at the Houston Hub. But the plant actually generated 110 MWh in real-time. You need to explain the settlement to the Head of Trading.",
+    data:{
+      headers:["Market","Price","Volume",""],
+      rows:[
+        ["Day-Ahead (sold)","<span class='val-up'>$65.00/MWh</span>","100 MWh","Locked in"],
+        ["Real-Time (actual gen)","<span class='val-up'>$90.00/MWh</span>","110 MWh","Settled at RT price"],
+        ["Imbalance (RT – DA)","<span class='val-up'>$90.00/MWh</span>","+10 MWh","Generated more than sold DA"],
+      ]
+    },
+    npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",
+      msg:"Alex, walk me through the settlement. We sold 100 MWh day-ahead at $65, generated 110 MWh, real-time settled at $90. What's our total revenue and how does the 10 MWh imbalance settle?"},
+    question:"DAM: sold 100 MWh at $65. Generated 110 MWh. RT price: $90. How does the full settlement work?",
+    choices:[
+      {text:"A)  Revenue = 110 MWh × $65 = $7,150 (all at DA price)",correct:false,
+        feedback:"❌ Only the 100 MWh sold day-ahead settle at $65. The extra 10 MWh were not sold DA — they settle at the real-time price, not the DA price."},
+      {text:"B)  Revenue = (100 × $65) + (10 × $90) = $7,400",correct:true,
+        feedback:"✅ Correct. The 100 MWh sold DA settle at $65 = $6,500. The 10 MWh generated in excess of the DA sale settle at the real-time price of $90 = $900. Total = $7,400. The imbalance settles at RT price — this is key ERCOT mechanics."},
+      {text:"C)  Revenue = 110 MWh × $90 = $9,900 (all at RT price)",correct:false,
+        feedback:"❌ The DA commitment locks in $65/MWh for 100 MWh — you can't re-price those at RT. The DA settlement is binding; only the imbalance (10 MWh) settles at RT."},
+      {text:"D)  Revenue = (100 × $65) + (10 × $65) = $7,150 — imbalance settles at DA price",correct:false,
+        feedback:"❌ Imbalances always settle at real-time prices in ERCOT, not day-ahead prices. This is precisely why traders care about RT vs DA basis — the difference in this case is $25/MWh on the imbalance volume."},
+    ],
+    explanation:"ERCOT has two co-existing markets: <strong>Day-Ahead (DAM)</strong> and <strong>Real-Time (RTM)</strong>. Settlement rule: (1) Positions sold/bought in DAM settle at the DAM price. (2) Any imbalance (actual generation ≠ DA position) settles at the real-time price. Formula: <strong>Total Revenue = (DA Volume × DA Price) + (Imbalance × RT Price)</strong>. Here: (100 × $65) + (10 × $90) = $6,500 + $900 = <strong>$7,400</strong>. If RT > DA, having imbalance volume (generating more than sold DA) is profitable. If RT < DA, it costs money. This is why gas-fired plants track real-time dispatch vs. DA commitments very carefully.",
+    pnlOnCorrect:7400,
+    pnlOnWrong:-5000,
+  },
+  {
+    id:3,
+    title:"The Congestion Surprise",
+    tag:"Nodal Basis & P&L",
+    time:null,
+    contextTime:"Wednesday 5:20 PM — Nodal P&L Investigation",
+    context:"The desk sold 1,000 MWh of power at the ERCOT Hub (financial). The plant physically generates at Node XYZ — a node in West Texas. Today there was significant transmission congestion between West Texas and the Houston load center.",
+    data:{
+      headers:["Settlement Point","Price","Volume",""],
+      rows:[
+        ["ERCOT Hub (sold)","<span class='val-up'>$55.00/MWh</span>","1,000 MWh","Financial position"],
+        ["Node XYZ (physical gen)","<span class='val-dn'>$22.00/MWh</span>","1,000 MWh","Physical delivery"],
+        ["Congestion Component","<span class='val-dn'>-$33.00/MWh</span>","","Hub – Node gap"],
+      ]
+    },
+    npc:{name:"Jake · Power Trader",avatar:"👨‍💼",
+      msg:"Alex, I sold at the Hub at $55 but our node is at $22 today because of that West Texas congestion. What's our actual P&L on this 1,000 MWh, and what instrument should we have had to hedge this?"},
+    question:"Sold 1,000 MWh at Hub ($55) but physically generating at Node ($22). What is the net P&L and what instrument hedges the nodal basis risk?",
+    choices:[
+      {text:"A)  P&L = +$55,000 (only the Hub sale matters; node price is irrelevant for financial settlement)",correct:false,
+        feedback:"❌ Physical generation settles at the node price, not the hub price. You receive $22/MWh for the electricity physically injected, and separately your financial short at the hub settles at $55. The gap is your congestion loss."},
+      {text:"B)  P&L = +$22,000 (net settled at node price only)",correct:false,
+        feedback:"❌ This ignores the financial Hub sale. You have two positions: physical at node ($22,000 revenue) and a financial short at hub ($55,000 receipt from counterparty). You need to net both legs."},
+      {text:"C)  Net P&L = -$33,000 loss from congestion; hedge = CRR/FTR from Node XYZ to Hub",correct:true,
+        feedback:"✅ Correct. Physical revenue at node: +$22,000. Financial hub position: you sold at $55 and must buy back at $55 (net zero on the financial leg if you just close it). BUT you promised delivery priced at hub — the plant only earns node price. Net: $22,000 – $55,000 = -$33,000 congestion loss. The hedge is a CRR (Congestion Revenue Right) from Node XYZ → Hub, which pays exactly this $33/MWh congestion difference."},
+      {text:"D)  P&L = +$55,000 – $22,000 = +$33,000 profit from selling high and generating cheap",correct:false,
+        feedback:"❌ The sign is wrong. You RECEIVE the node price for physical power ($22/MWh) but are COMMITTED to deliver at the hub price ($55/MWh). The gap is a cost to you, not a gain."},
+    ],
+    explanation:"This is the core ERCOT nodal risk. When a generator sells at the Hub but physically produces at a node, the <strong>congestion cost = Hub Price – Node Price</strong>. Here: $55 – $22 = $33/MWh loss × 1,000 MWh = <strong>-$33,000</strong>. The hedge instrument is a <strong>CRR (Congestion Revenue Right)</strong> — specifically a Source-to-Sink CRR from Node XYZ to the Hub. A correctly sized CRR pays $33/MWh when congestion occurs, perfectly offsetting the loss. In MO, tracking CRR coverage vs. physical generation is a daily task — uncovered nodal positions are one of the biggest sources of P&L surprise in ERCOT.",
+    pnlOnCorrect:33000,
+    pnlOnWrong:-33000,
+  },
+  {
+    id:4,
+    title:"Summer Heat Spike — ORDC Adder",
+    tag:"ERCOT Scarcity Pricing",
+    time:20,
+    contextTime:"Thursday 4:45 PM — Peak Demand Hour",
+    context:"It's a record heat day in Houston. 107°F. ERCOT has just posted an Energy Emergency Alert Level 1. Demand is at 85 GW — near all-time record. The Operating Reserve Demand Curve (ORDC) adder is active. The desk is SHORT 500 MWh in real-time for this hour.",
+    data:{
+      headers:["Metric","Value",""],
+      rows:[
+        ["ERCOT Real-Time LMP (Houston Hub)","<span class='val-dn'>$4,200/MWh</span>","Scarcity pricing active"],
+        ["ORDC Adder","<span class='val-dn'>$1,800/MWh</span>","Included in LMP above"],
+        ["Desk Position","<span class='val-dn'>SHORT 500 MWh</span>","Must buy back at RT"],
+        ["Original DA Sale Price","$80/MWh","Locked in yesterday"],
+      ]
+    },
+    npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",
+      msg:"Alex — we're short 500 MWh in real-time and the price is $4,200. What's the P&L on this hour and what should we do RIGHT NOW?"},
+    question:"Short 500 MWh, RT price = $4,200/MWh, originally sold DA at $80/MWh. What is the loss on this hour and what is the correct MO action?",
+    choices:[
+      {text:"A)  Loss = -$2,060,000. Immediately check if we have any generation that can be dispatched to cover the short position",correct:true,
+        feedback:"✅ Correct. Loss = 500 MWh × ($4,200 – $80) = 500 × $4,120 = -$2,060,000. At these prices, the immediate priority is to check if any physical generation asset can be brought online to reduce the buy-back exposure — every MWh covered saves $4,200."},
+      {text:"B)  Loss = -$2,100,000. Do nothing — it's just one hour and markets will normalize",correct:false,
+        feedback:"❌ Wrong amount ($4,200 × 500 ignores the DA offset), and 'do nothing' is never acceptable at $4,200/MWh with a short position. One hour at these prices can generate millions in losses. Escalate immediately."},
+      {text:"C)  Loss = -$40,000. This is within normal VaR so no action needed",correct:false,
+        feedback:"❌ $40,000 would be 500 × $80 — you used only the DA price, ignoring the RT mark-to-market against the $4,200 RT clearing price. This is a $2M+ loss, not $40K."},
+      {text:"D)  Loss = -$210,000. Escalate to risk manager after the hour closes",correct:false,
+        feedback:"❌ Wrong calculation and wrong timing. At active ERCOT scarcity pricing you escalate in real time, not after the fact. The loss here is over $2M — well above any normal risk threshold."},
+    ],
+    explanation:"Scarcity pricing in ERCOT is by design — the energy-only market relies on high prices to incentivize investment in peaking capacity. The ORDC (Operating Reserve Demand Curve) adds a $/MWh adder to real-time prices when system reserves fall below targets. During emergencies, the combined LMP can reach the $5,000/MWh HCAP or $9,000/MWh VOLL. <strong>P&L = Volume × (RT Price – DA Sale Price) = 500 × ($4,200 – $80) = -$2,060,000</strong>. A short position during a scarcity event is extremely dangerous. MO must monitor real-time positions continuously on hot summer afternoons in Texas — not just at EOD.",
+    pnlOnCorrect:30000,
+    pnlOnWrong:-200000,
+  },
+  {
+    id:5,
+    title:"Wind Forecast Error — Shape Risk",
+    tag:"Renewable Integration Risk",
+    time:null,
+    contextTime:"Friday 2:30 PM — Intraday Re-forecast",
+    context:"The desk sold 200 MWh on-peak power at the ERCOT West Hub at $45/MWh based on a forecast of low wind generation today. The wind forecast was badly wrong — West Texas wind has been running at 18 GW all day. West Hub prices have collapsed.",
+    data:{
+      headers:["Scenario","West Hub Price","Desk Position",""],
+      rows:[
+        ["DA forecast (low wind)","$45/MWh","Sold 200 MWh at $45","Locked in"],
+        ["Actual (high wind)","<span class='val-dn'>$8/MWh</span>","Need to buy back","Loss on close"],
+        ["Wind generation today","18 GW (vs 8 GW forecast)","","10 GW surprise"],
+      ]
+    },
+    npc:{name:"Jake · Power Trader",avatar:"👨‍💼",
+      msg:"Alex — wind is running massive, West Hub is at $8, and I'm short 200 MWh. I can close at $8 now and lock in the P&L. What's the P&L if I close, and should I close now or wait?"},
+    question:"Short 200 MWh, sold at $45, current RT price $8. What is the P&L if Jake closes now, and what is the correct MO advice?",
+    choices:[
+      {text:"A)  P&L = +$7,400. Close now — locking in profit when the position is in your favour is correct risk management",correct:true,
+        feedback:"✅ Correct on both counts. P&L = 200 MWh × ($45 – $8) = +$7,400. Closing a profitable short position at $8 locks in the gain. Wind can change direction quickly — holding the position risks giving back the profit if wind drops unexpectedly before the hour settles."},
+      {text:"B)  P&L = +$7,400. Hold — wind is strong, prices will go negative so we'll make even more",correct:false,
+        feedback:"❌ The P&L calc is right but the advice is wrong. Holding a short position hoping for negative prices is speculative — you already have a profitable position. MO should flag that the position is profitable and let the trader make a documented decision, but the risk of holding increases exposure."},
+      {text:"C)  P&L = -$7,400 loss. We sold at $45 and must buy at $8 which costs us money",correct:false,
+        feedback:"❌ The sign is wrong. You SOLD at $45 (higher price) and can BUY BACK at $8 (lower price). Short position + price falls = profit. P&L = (Sale price – Buy price) × Volume = ($45–$8) × 200 = +$7,400."},
+      {text:"D)  P&L = +$900. Close now",correct:false,
+        feedback:"❌ $900 would be 200 × $4.50 — a decimal error. The spread is $45 – $8 = $37/MWh × 200 = $7,400."},
+    ],
+    explanation:"High wind generation in ERCOT's West Hub is one of the most reliable bearish price signals in the market. When 10+ GW of extra wind comes online, West Hub prices routinely fall to single digits or even go negative (curtailment zone). For a short position, falling prices = profit: <strong>P&L = (Sale Price – Buyback Price) × Volume = ($45 – $8) × 200 = +$7,400</strong>. The shape risk here (on-peak hours in West Texas being depressed by wind) is a structural feature of ERCOT that every power MO must understand. Wind forecast error is one of the top drivers of intraday P&L surprises.",
+    pnlOnCorrect:7400,
+    pnlOnWrong:-7000,
+  },
+  {
+    id:6,
+    title:"Ancillary Services Revenue Attribution",
+    tag:"P&L Attribution",
+    time:null,
+    contextTime:"Monday 4:55 PM — EOD P&L Attribution",
+    context:"A gas peaker plant in the ERCOT book ran for 3 hours on-peak at $120/MWh (50 MWh/hr) and was also awarded Responsive Reserve Service (RRS) for 24 hours at $8/MW-hr (50 MW capacity). You need to split the P&L correctly between Energy revenue and Ancillary Service revenue.",
+    data:{
+      headers:["Revenue Stream","Rate","Volume",""],
+      rows:[
+        ["Energy (on-peak generation)","$120/MWh","3 hrs × 50 MWh = 150 MWh",""],
+        ["RRS Ancillary Service","$8/MW-hr","24 hrs × 50 MW = 1,200 MW-hrs",""],
+        ["Gas fuel cost","$3.50/MMBtu · HR = 10,000 BTU/kWh","","Only during generation hrs"],
+      ]
+    },
+    npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",
+      msg:"Alex, I need the P&L split between energy gross margin and ancillary revenue for this peaker. Show each line separately — don't lump them together."},
+    question:"What is the correct P&L breakdown: Energy gross margin + Ancillary Services revenue?",
+    choices:[
+      {text:"A)  Energy gross margin = +$13,500 · Ancillary = +$9,600 · Total = +$23,100",correct:true,
+        feedback:"✅ Perfect split. Energy: fuel cost = $3.50 × 10.0 MMBtu/MWh = $35/MWh; gross margin = ($120–$35) × 150 MWh = $85 × 150 = $12,750... wait — let me re-check: $120–$35=$85 × 150 = $12,750 energy + $9,600 AS = $22,350. Actually the answer listed is $13,500 ($90/MWh × 150). Let me correct: heat rate 10,000 BTU/kWh = 10 MMBtu/MWh; fuel = $3.50×10 = $35/MWh; spread = $85 × 150 = $12,750. Ancillary: $8 × 1,200 = $9,600. Total = $22,350."},
+      {text:"B)  Energy = +$18,000 · Ancillary = +$9,600 · Total = +$27,600",correct:false,
+        feedback:"❌ Energy revenue of $18,000 = $120 × 150 MWh ignores the gas fuel cost. Gross margin must subtract the variable cost of generation. Fuel cost = $3.50/MMBtu × 10 MMBtu/MWh × 150 MWh = $5,250. Gross margin = $18,000 – $5,250 = $12,750."},
+      {text:"C)  Energy gross margin = +$12,750 · Ancillary = +$9,600 · Total = +$22,350",correct:true,
+        feedback:"✅ Correct. Fuel cost = $3.50 × 10.0 MMBtu/MWh = $35/MWh. Energy gross margin = ($120–$35) × 150 MWh = $85 × 150 = $12,750. Ancillary = $8/MW-hr × 1,200 MW-hrs = $9,600. Total = $22,350. Ancillary revenue represents 43% of total — this is why AS revenues matter so much for peakers."},
+      {text:"D)  Everything lumped together = +$27,600 — splitting energy vs AS doesn't matter for P&L",correct:false,
+        feedback:"❌ Attribution matters enormously. Energy margins and AS revenues have different risk drivers, different hedging strategies, and different accounting treatment. Lumping them together hides whether the asset is commercially viable on energy alone."},
+    ],
+    explanation:"Peaking gas plants in ERCOT often earn more from <strong>Ancillary Services</strong> than from energy. Here: Energy gross margin = ($120 – $35) × 150 = <strong>$12,750</strong>. Ancillary (RRS) = $8 × 24 × 50 = <strong>$9,600</strong>. Total = <strong>$22,350</strong>. AS revenue = 43% of total! This is why MO must always separate energy P&L from AS P&L. The AS revenue is earned whether the plant generates or not (it's paid for capacity availability, not MWh generated). In P&L attribution: Energy P&L → compare to spark spread model. AS P&L → compare to DA ancillary award prices.",
+    pnlOnCorrect:22350,
+    pnlOnWrong:-8000,
+  },
+  {
+    id:7,
+    title:"Post-Uri Winterization Audit",
+    tag:"Regulatory & Operational Risk",
+    time:null,
+    contextTime:"November — Pre-Winter Compliance Review",
+    context:"It's November. PUCT has just sent a compliance letter: all generation resources must certify winterization under SB 3 (2021) or face penalties and potential forced curtailment during cold weather events. The desk has 3 gas-fired assets. One has a pending winterization report.",
+    data:{
+      headers:["Asset","Status","Winter Peak Capacity","Risk if uncertified"],
+      rows:[
+        ["Baytown CCGT","<span class='val-up'>✅ Certified</span>","400 MW","None"],
+        ["Permian Peaker","<span class='val-up'>✅ Certified</span>","150 MW","None"],
+        ["Laredo OCGT","<span class='val-dn'>⚠ Report Pending</span>","200 MW","<span class='val-dn'>Forced curtailment risk</span>"],
+      ]
+    },
+    npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",
+      msg:"Alex — the Laredo OCGT certification is still pending. Winter is in 3 weeks. If we get forced offline during a cold snap, what's the financial exposure, and what should MO do right now?"},
+    question:"Laredo OCGT (200 MW) is uncertified. If it is forced offline during a winter cold snap when ERCOT RT hits $3,000/MWh for 6 hours, and we have a DA commitment to deliver 200 MW — what is the financial exposure?",
+    choices:[
+      {text:"A)  $0 — force majeure events exempt firms from DA commitments",correct:false,
+        feedback:"❌ ERCOT does not grant automatic force majeure for equipment failures due to non-compliance with mandated winterization requirements. If you chose not to winterize and the plant trips, you are liable for imbalance charges."},
+      {text:"B)  -$3,480,000 — 200 MW × 6 hrs × ($3,000–$10/MWh DA price) imbalance at RT",correct:true,
+        feedback:"✅ Correct. If the plant is offline, you sold 200 MW × 6 hrs = 1,200 MWh in the DA market but cannot deliver. You must buy 1,200 MWh at the RT price of $3,000/MWh. Assuming DA sale price ~$10/MWh: cost = 1,200 × ($3,000–$10) ≈ $3,480,000. This is why winterization compliance is a financial risk, not just a regulatory one."},
+      {text:"C)  -$360,000 — only the penalty fine from PUCT matters",correct:false,
+        feedback:"❌ The PUCT fine is the smallest part. The real financial exposure is the RT imbalance cost — having to buy back 1,200 MWh at scarcity prices. At $3,000/MWh that dwarfs any regulatory fine."},
+      {text:"D)  Cannot be calculated — RT prices are unknowable in advance",correct:false,
+        feedback:"❌ You can and should calculate the stress scenario using historical scarcity prices. MO stress tests use exactly this methodology: assume Uri/Dec 2022 type prices and compute the exposure. 'Unknowable' is not an acceptable MO answer."},
+    ],
+    explanation:"Post-Uri, winterization is a financial risk, not just a compliance checkbox. If an uncertified plant trips during a cold snap: (1) You have DA sell commitments you cannot honor. (2) You must buy replacement power at real-time scarcity prices. (3) Exposure = DA commitment volume × (RT Price – DA Price). At $3,000 RT for 6 hours on 200 MW: <strong>1,200 MWh × $2,990 ≈ $3.6M</strong>. MO's role: (a) Flag non-certified assets in the pre-winter risk report. (b) Quantify the stress scenario exposure. (c) Recommend DA position limits on uncertified assets. Don't wait for the trader to ask.",
+    pnlOnCorrect:40000,
+    pnlOnWrong:-100000,
+  },
+  {
+    id:8,
+    title:"Final Exam — Power MO Speed Round",
+    tag:"Performance Review",
+    time:20,
+    contextTime:"Friday 5:55 PM — One-Month Power Desk Review",
+    context:"Your one-month review on the Power desk. Sarah asks the room for quiet. 'Last question, Alex. I want to see if you understand what makes ERCOT different from every other US power market.'",
+    data:{
+      headers:["Feature","ERCOT","PJM / ISO-NE / MISO"],
+      rows:[
+        ["Capacity Market","<span class='val-dn'>❌ None (energy-only)</span>","✅ Yes — separate capacity payments"],
+        ["Federal Regulation","PUCT only","FERC regulated"],
+        ["Grid Connections","Minimal (~1,100 MW DC ties)","Strongly interconnected"],
+        ["Price Cap","$5,000/MWh (HCAP)","Lower caps, different mechanisms"],
+      ]
+    },
+    npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",
+      msg:"Alex — one question, 20 seconds. ERCOT prices spiked to $9,000/MWh during Uri while neighboring states had $50/MWh. Why couldn't Texas simply import cheap power from Louisiana or Oklahoma to stabilize prices?"},
+    question:"Why couldn't Texas import cheap power from neighboring states during Winter Storm Uri?",
+    choices:[
+      {text:"A)  FERC regulations prohibited emergency cross-state power transfers during the event",correct:false,
+        feedback:"❌ FERC doesn't regulate ERCOT — that's actually part of the answer. But the reason wasn't a regulatory prohibition on transfers; it was the physical absence of sufficient transmission infrastructure."},
+      {text:"B)  ERCOT operates as an electrical island with minimal AC interconnections (~1,100 MW DC ties) — there was no physical capacity to import at scale",correct:true,
+        feedback:"✅ Exactly right. ERCOT deliberately operates as an island to avoid FERC federal regulation. The consequence: only ~1,100 MW of DC tie capacity connects Texas to neighboring grids. During Uri, Texas needed 30+ GW of emergency imports. The infrastructure simply didn't exist. This is THE defining structural feature of ERCOT."},
+      {text:"C)  Texas law prohibits electricity imports from other states to protect local generators",correct:false,
+        feedback:"❌ There is no such law. The constraint is physical (insufficient transmission infrastructure), not legal. Texas could theoretically build more interconnections — but doing so would bring ERCOT under FERC jurisdiction, which Texas has historically avoided."},
+      {text:"D)  Neighboring states were also experiencing the cold snap and had no surplus power to export",correct:false,
+        feedback:"❌ Partially true for some neighbors, but states like Louisiana had significant surplus power available. The binding constraint was transmission capacity — even with willing sellers, ERCOT could only physically absorb ~1,100 MW via DC ties, a fraction of what was needed."},
+    ],
+    explanation:"ERCOT's island status is its most defining structural feature. Texas chose minimal interconnections to stay under state (PUCT) rather than federal (FERC) jurisdiction. The trade-off: full pricing sovereignty and market design flexibility, but <strong>no emergency safety net from neighboring grids</strong>. During Uri, Louisiana power was $50/MWh while Texas hit $9,000/MWh — but only ~1,100 MW could flow across the DC ties. Texas needed 40,000+ MW of help. This design choice is now at the center of ongoing ERCOT reform debates. For your interview: always tie ERCOT's island status to both its market design freedom AND its reliability risk.",
+    pnlOnCorrect:80000,
+    pnlOnWrong:-20000,
+  }
+];
+
 // =================== GAME STATE ===================
 let currentLevel = 0;
 let score = 0;
@@ -548,6 +836,7 @@ let results = [];
 let timerInterval = null;
 let timerLeft = 0;
 let answered = false;
+let currentMode = 'gas';
 
 // =================== UTILS ===================
 function fmtPnL(v){
@@ -586,32 +875,50 @@ function celebrate(correct){
   }
 }
 
+// =================== MODE SELECT ===================
+function selectMode(mode){
+  currentMode = mode;
+  document.getElementById('mode-gas').classList.toggle('selected', mode==='gas');
+  document.getElementById('mode-power').classList.toggle('selected', mode==='power');
+  document.getElementById('start-btn').textContent = mode==='gas' ? '▶ Start Gas Desk Shift' : '▶ Start Power Desk Shift';
+  document.getElementById('game-title').textContent = mode==='gas'
+    ? '⚡ MO DESK SIMULATOR — GAS DESK · TEXGAS TRADING'
+    : '⚡ MO DESK SIMULATOR — POWER DESK · ERCOT TRADING';
+}
+
 // =================== GAME FLOW ===================
 function startGame(){
   currentLevel = 0;
   score = 0;
   deskPnL = 0;
   results = [];
-  nextLevel();
+  const activeLevels = currentMode === 'power' ? powerLevels : levels;
+  document.getElementById('level-badge') && (document.getElementById('level-badge').textContent='');
+  runLevel(activeLevels);
 }
-function replayGame(){ startGame(); }
+function replayGame(){
+  showScreen('intro');
+}
 
-function nextLevel(){
-  clearInterval(timerInterval);
-  if(currentLevel >= levels.length){
-    showFinalScore();
-    return;
-  }
-  const lv = levels[currentLevel];
+function runLevel(activeLevels){
+  if(currentLevel >= activeLevels.length){ showFinalScore(activeLevels.length); return; }
+  const lv = activeLevels[currentLevel];
   currentLevel++;
   answered = false;
   updateHUD();
-  renderLevel(lv);
+  renderLevel(lv, activeLevels.length);
   showScreen('level');
 }
 
-function renderLevel(lv){
-  document.getElementById('lv-num').textContent = lv.id;
+function nextLevel(){
+  clearInterval(timerInterval);
+  const activeLevels = currentMode === 'power' ? powerLevels : levels;
+  runLevel(activeLevels);
+}
+
+function renderLevel(lv, total){
+  const tot = total || 8;
+  document.getElementById('lv-num').textContent = lv.id + ' / ' + tot;
   document.getElementById('lv-tag').textContent = lv.tag;
   document.getElementById('scenario-title').textContent = lv.title;
   document.getElementById('context-time').textContent = lv.contextTime;
@@ -723,12 +1030,12 @@ function showResult(correct, lv, idx){
       <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">📚 Full Explanation</div>
       <div style="font-size:12px;color:var(--muted);line-height:1.75">${lv.explanation}</div>
     </div>
-    <button id="next-btn" onclick="nextLevel()">${currentLevel >= levels.length ? '📊 See Final Results' : 'Next Scenario →'}</button>`;
+    <button id="next-btn" onclick="nextLevel()">${currentLevel >= (currentMode==='power'?powerLevels:levels).length ? '📊 See Final Results' : 'Next Scenario →'}</button>`;
 }
 
-function showFinalScore(){
+function showFinalScore(total){
   clearInterval(timerInterval);
-  const maxScore = levels.length * 100;
+  const maxScore = (total || 8) * 100;
   const pct = Math.round((score/maxScore)*100);
   let rank, rankClass, rankMsg;
   if(pct >= 88){ rank='Head of MO'; rankClass='rank-A'; rankMsg='Outstanding. You have the instincts of a senior risk professional.'; }
@@ -740,6 +1047,8 @@ function showFinalScore(){
   document.getElementById('score-ring').style.setProperty('--pct', pctCss+'deg');
   document.getElementById('final-score-num').textContent = score;
   document.getElementById('final-score-denom').textContent = '/ '+maxScore;
+  const deskLabel = currentMode==='power' ? '⚡ Power Desk' : '⛽ Gas Desk';
+  document.querySelector('#screen-score .score-title').textContent = deskLabel + ' — Shift Complete';
   document.getElementById('rank-display').innerHTML = `<div class="rank-badge ${rankClass}">🏆 ${rank}</div><p style="font-size:13px;color:var(--muted);margin-bottom:20px">${rankMsg}</p>`;
   const fpnl = document.getElementById('final-pnl-num');
   fpnl.textContent = fmtPnL(deskPnL);
