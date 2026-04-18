@@ -841,6 +841,7 @@ let timerInterval = null;
 let timerLeft = 0;
 let answered = false;
 let currentMode = 'gas';
+let activeLevels = null;
 
 // =================== UTILS ===================
 function fmtPnL(v){
@@ -896,15 +897,14 @@ function startGame(){
   score = 0;
   deskPnL = 0;
   results = [];
-  const activeLevels = currentMode === 'power' ? powerLevels : levels;
-  document.getElementById('level-badge') && (document.getElementById('level-badge').textContent='');
-  runLevel(activeLevels);
+  activeLevels = currentMode === 'power' ? powerLevels : levels;
+  runLevel();
 }
 function replayGame(){
   showScreen('intro');
 }
 
-function runLevel(activeLevels){
+function runLevel(){
   if(currentLevel >= activeLevels.length){ showFinalScore(activeLevels.length); return; }
   const lv = activeLevels[currentLevel];
   currentLevel++;
@@ -916,8 +916,7 @@ function runLevel(activeLevels){
 
 function nextLevel(){
   clearInterval(timerInterval);
-  const activeLevels = currentMode === 'power' ? powerLevels : levels;
-  runLevel(activeLevels);
+  runLevel();
 }
 
 function renderLevel(lv, total){
@@ -990,7 +989,7 @@ function renderLevel(lv, total){
 
 function timeUp(){
   answered = true;
-  const lv = levels[currentLevel-1];
+  const lv = activeLevels[currentLevel-1];
   document.querySelectorAll('.choice-btn').forEach(b=>b.classList.add('disabled'));
   const corrIdx = lv.choices.findIndex(c=>c.correct);
   document.getElementById('choice-'+corrIdx).classList.add('correct');
@@ -1001,7 +1000,7 @@ function selectChoice(idx){
   if(answered) return;
   clearInterval(timerInterval);
   answered = true;
-  const lv = levels[currentLevel-1];
+  const lv = activeLevels[currentLevel-1];
   const choice = lv.choices[idx];
   document.querySelectorAll('.choice-btn').forEach((b,i)=>{
     b.classList.add('disabled');
@@ -1034,7 +1033,7 @@ function showResult(correct, lv, idx){
       <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">📚 Full Explanation</div>
       <div style="font-size:12px;color:var(--muted);line-height:1.75">${lv.explanation}</div>
     </div>
-    <button id="next-btn" onclick="nextLevel()">${currentLevel >= (currentMode==='power'?powerLevels:levels).length ? '📊 See Final Results' : 'Next Scenario →'}</button>`;
+    <button id="next-btn" onclick="nextLevel()">${currentLevel >= activeLevels.length ? '📊 See Final Results' : 'Next Scenario →'}</button>`;
 }
 
 function showFinalScore(total){
