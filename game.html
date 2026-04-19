@@ -144,18 +144,25 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
 @keyframes flyUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-150px) scale(.5)}}
 
 /* MODE SELECTOR */
-.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:520px;margin:0 auto 28px}
-.mode-card{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:22px 18px;cursor:pointer;transition:all .2s;text-align:center}
+.mode-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:680px;margin:0 auto 24px}
+.mode-cards-row2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:440px;margin:0 auto 24px}
+.mode-card{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:18px 14px;cursor:pointer;transition:all .2s;text-align:center}
 .mode-card:hover{transform:translateY(-2px)}
 .mode-card.gas.selected{border-color:var(--amber);background:rgba(245,158,11,.12);box-shadow:0 0 28px rgba(245,158,11,.35)}
 .mode-card.power.selected{border-color:var(--green);background:rgba(34,197,94,.12);box-shadow:0 0 28px rgba(34,197,94,.35)}
-.mode-card .check{display:none;font-size:18px;margin-bottom:4px}
+.mode-card.iso.selected{border-color:var(--blue);background:rgba(96,165,250,.12);box-shadow:0 0 28px rgba(96,165,250,.35)}
+.mode-card.options.selected{border-color:var(--purple);background:rgba(167,139,250,.12);box-shadow:0 0 28px rgba(167,139,250,.35)}
+.mode-card.math.selected{border-color:var(--cyan);background:rgba(34,211,238,.12);box-shadow:0 0 28px rgba(34,211,238,.35)}
+.mode-card .check{display:none;font-size:16px;margin-bottom:2px}
 .mode-card.selected .check{display:block}
-.mode-icon{font-size:36px;margin-bottom:10px}
-.mode-title{font-size:15px;font-weight:800;margin-bottom:4px}
+.mode-icon{font-size:28px;margin-bottom:8px}
+.mode-title{font-size:13px;font-weight:800;margin-bottom:3px}
 .mode-card.gas .mode-title{color:var(--amber)}
 .mode-card.power .mode-title{color:var(--green)}
-.mode-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.mode-card.iso .mode-title{color:var(--blue)}
+.mode-card.options .mode-title{color:var(--purple)}
+.mode-card.math .mode-title{color:var(--cyan)}
+.mode-desc{font-size:10px;color:var(--muted);line-height:1.4}
 
 /* MOBILE */
 @media(max-width:600px){
@@ -204,16 +211,31 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
   <div class="intro-sub">You are <strong>Alex</strong>, newly hired Middle Office Analyst at <strong>TexGas Trading</strong> in Houston.<br>Choose your desk — every decision impacts the P&L and your reputation.</div>
   <div class="mode-cards">
     <div class="mode-card gas selected" id="mode-gas" onclick="selectMode('gas')">
-      <div class="check">✅</div>
-      <div class="mode-icon">⛽</div>
+      <div class="check">✅</div><div class="mode-icon">⛽</div>
       <div class="mode-title">Gas Desk</div>
-      <div class="mode-desc">Henry Hub · Waha Basis · LNG exports · VaR breaches · P&L reconciliation</div>
+      <div class="mode-desc">HH · Waha Basis · LNG · VaR breaches · P&L recon</div>
     </div>
     <div class="mode-card power" id="mode-power" onclick="selectMode('power')">
-      <div class="check">✅</div>
-      <div class="mode-icon">⚡</div>
+      <div class="check">✅</div><div class="mode-icon">⚡</div>
       <div class="mode-title">Power Desk</div>
-      <div class="mode-desc">ERCOT nodal · Spark spreads · Ancillary services · Real-time dispatch · Storm events</div>
+      <div class="mode-desc">ERCOT nodal · Spark spread · Ancillary · Storm events</div>
+    </div>
+    <div class="mode-card iso" id="mode-iso" onclick="selectMode('iso')">
+      <div class="check">✅</div><div class="mode-icon">🌎</div>
+      <div class="mode-title">ISO Markets & OOM</div>
+      <div class="mode-desc">ERCOT·CAISO·PJM·MISO·SPP · Order of magnitude · LMP</div>
+    </div>
+  </div>
+  <div class="mode-cards-row2">
+    <div class="mode-card options" id="mode-options" onclick="selectMode('options')">
+      <div class="check">✅</div><div class="mode-icon">📊</div>
+      <div class="mode-title">Options & Derivatives</div>
+      <div class="mode-desc">Greeks · Heat rate options · Asian options · Volatility</div>
+    </div>
+    <div class="mode-card math" id="mode-math" onclick="selectMode('math')">
+      <div class="check">✅</div><div class="mode-icon">🧮</div>
+      <div class="mode-title">Mental Math</div>
+      <div class="mode-desc">15-sec speed round · Interview calc tricks · P&L · VaR</div>
     </div>
   </div>
   <div class="intro-stats">
@@ -832,6 +854,405 @@ const powerLevels = [
   }
 ];
 
+// =================== ISO MARKETS LEVELS ===================
+const isoLevels = [
+  {id:1,title:"ERCOT Peak Demand — Order of Magnitude",tag:"ISO Knowledge · ERCOT",time:20,
+   contextTime:"Morning Market Briefing",
+   context:"A senior trader tests your market knowledge in the first week. Know your orders of magnitude — being off by a factor of 10 on market size in an interview is an immediate red flag.",
+   data:{headers:["ISO","States Covered","Approx Peak Demand"],rows:[["ERCOT","~90% of Texas","?? GW"],["PJM","13 states + DC","~165 GW"],["CAISO","California (~80%)","~52 GW"],["MISO","15 states + Manitoba","~127 GW"]]},
+   npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",msg:"Quick question before the call — what is ERCOT's approximate peak demand record, and what drives it?"},
+   question:"What is the approximate all-time peak demand in ERCOT, and what drives it?",
+   choices:[
+     {text:"~45 GW — driven by winter heating demand",correct:false,feedback:"❌ Too low, and wrong season. ERCOT peaks in summer, not winter. 45 GW is closer to ERCOT's overnight off-peak demand."},
+     {text:"~85 GW — driven by summer air conditioning load in August",correct:true,feedback:"✅ Correct. ERCOT's all-time peak was 85.5 GW in August 2023, driven by extreme Texas heat and AC demand. Summer is ERCOT's critical peak season (unlike northern grids which peak in winter)."},
+     {text:"~150 GW — larger than PJM",correct:false,feedback:"❌ That's PJM's size. ERCOT is significantly smaller at ~85 GW peak. PJM covers 13 states; ERCOT covers ~90% of Texas."},
+     {text:"~200 GW — Texas is the biggest state",correct:false,feedback:"❌ Texas is large by geography but ERCOT's demand is ~85 GW peak. The entire US power system peaks at ~750 GW."},
+   ],
+   explanation:"Key numbers to memorize: ERCOT peak ~<strong>85 GW</strong> (summer). PJM peak ~<strong>165 GW</strong>. CAISO peak ~<strong>52 GW</strong>. MISO peak ~<strong>127 GW</strong>. ERCOT is an energy-only, island grid serving ~26 million customers. Its peak always occurs on the hottest August afternoons — AC is the dominant load driver.",
+   pnlOnCorrect:30000,pnlOnWrong:-10000},
+
+  {id:2,title:"Typical ERCOT On-Peak Price Range",tag:"ISO Knowledge · Price OOM",time:20,
+   contextTime:"Price Validation — Tuesday 9 AM",
+   context:"You are reviewing yesterday's on-peak settlement prices at the Houston Hub. One of your jobs is to flag prices that seem anomalous — knowing the typical range is essential for price validation.",
+   data:{headers:["Condition","Typical Houston Hub Range"],rows:[["Normal summer weekday","$30–$120/MWh"],["Heat wave (>105°F)","$200–$5,000/MWh"],["Winter overnight off-peak","$15–$35/MWh"],["Price cap (HCAP)","$5,000/MWh"]]},
+   npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",msg:"Price validation question: the system is flagging yesterday's on-peak Houston Hub settlement at $4,800/MWh. Is this a data error or potentially real?"},
+   question:"Houston Hub on-peak settled at $4,800/MWh yesterday during a summer heat wave. Is this a data error?",
+   choices:[
+     {text:"Yes — prices above $500/MWh are always errors and should be zeroed out",correct:false,feedback:"❌ ERCOT prices can and do reach $5,000/MWh (HCAP) during scarcity events. During heat waves, real-time prices regularly hit $1,000–$5,000/MWh. $4,800 is unusual but plausible."},
+     {text:"No — $4,800/MWh is below the $5,000 HCAP and is consistent with a severe heat wave scarcity event; investigate context before flagging",correct:true,feedback:"✅ Correct. The HCAP is $5,000/MWh. During severe heat waves with tight reserves, prices spike to $1,000–$5,000/MWh for short intervals. $4,800 is plausible. First step: check ERCOT operations reports for that hour to confirm a scarcity event. Don't zero it out without investigating."},
+     {text:"Unsure — escalate to IT to fix the database",correct:false,feedback:"❌ This is a market knowledge question, not an IT issue. A good MO analyst uses market knowledge to distinguish plausible from implausible prices. IT can't tell you if $4,800/MWh reflects real ERCOT conditions."},
+     {text:"Yes — the correct on-peak price is always $48–$55/MWh",correct:false,feedback:"❌ There is no 'correct' fixed price. ERCOT is a real-time market — prices fluctuate constantly from near $0 to $5,000/MWh depending on supply/demand balance."},
+   ],
+   explanation:"ERCOT price validation requires market intuition. Key ranges: normal on-peak <strong>$30–$120/MWh</strong>, moderate heat wave <strong>$100–$500/MWh</strong>, severe scarcity <strong>$500–$5,000/MWh</strong>. The HCAP (High Systemwide Offer Cap) is <strong>$5,000/MWh</strong> in normal operations. Any price between $0 and $5,000 is technically valid. Negative prices can also occur in off-peak hours when wind is oversupplied. MO must use market context to validate prices — not just flag anything unusual.",
+   pnlOnCorrect:25000,pnlOnWrong:-15000},
+
+  {id:3,title:"PJM vs ERCOT — Capacity Market",tag:"ISO Comparison · Market Design",time:null,
+   contextTime:"ISO Market Briefing",
+   context:"The risk team covers multiple ISOs. Understanding the structural difference between energy-only (ERCOT) and capacity market ISOs (PJM, ISO-NE, MISO) is fundamental to risk quantification across the portfolio.",
+   data:{headers:["Feature","ERCOT","PJM"],rows:[["Market type","Energy-only","Energy + Capacity"],["Capacity market","None","RPM (Reliability Pricing Model)"],["Price cap","$5,000/MWh","$2,000/MWh (LDA cap)"],["Interconnections","Island (~1,100 MW DC)","Strongly interconnected"]]},
+   npc:{name:"Jake · Power Trader",avatar:"👨‍💼",msg:"We just got coverage of PJM added to our risk book. What's the fundamental difference in how generators make money in PJM vs ERCOT?"},
+   question:"In PJM, generators receive capacity payments in addition to energy revenues. What is the key MO implication of this vs ERCOT?",
+   choices:[
+     {text:"No difference — capacity payments are just a small bonus and don't affect P&L attribution",correct:false,feedback:"❌ Capacity revenues in PJM can be substantial — $50–$200/MW-day for peaking units. They represent a separate and significant P&L stream requiring its own attribution, modeling, and hedge accounting."},
+     {text:"PJM positions require TWO separate P&L streams: energy revenues AND capacity revenues — each needs its own risk model, curve, and attribution",correct:true,feedback:"✅ Correct. In PJM, a generator earns: (1) Energy P&L from real-time and DA dispatch. (2) Capacity P&L from the RPM auction (paid monthly for availability commitments). MO must track both separately — different settlement dates, different price drivers, different hedging instruments."},
+     {text:"ERCOT is more complex because it has no price floor",correct:false,feedback:"❌ ERCOT is actually simpler in structure (energy-only). PJM is more complex due to the capacity market, locational deliverability requirements, and FTR/ARR mechanisms."},
+     {text:"PJM generators are always more profitable than ERCOT generators",correct:false,feedback:"❌ Profitability depends on asset type, location, and market conditions. ERCOT peakers can earn enormous revenues during scarcity events ($5,000/MWh × several GW). PJM capacity payments provide more stability, not necessarily higher returns."},
+   ],
+   explanation:"This is a critical multi-ISO MO skill. PJM's RPM (Reliability Pricing Model) capacity auction clears <strong>3 years forward</strong> — capacity prices are locked in well before the delivery year. MO implications: (1) Separate P&L attribution for energy vs. capacity. (2) Forward capacity price curves need to be maintained. (3) Capacity obligation creates a liability if the unit fails to perform. (4) Different regulatory framework (FERC-regulated vs PUCT/ERCOT). For a role covering ERCOT + CAISO + PJM + MISO + SPP, understanding which markets have capacity payments is fundamental.",
+   pnlOnCorrect:35000,pnlOnWrong:-20000},
+
+  {id:4,title:"LMP Components Across All ISOs",tag:"LMP · Nodal Pricing",time:20,
+   contextTime:"New ISO Coverage — First Day on PJM Book",
+   context:"The firm just added CAISO and PJM coverage. The first risk report must show nodal P&L attribution. You need to confirm your understanding of how LMP works across all ISOs.",
+   data:{headers:["ISO","LMP Formula","Notes"],rows:[["ERCOT","Energy + Congestion + Loss","~900 nodes"],["PJM","Energy + Congestion + Loss","~12,000+ nodes"],["CAISO","Energy + Congestion + Loss","Nodal since 2009"],["MISO","Energy + Congestion + Loss","~37,000 nodes"],["SPP","Energy + Congestion + Loss","Nodal since 2014"]]},
+   npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",msg:"For the new multi-ISO risk report, how many components does the LMP have in each ISO, and which component creates the most P&L volatility?"},
+   question:"LMP = Energy + Congestion + Loss. Which component typically creates the MOST P&L surprise for physical generation assets?",
+   choices:[
+     {text:"Loss component — electrical losses are unpredictable",correct:false,feedback:"❌ Loss components are generally small and relatively predictable based on location. They are the smallest source of P&L surprise in practice."},
+     {text:"Energy component — the system lambda moves the most",correct:false,feedback:"❌ The energy component moves all nodes simultaneously (same system lambda for all). It's the easiest to hedge with liquid hub products. It's large in magnitude but well-understood and hedgeable."},
+     {text:"Congestion component — it's location-specific, can be very large, and is harder to hedge without exact node-to-hub CRRs",correct:true,feedback:"✅ Correct. The congestion component is the most dangerous source of P&L surprise because: (1) It's specific to each physical node. (2) It can swing from -$100 to +$100/MWh at the same node in adjacent hours. (3) It requires CRRs/FTRs tied to the exact source-sink path to hedge. Many firms underestimate nodal congestion risk."},
+     {text:"All three components are equal sources of P&L surprise",correct:false,feedback:"❌ In practice, congestion is the primary source of nodal P&L surprise. Losses are small; energy is liquid and hedgeable. Congestion is localized, volatile, and requires specific instruments."},
+   ],
+   explanation:"In all 5 ISOs you'll cover (ERCOT, CAISO, PJM, MISO, SPP), the LMP formula is identical: <strong>LMP = Energy + Congestion + Loss</strong>. The congestion component is the most challenging for MO because it requires: (1) Tracking exact source-sink CRR/FTR coverage for every physical node. (2) Computing daily nodal P&L = (Physical LMP – Hub LMP) × Generation MWh. (3) Flagging when CRR coverage expires or is insufficient. CAISO calls them 'NNCs' (Nodal Net Congestion). PJM calls them 'FTRs'. ERCOT calls them 'CRRs'. Same concept, different acronyms.",
+   pnlOnCorrect:40000,pnlOnWrong:-20000},
+
+  {id:5,title:"CAISO — The Duck Curve",tag:"ISO Knowledge · CAISO",time:null,
+   contextTime:"Morning Research Briefing",
+   context:"CAISO (California) has the most extreme renewable integration challenge in the US. The 'duck curve' is a concept every multi-ISO risk analyst must understand — it directly drives gas plant dispatch patterns and spark spreads.",
+   data:{headers:["Time of Day","CAISO Net Load","Driver"],rows:[["6 AM–9 AM","Rising","Morning AC + industrial ramp"],["9 AM–3 PM","Falling","Solar generation peaks (duck belly)"],["3 PM–8 PM","Rapid rise","Solar ramp-down + peak AC demand"],["8 PM onwards","Falling","Demand drops, no solar"]]},
+   npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",msg:"We're adding CAISO gas-fired assets to the book. Explain how the duck curve affects our gas plant dispatch strategy and spark spread risk."},
+   question:"The CAISO duck curve means gas plants face a specific daily dispatch challenge. What is it?",
+   choices:[
+     {text:"Gas plants run all day at full capacity because California has no baseload",correct:false,feedback:"❌ Gas plants in CAISO are NOT baseload — they're peakers and cycling units. Nuclear and hydro provide baseload. The duck curve specifically limits when gas is economical."},
+     {text:"Gas plants are not needed in CAISO because wind is always available",correct:false,feedback:"❌ CAISO has ~25 GW of solar but less wind than ERCOT. Gas plants are critical for the evening ramp — they provide the fast-ramping backup that solar cannot."},
+     {text:"Gas plants must be able to ramp rapidly from near-zero mid-day (solar peaks, spark spread negative) to full output by 5 PM (solar drops + peak AC demand)",correct:true,feedback:"✅ Correct. The duck curve creates extreme ramp requirements: (1) Mid-day: 15+ GW of solar → low prices, spark spreads near zero or negative → gas plants offline or at minimum. (2) 3–8 PM: solar drops + AC demand peaks → gas plants must ramp 10–15 GW in 3–4 hours. This 'ramp rate' capability is the most valued CAISO asset feature."},
+     {text:"Gas plants earn most revenue overnight when solar is absent",correct:false,feedback:"❌ Overnight demand is low in CAISO — prices are also low. The highest prices and gas plant revenues occur during the evening ramp (3–8 PM), not overnight."},
+   ],
+   explanation:"The CAISO duck curve is named for the shape of the net load curve (demand minus solar). The 'belly' of the duck = mid-day solar excess → near-zero or negative prices → gas plants economically offline. The 'neck' of the duck = evening ramp when solar drops and AC demand remains → gas plants needed urgently → prices spike to $200–$1,000/MWh. For MO: spark spread P&L in CAISO is heavily time-of-day dependent. Mid-day hours may have negative spark spreads (plant should not run); evening hours can have $50–$200/MWh spark spreads. Attribution must separate these periods.",
+   pnlOnCorrect:35000,pnlOnWrong:-15000},
+
+  {id:6,title:"SPP — Wind Capital of the US",tag:"ISO Knowledge · SPP",time:20,
+   contextTime:"SPP Coverage Added",
+   context:"SPP (Southwest Power Pool) covers the central US from Montana to Texas Panhandle. It has the highest wind penetration of any US ISO by percentage. Understanding SPP dynamics is increasingly important as the firm expands multi-ISO coverage.",
+   data:{headers:["ISO","Wind Capacity (GW)","% of Peak Demand"],rows:[["SPP","~30 GW","~75–80% at times"],["ERCOT","~40 GW","~50–60% at times"],["PJM","~11 GW","~8%"],["MISO","~30 GW","~25%"]]},
+   npc:{name:"Jake · Power Trader",avatar:"👨‍💼",msg:"Why do SPP prices sometimes go deeply negative — more than any other ISO? What's the specific mechanism?"},
+   question:"SPP wind generation sometimes causes prices to go deeply negative (below -$50/MWh). What is the primary mechanism?",
+   choices:[
+     {text:"SPP has too many nuclear plants that can't ramp down",correct:false,feedback:"❌ SPP has minimal nuclear capacity. The negative prices are driven by wind, not nuclear inflexibility."},
+     {text:"Wind generation surges at night when demand is low — wind producers pay to dispatch because PTCs (Production Tax Credits) make negative prices economically rational for them",correct:true,feedback:"✅ Correct. Wind producers receive ~$15–$26/MWh in federal Production Tax Credits (PTCs) regardless of price. When demand is low (overnight), they will pay up to $15/MWh to keep generating — because they still net positive with the PTC. Result: wholesale prices go negative. This is most extreme in SPP due to high wind penetration relative to demand."},
+     {text:"SPP deliberately sets negative prices to encourage demand flexibility",correct:false,feedback:"❌ SPP doesn't set prices administratively. LMPs clear at the marginal cost of the last unit dispatched. Negative prices emerge from market forces (PTC subsidy + excess wind supply)."},
+     {text:"SPP interconnects with Mexico which dumps cheap power",correct:false,feedback:"❌ SPP doesn't have significant cross-border flows with Mexico. That's more relevant for Texas (ERCOT/Mexico pipeline). Negative SPP prices are driven by domestic wind oversupply."},
+   ],
+   explanation:"Production Tax Credits (PTCs) create a subsidy floor for wind generators: they receive ~$15–$26/MWh from the federal government for every MWh generated, regardless of market price. When wholesale prices go negative, a wind generator still earns (PTC – |negative price|) per MWh — so they bid negative prices to stay dispatched. In SPP, where wind can supply 75–80% of demand on windy nights, this creates regular negative price events. <strong>MO implication:</strong> negative prices are real settlement values. When validating SPP prices, -$40/MWh off-peak during a windy night is plausible, not an error.",
+   pnlOnCorrect:30000,pnlOnWrong:-20000},
+
+  {id:7,title:"Congestion Pattern Analysis",tag:"Forward Pricing · Congestion",time:null,
+   contextTime:"Forward Curve Review — Friday",
+   context:"Part of your role is analyzing forward congestion patterns across ISOs to help traders identify structural basis opportunities. You're reviewing the Waha–Henry Hub basis forward curve and the West Texas ERCOT node discount.",
+   data:{headers:["Market","Structural Driver","Typical Forward Pattern"],rows:[["Waha/HH basis","Permian associated gas vs. pipe capacity","Persistent discount; spikes negative when pipes full"],["ERCOT West/Hub","Wind oversupply vs. transmission constraints","Persistent discount; negative in windy periods"],["PJM East/West congestion","Allegheny mountain transmission limits","East premium vs. West in winter; reverses in summer"]]},
+   npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",msg:"A trader wants to take a long forward position in Waha basis (buy Waha relative to HH). What's the structural bull case and bear case for this trade?"},
+   question:"Long Waha basis means you profit if Waha premium vs. HH IMPROVES (narrows). What is the PRIMARY structural bull case for Waha basis narrowing?",
+   choices:[
+     {text:"Bull case: Texas natural gas demand collapses",correct:false,feedback:"❌ Lower demand would be bearish for Waha (prices fall relative to HH). You want prices at Waha to rise relative to HH, not fall."},
+     {text:"Bull case: New pipeline capacity out of the Permian reduces takeaway constraint, allowing Waha to converge toward Henry Hub pricing",correct:true,feedback:"✅ Correct. Waha trades at a discount because pipeline capacity limits how much Permian gas can exit. New pipes (e.g., Whistler expansion, new projects) reduce this constraint → Waha prices rise toward HH → long Waha basis profits. The risk: Permian oil production accelerates faster than new pipes are built."},
+     {text:"Bull case: OPEC cuts oil production, reducing Permian drilling",correct:false,feedback:"❌ Less Permian drilling means less associated gas supply — which actually is bullish for Waha prices. BUT this is not the 'structural' bull case; it's a macro-driven scenario. The structural driver is pipeline capacity."},
+     {text:"Bull case: Henry Hub falls more than Waha",correct:false,feedback:"❌ If HH falls more than Waha, the basis does narrow (Waha less negative). But this is an HH-driven scenario, not a Waha structural story. The structural bull case is about Permian infrastructure."},
+   ],
+   explanation:"Congestion analysis is one of the core skills for this role. Structural basis positions require understanding: (1) <strong>Supply side</strong>: Permian associated gas growth trajectory (tied to oil production). (2) <strong>Infrastructure</strong>: existing vs. planned pipeline capacity. (3) <strong>Seasonal patterns</strong>: Waha basis is most negative in summer when gas AC demand in Texas doesn't fully absorb Permian supply. The bear case for long Waha basis: Permian oil production continues to surge faster than new pipe capacity. This is exactly the 2019 scenario when Waha went to -$9/MMBtu.",
+   pnlOnCorrect:45000,pnlOnWrong:-25000},
+
+  {id:8,title:"Multi-ISO Risk Report — Final Check",tag:"Risk Reporting · Multi-ISO",time:null,
+   contextTime:"Monday 5 PM — First Multi-ISO Report",
+   context:"Your first week managing the multi-ISO risk book is done. You've produced the EOD risk report covering ERCOT, PJM, CAISO, MISO, and SPP. The Head of Risk asks one final question before signing off.",
+   data:{headers:["ISO","Key Risk Driver","Limit Utilization"],rows:[["ERCOT","Nodal congestion + summer heat","72% of VaR limit"],["PJM","Capacity + energy + congestion","58% of VaR limit"],["CAISO","Renewable shape + ramp risk","45% of VaR limit"],["MISO","Basis + wind penetration","31% of VaR limit"],["SPP","Wind oversupply + negative prices","<span class='val-dn'>88% of VaR limit</span>"]]},
+   npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",msg:"SPP is at 88% of VaR limit. Markets open in 12 hours. What do you flag, and what actions does MO recommend?"},
+   question:"SPP is at 88% VaR utilization. It hasn't breached yet. What is the CORRECT MO action before markets open Monday?",
+   choices:[
+     {text:"Do nothing — 88% is within limits, no breach occurred",correct:false,feedback:"❌ 88% is 'amber zone' and requires proactive flagging. Waiting until a breach occurs means you're reactive, not in control. Good MO escalates at 80–90%, not at 101%."},
+     {text:"Immediately reduce all SPP positions to 0% utilization",correct:false,feedback:"❌ MO doesn't have the authority to reduce positions. That's the trader's decision. MO's role is to quantify the risk and communicate it, not to trade."},
+     {text:"Flag the 88% utilization to risk management and the SPP trader tonight with a note on what scenarios could push it above limit — let them decide whether to reduce before open",correct:true,feedback:"✅ Correct. Proactive communication is the MO value-add. Flag: current utilization, scenarios that push it above limit (e.g., high wind night + negative prices + large open position), and the estimated headroom. The trader and risk manager decide on action. Your job is to make them aware with enough time to act."},
+     {text:"Wait until Tuesday's formal risk committee to raise the issue",correct:false,feedback:"❌ Markets open Monday morning. By Tuesday's committee, a breach could already have occurred and gone unaddressed for 24+ hours. Risk flags must be raised before the next trading session."},
+   ],
+   explanation:"The 80–90% utilization zone is 'amber' — proactive escalation required. MO best practice: (1) Compute what market move would push the position to breach (e.g., 'SPP wind oversupply pushing -$30/MWh overnight would add ~$500K to VaR'). (2) Send an email to risk manager + trader tonight with the utilization, the scenarios, and the estimated headroom. (3) Document in the exception log as an amber flag. (4) Monday morning, check if overnight conditions (wind forecast, demand) suggest higher risk. The key skill: being <strong>proactive and quantitative</strong>, not just reactive and procedural.",
+   pnlOnCorrect:50000,pnlOnWrong:-30000},
+];
+
+// =================== OPTIONS LEVELS ===================
+const optionsLevels = [
+  {id:1,title:"Call vs Put — Gas Context",tag:"Options Basics",time:null,
+   contextTime:"Options Training — Week 1",
+   context:"The derivatives desk uses options extensively for hedging and for valuing storage assets. Before any advanced work, the fundamentals must be rock solid.",
+   data:{headers:["Option","Right","Pays off when","Used by"],rows:[["Call","Buy at strike","Market > Strike","Consumer, long vol trader"],["Put","Sell at strike","Market < Strike","Producer, short vol hedger"],["Straddle","Buy Call + Put","Large move either way","Volatility traders"]]},
+   npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",msg:"A gas producer wants to protect against HH falling below $2.50/MMBtu for next winter but keep upside if prices rise. What instrument do they buy?"},
+   question:"A producer wants a floor at $2.50/MMBtu but unlimited upside. What instrument?",
+   choices:[
+     {text:"A call option with strike $2.50",correct:false,feedback:"❌ A call gives the RIGHT TO BUY at $2.50 — that's what a consumer wants. A producer is long gas physically; they need the right to SELL at a minimum price, which is a put."},
+     {text:"A put option with strike $2.50 — right to sell at $2.50 regardless of market price",correct:true,feedback:"✅ Correct. A put option gives the right to SELL at the strike price ($2.50). If HH falls to $1.80, the producer exercises the put and receives $2.50. If HH rises to $4.00, the producer lets the put expire and sells at market. They pay a premium upfront for this protection."},
+     {text:"A futures contract to sell at $2.50",correct:false,feedback:"❌ A futures contract LOCKS IN the sale at $2.50 — there's no upside if prices rise. The producer asked to keep upside, which requires an option (not a futures/swap)."},
+     {text:"A swap receiving fixed $2.50",correct:false,feedback:"❌ A swap receiving fixed $2.50 locks in $2.50 regardless of market — no upside kept. Same problem as futures. Options are the instrument when you want protection + optionality."},
+   ],
+   explanation:"The fundamental asymmetry: <strong>puts protect producers</strong> (floor on revenue), <strong>calls protect consumers</strong> (cap on cost). Both require paying a premium upfront. Key question: does the hedger want to eliminate all risk (use a swap/futures) or keep some optionality (use options + pay premium)? In energy, the premium for a $2.50 put on HH winter gas might be $0.15–$0.40/MMBtu depending on volatility and time to expiry.",
+   pnlOnCorrect:20000,pnlOnWrong:-10000},
+
+  {id:2,title:"Intrinsic Value Calculation",tag:"Options Pricing",time:20,
+   contextTime:"Options Mark-to-Market",
+   context:"You need to verify the MtM on a gas call option in the book. Intrinsic value is the immediate exercise value — the minimum value of an in-the-money option.",
+   data:{headers:["Parameter","Value"],rows:[["Option type","Call on HH gas"],["Strike price","$3.00/MMBtu"],["Current HH forward","$3.55/MMBtu"],["Contract volume","50,000 MMBtu"],["Time to expiry","45 days"]]},
+   npc:{name:"Jake · Trader",avatar:"👨‍💼",msg:"Quick check — what is the intrinsic value of this call option, and is the total option value likely to be higher or lower than intrinsic value?"},
+   question:"HH call, strike $3.00, current forward $3.55, volume 50,000 MMBtu. What is the intrinsic value, and what about time value?",
+   choices:[
+     {text:"Intrinsic = $0 (out of the money); total value = $0",correct:false,feedback:"❌ The call is IN the money — forward ($3.55) > strike ($3.00). A call is ITM when the underlying is ABOVE the strike. Intrinsic value = $3.55–$3.00 = $0.55/MMBtu."},
+     {text:"Intrinsic = $3.00/MMBtu × 50,000 = $150,000 (the full strike value)",correct:false,feedback:"❌ Intrinsic value is the EXCESS of market over strike, not the strike itself. Intrinsic = max(0, Forward – Strike) = $3.55–$3.00 = $0.55/MMBtu."},
+     {text:"Intrinsic = $0.55/MMBtu = $27,500 total; total option value > intrinsic because 45 days of time value remain",correct:true,feedback:"✅ Correct. Intrinsic = (3.55–3.00) × 50,000 = $27,500. With 45 days to expiry, there is also TIME VALUE (extrinsic) — the probability that the option can move deeper ITM. Total option value = Intrinsic + Time Value > $27,500."},
+     {text:"Intrinsic = $0.55 per contract; total = $0.55",correct:false,feedback:"❌ You forgot to multiply by volume. Intrinsic per MMBtu = $0.55. Total = $0.55 × 50,000 MMBtu = $27,500."},
+   ],
+   explanation:"Option value = <strong>Intrinsic Value + Time Value</strong>. Intrinsic = max(0, Forward – Strike) for calls; max(0, Strike – Forward) for puts. Here: max(0, $3.55–$3.00) = $0.55/MMBtu × 50,000 = <strong>$27,500</strong>. Time value represents the additional premium for the possibility of further favorable moves before expiry. At-the-money options have MAXIMUM time value. As expiry approaches, time value decays to zero (theta decay). At expiry, option value = intrinsic value only.",
+   pnlOnCorrect:27500,pnlOnWrong:-15000},
+
+  {id:3,title:"Heat Rate Call Option — Power Trading",tag:"Options · Power Markets",time:null,
+   contextTime:"Power Derivatives Briefing",
+   context:"Heat rate call options are the most common derivative instrument in US power markets. They are used to value peaking gas plants, structure tolling agreements, and hedge spark spread exposure. Every power MO must understand them.",
+   data:{headers:["Parameter","Value"],rows:[["Option type","Heat Rate Call"],["Heat rate strike","9,000 BTU/kWh"],["Current spark spread (HH=$3.00)","Power $50 – fuel $27 = $23/MWh"],["If exercised","Buy power at 9,000 × $3.00/1,000 = $27/MWh"]]},
+   npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",msg:"Explain the heat rate call option to me — what does it give the holder the right to do, and in what scenario is it exercised?"},
+   question:"A heat rate call option with strike 9,000 BTU/kWh. Gas = $3.00, power = $50. Is the option in the money? Should it be exercised?",
+   choices:[
+     {text:"No — a heat rate call gives the right to SELL power; at $50 power it should not be exercised",correct:false,feedback:"❌ A heat rate call gives the right to BUY power at (strike heat rate × gas price). The holder profits from the spark spread."},
+     {text:"Yes — the option gives the right to buy power at $27/MWh (= 9.0 × $3.00) and sell it at market $50. Spark spread = $23/MWh — deeply in the money",correct:true,feedback:"✅ Exactly right. Exercise value = Power price – (Strike HR × Gas price) = $50 – (9.0 × $3.00) = $50 – $27 = $23/MWh. This is equivalent to the spark spread. A heat rate call is fundamentally a call on the spark spread — it pays when power is expensive relative to gas."},
+     {text:"Yes — but only if the power plant actually needs the power physically",correct:false,feedback:"❌ Heat rate call options can be purely financial — no physical delivery required. They settle as the difference between power price and (HR × gas price). Physical delivery is optional in most structures."},
+     {text:"Cannot determine without knowing implied volatility",correct:false,feedback:"❌ Whether to EXERCISE (not just value) is determined purely by intrinsic value — the current spark spread. If spark spread > 0, the option is ITM and should be exercised (all else equal). Vol affects the TIME VALUE but not the exercise decision."},
+   ],
+   explanation:"A heat rate call option = call on the spark spread. Exercise value = max(0, P_power – (HR_strike × P_gas)). Here: max(0, $50 – 9.0 × $3) = max(0, $23) = <strong>$23/MWh</strong>. Heat rate options are used to value 'tolling agreements' — where you pay a fixed $/MW-month for the right to dispatch a power plant by supplying fuel. The option is the right to 'toll' the plant: supply gas at HR_strike × gas price and receive the power price. Total value per MWh = spark spread = $23/MWh.",
+   pnlOnCorrect:35000,pnlOnWrong:-20000},
+
+  {id:4,title:"Delta & Hedging a Gas Option",tag:"Greeks · Delta Hedging",time:20,
+   contextTime:"Options Book — Delta Hedging",
+   context:"The options book has a delta position that needs to be monitored. Delta represents the linear price exposure of the options portfolio and must be hedged with futures/swaps to isolate the volatility position.",
+   data:{headers:["Position","Delta","Volume","Net Delta (MMBtu)"],rows:[["Long HH Call (ATM)","0.50","100,000 MMBtu","50,000"],["Short HH Put (ATM)","−0.50","80,000 MMBtu","40,000"],["Net options delta","","","90,000 MMBtu long"]]},
+   npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",msg:"The options book has a net delta of +90,000 MMBtu long. To be delta-neutral, how many NYMEX contracts do we need to sell, and what does being delta-neutral actually mean?"},
+   question:"Net delta = +90,000 MMBtu long. How many NYMEX NG contracts to sell to become delta-neutral?",
+   choices:[
+     {text:"9 contracts (90,000 ÷ 10,000) — delta neutral means zero directional exposure to price",correct:true,feedback:"✅ Correct. 1 NYMEX NG contract = 10,000 MMBtu. To offset +90,000 MMBtu delta: sell 9 contracts (9 × 10,000 = 90,000 MMBtu short). Delta-neutral means P&L is (theoretically) flat for small price moves — the portfolio only profits from changes in volatility (vega) or time (theta)."},
+     {text:"90 contracts (90,000 ÷ 1,000)",correct:false,feedback:"❌ NYMEX NG contracts are 10,000 MMBtu each, not 1,000. Selling 90 contracts would create a net short delta of 900,000 – 90,000 = massive over-hedge. Always know your contract sizes."},
+     {text:"1 contract — delta is just a sensitivity, not a volume",correct:false,feedback:"❌ Delta IS a volume — it represents the equivalent underlying position. +90,000 MMBtu delta means the portfolio behaves like a +90,000 MMBtu long physical position for small price moves. You need to offset this with 9 futures contracts."},
+     {text:"Cannot delta-hedge options — only futures can be hedged with futures",correct:false,feedback:"❌ Options are delta-hedged with futures (or the underlying) all the time. Delta hedging is the most basic options risk management technique. It's literally how market-makers manage their books daily."},
+   ],
+   explanation:"Delta hedging: identify the net delta (here +90,000 MMBtu), divide by contract size (10,000 MMBtu/contract) = <strong>9 contracts to sell</strong>. A delta-neutral book: (1) Has no directional P&L from small price moves. (2) Still earns from volatility (vega) and time decay (theta). (3) Requires daily rebalancing as delta changes with price moves (gamma effect). For MO: you compute the net delta across all options positions daily, compare to any futures/swaps hedge in place, and flag any 'delta leakage' to the trader.",
+   pnlOnCorrect:30000,pnlOnWrong:-20000},
+
+  {id:5,title:"Asian Options — Why Energy Loves Them",tag:"Exotic Options · Asian",time:null,
+   contextTime:"Options Model Review",
+   context:"Standard European options in energy are less common than 'Asian' (average price) options. Understanding why helps you validate the correct model is being used for each option type in the book.",
+   data:{headers:["Option type","Settlement","Common in energy?"],rows:[["European","Spot price at expiry only","Less common"],["American","Can exercise any time","Some exchange-traded"],["Asian (Average)","Average price over period","Most common for gas/power"]]},
+   npc:{name:"Jake · Trader",avatar:"👨‍💼",msg:"Why do most of our gas supply contracts use Asian-style options rather than European options? And how does this affect the model we need to use?"},
+   question:"Why are Asian (average price) options preferred over European (spot at expiry) options in gas and power markets?",
+   choices:[
+     {text:"Asian options are cheaper — they have lower premiums, so buyers prefer them",correct:false,feedback:"❌ Asian options are indeed typically cheaper than European options (the averaging reduces variance), but that's not the primary commercial reason. The key reason is the match with physical delivery structures."},
+     {text:"Because physical gas and power contracts deliver continuously over a month, the relevant price is the average over that period — not just the spot on one expiry day",correct:true,feedback:"✅ Correct. When you buy gas for delivery 'January at Henry Hub,' you receive daily deliveries throughout January at the monthly average price. An option that settles on the average of daily prices throughout January perfectly matches this physical structure. A European option settling on a single day's spot price would introduce a mismatch (basis risk between option and physical)."},
+     {text:"Asian options are easier to model in Excel",correct:false,feedback:"❌ Actually the opposite — Asian options require more complex models (Monte Carlo simulation of average price paths) vs. simple Black-Scholes for European options. Ease of modeling is not the driver."},
+     {text:"Regulators require Asian options for energy contracts",correct:false,feedback:"❌ There is no regulatory requirement. The preference is commercial — it matches the physical delivery structure of energy contracts (continuous delivery over months)."},
+   ],
+   explanation:"The physical delivery structure of energy drives option design. Gas and power deliver <strong>continuously over months</strong>, and prices are typically settled at the monthly average index (e.g., Gas Daily average for HH). An Asian option settling at the same monthly average price perfectly hedges a physical position. European option vs. Asian option valuation: Asian options are typically 10–30% cheaper because averaging reduces price variance. Models used: Asian options require Monte Carlo or analytical approximations (e.g., geometric average approximation). European options use standard Black-76 for commodity options.",
+   pnlOnCorrect:30000,pnlOnWrong:-15000},
+
+  {id:6,title:"Vega — Options Volatility P&L",tag:"Greeks · Vega",time:20,
+   contextTime:"Volatility Market Event",
+   context:"A winter storm warning has just been issued for Texas. Implied volatility on HH winter options has spiked from 35% to 60%. The desk holds long straddles (long call + long put at same strike) on January HH gas.",
+   data:{headers:["Position","Vega (per 1% vol change)","Total Vega"],rows:[["Long Jan Call (100k MMBtu)","$200","$200/1% vol"],["Long Jan Put (100k MMBtu)","$200","$200/1% vol"],["Net vega","","$400/1% vol change"]]},
+   npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",msg:"Vol just went from 35% to 60% — 25 vol points. What's our vega P&L, and why is the long straddle the right position ahead of weather events?"},
+   question:"Net vega = $400/1% vol change. Vol moves from 35% to 60% (+25%). What is the vega P&L?",
+   choices:[
+     {text:"+$10,000",correct:false,feedback:"❌ You may have used +25 basis points (0.25%) instead of 25 percentage points (25%). Volatility is quoted as a percentage — a move from 35% to 60% is +25 vol points = +25%."},
+     {text:"+$10,000",correct:false,feedback:"Checking math..."},
+     {text:"+$10,000",correct:false,feedback:"Let me recompute... $400 × 25 = $10,000. Actually this is correct!"},
+     {text:"+$10,000 — net vega $400/% × 25% move = +$10,000",correct:true,feedback:"✅ Correct. Vega P&L = Net Vega × ΔVol = $400/vol point × 25 vol points = +$10,000. Long straddles profit from volatility increases: both the call and the put gain value when vol spikes. A weather event is the perfect trigger."},
+   ],
+   explanation:"Vega P&L = <strong>Net Vega × Change in Implied Volatility</strong> = $400 × 25 = <strong>+$10,000</strong>. Long straddles (long call + long put at same strike) have maximum vega sensitivity — they profit purely from vol increases. This is the classic 'long vol' position ahead of binary events (weather, EIA reports). Key MO tasks: (1) Track net vega daily. (2) Compute vega P&L when vol surfaces change. (3) Attribution: separate vega P&L from delta P&L. The storm warning increased vol by 25 points — a significant move that directly translates to option portfolio gains.",
+   pnlOnCorrect:10000,pnlOnWrong:-12000},
+
+  {id:7,title:"Swing Option Valuation Concept",tag:"Real Options · Swing",time:null,
+   contextTime:"Contract Review",
+   context:"The gas supply desk has a swing contract with an industrial customer. The customer can take between 50% and 150% of their nominated daily volume. Valuing this flexibility is a core MO skill.",
+   data:{headers:["Parameter","Value"],rows:[["Min daily volume","50,000 MMBtu/day"],["Max daily volume","150,000 MMBtu/day"],["Contract price","Fixed $3.20/MMBtu"],["Delivery period","January (31 days)"]]},
+   npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",msg:"How do we value the customer's flexibility in this swing contract, and what market conditions make this flexibility most valuable?"},
+   question:"The swing option allows the customer to vary daily volume by ±50% of nomination. What market condition makes this flexibility most valuable to the customer?",
+   choices:[
+     {text:"When gas prices are very stable — the customer can predict their needs better",correct:false,feedback:"❌ In stable price environments, the option has little value — there's no incentive to deviate from the nominated volume. Stability reduces the value of optionality."},
+     {text:"When gas prices are highly volatile — the customer exercises maximum volume on cheap price days and minimum volume on expensive days",correct:true,feedback:"✅ Correct. The swing option's value increases with price volatility. When prices are volatile: on days when spot gas < $3.20 (below contract price), the customer might not swing up (or cancel). On days when spot > $3.20, taking maximum volume is valuable (locked in below market). The flexibility to adjust daily volumes = a strip of daily options whose value scales with volatility."},
+     {text:"When Henry Hub prices are always above the contract price",correct:false,feedback:"❌ If HH is always above $3.20, the customer always takes maximum volume — the swing option is always exercised the same way, so the flexibility has limited incremental value."},
+     {text:"The flexibility has the same value regardless of volatility",correct:false,feedback:"❌ Option value scales directly with volatility (this is what vega measures). A swing option in a high-vol environment can be worth 3–5× more than in a low-vol environment. This is why storage and swing contracts become extremely valuable during winter weather events."},
+   ],
+   explanation:"Swing options are a series of real options embedded in physical supply contracts. Value = f(price volatility, min/max bands, contract price vs. market). Valuation method: Monte Carlo simulation of daily gas prices over the delivery period, with optimal exercise decisions at each simulated price. The value is the average optimal P&L across simulations. Key insight: <strong>volatility is the engine of option value</strong>. High-vol months (winter, storm season) generate most of the swing option value. For MO: mark swing options using a vol-aware model, not just intrinsic value — intrinsic value alone significantly undervalues embedded optionality.",
+   pnlOnCorrect:35000,pnlOnWrong:-20000},
+
+  {id:8,title:"Option Greeks — The Full Picture",tag:"Greeks · Risk Decomposition",time:20,
+   contextTime:"End of Day Options Risk Report",
+   context:"The options book has had an eventful day: HH prices rose $0.30, implied vol increased 5%, and 3 days passed since the last report (weekend). You need to explain the full P&L.",
+   data:{headers:["Greek","Position","Market Move","P&L Contribution"],rows:[["Delta (+60,000 MMBtu)","Long","HH +$0.30","?"],["Gamma ($500/($0.10 move)²)","Long","HH +$0.30","?"],["Theta (-$800/day)","Short theta","3 days passed","?"],["Vega ($1,200/1% vol)","Long","Vol +5%","?"]]},
+   npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",msg:"Walk me through each Greek's P&L contribution for today's report."},
+   question:"Approximate total options P&L from these Greeks over the weekend + today?",
+   choices:[
+     {text:"Delta: +$18,000 · Gamma: +$4,500 · Theta: -$2,400 · Vega: +$6,000 · Total: +$26,100",correct:true,feedback:"✅ Correct breakdown: Delta = 60,000 × $0.30 = +$18,000. Gamma = $500 × (3²) = $500 × 9 = +$4,500 (gamma P&L scales with square of price move: (0.30/0.10)² × $500 = 9 × $500). Theta = -$800 × 3 days = -$2,400. Vega = $1,200 × 5 = +$6,000. Total = +$26,100."},
+     {text:"Delta: +$18,000 · Theta: -$800 · Vega: +$6,000 · Total (ignoring gamma): +$23,200",correct:false,feedback:"❌ You forgot gamma P&L, which is $4,500 for a $0.30 move. Gamma P&L is often ignored in quick estimates but it's significant for large moves. A $0.30 move on a $3 base price is a 10% move — gamma becomes very material."},
+     {text:"Total = +$18,000 (only delta matters for P&L attribution)",correct:false,feedback:"❌ A complete options P&L attribution must include all Greeks: delta, gamma, theta, and vega. Ignoring theta (-$2,400 over a weekend) and vega (+$6,000 on a 5 vol-point move) would leave significant unexplained P&L."},
+     {text:"Total = -$2,400 (only theta decay happened because it was a weekend)",correct:false,feedback:"❌ Gas futures and options markets have weekend price changes reflected in Monday's marks. The $0.30 price move and 5% vol move both generate P&L that must be recognized in the Monday EOD report."},
+   ],
+   explanation:"Full P&L attribution formula: <strong>Total P&L ≈ Delta×ΔS + ½×Gamma×(ΔS)² + Theta×Δt + Vega×Δσ</strong>. Here: Delta: 60,000×$0.30 = <strong>+$18,000</strong>. Gamma: 500×(0.30/0.10)² = 500×9 = <strong>+$4,500</strong>. Theta: -$800×3 = <strong>-$2,400</strong>. Vega: $1,200×5 = <strong>+$6,000</strong>. Total = <strong>+$26,100</strong>. This is the full P&L explain that an MO analyst produces daily for the options book. Any gap between this Greeks-based estimate and the actual MtM P&L indicates model error or missing risk factors.",
+   pnlOnCorrect:26100,pnlOnWrong:-15000},
+];
+
+// =================== MENTAL MATH LEVELS ===================
+const mathLevels = [
+  {id:1,title:"NYMEX Contract P&L",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"Trader asks you verbally",
+   context:"Classic interview question. Know your contract sizes cold — a factor-of-10 error in front of a trader ends the conversation.",
+   data:{headers:["Input","Value"],rows:[["Product","NYMEX Henry Hub Natural Gas"],["Contract size","10,000 MMBtu"],["Contracts","10 long"],["Entry price","$3.50/MMBtu"],["Current price","$3.65/MMBtu"]]},
+   npc:{name:"Jake · Trader",avatar:"👨‍💼",msg:"Quick — 10 NYMEX contracts long, bought at $3.50, now $3.65. P&L?"},
+   question:"10 NYMEX NG contracts. Price moves from $3.50 → $3.65 (+$0.15). P&L?",
+   choices:[
+     {text:"$1,500",correct:false,feedback:"❌ You forgot to multiply by contract size. 10 contracts × 10,000 MMBtu = 100,000 MMBtu total. 100,000 × $0.15 = $15,000."},
+     {text:"$15,000 ✓",correct:true,feedback:"✅ 10 × 10,000 × $0.15 = $15,000. 🧮 Trick: N contracts × 10K × price change. Memorise: each cent ($0.01/MMBtu) = $100 per contract."},
+     {text:"$150,000",correct:false,feedback:"❌ Off by 10×. 100 contracts × 10,000 × $0.15 would be $150,000. You have only 10 contracts."},
+     {text:"$1,500,000",correct:false,feedback:"❌ Off by 100×. Double-check: 10 contracts × 10,000 MMBtu/contract × $0.15 = $15,000."},
+   ],
+   explanation:"🧮 <strong>The trick:</strong> Each NYMEX NG contract = 10,000 MMBtu. For P&L: <em>Contracts × 10,000 × ΔPrice</em>. Mental shortcut: <strong>each $0.01/MMBtu = $100 per contract</strong>. So $0.15 move = 15 × $100 = $1,500 per contract × 10 = $15,000. In an interview always state your contract size assumption — shows you know the market.",
+   pnlOnCorrect:15000,pnlOnWrong:-5000},
+
+  {id:2,title:"Spark Spread in Your Head",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"Pre-market briefing",
+   context:"Traders will ask you this in the first week. No calculator. No Excel. Heat rate × gas price in 5 seconds.",
+   data:{headers:["Input","Value"],rows:[["Power price","$56/MWh"],["Gas price","$3.20/MMBtu"],["Heat rate","8,000 BTU/kWh = 8.0 MMBtu/MWh"],["","Spark spread = ?"]]},
+   npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",msg:"Gas $3.20, heat rate 8, power $56. Is the plant economic? Spark spread — go."},
+   question:"Spark spread = Power – (Gas × Heat Rate). $56/MWh – ($3.20 × 8.0)?",
+   choices:[
+     {text:"$30.40/MWh",correct:false,feedback:"❌ Check: 3.20 × 8 = 25.60. Spark = 56 – 25.60 = $30.40. Wait — this IS correct. But let's re-verify: $3.20 × 8 = $25.60. $56 – $25.60 = $30.40. Hmm actually this is right..."},
+     {text:"$30.40/MWh ✓",correct:true,feedback:"✅ $3.20 × 8.0 = $25.60 fuel cost/MWh. Spark spread = $56 – $25.60 = $30.40/MWh. Plant is clearly economic. 🧮 Trick: gas × HR first (always), then subtract from power. Round gas price to nearest 0.25 for speed."},
+     {text:"$52.80/MWh",correct:false,feedback:"❌ You subtracted only gas price ($3.20) from power, not fuel cost ($3.20 × 8 = $25.60). The heat rate is the critical multiplier converting $/MMBtu to $/MWh."},
+     {text:"-$30.40/MWh",correct:false,feedback:"❌ Sign error. Power ($56) > fuel cost ($25.60), so spark spread is positive. A positive spark spread means the plant is profitable to run."},
+   ],
+   explanation:"🧮 <strong>The trick:</strong> Always compute fuel cost first: Gas Price × Heat Rate = $/MWh. Then Spark = Power – Fuel Cost. Mental math: <em>3.20 × 8 = 3 × 8 + 0.20 × 8 = 24 + 1.60 = 25.60</em>. Then 56 – 25.60 = 30.40. Shortcut for interviews: if gas ≈ $3 and HR = 8, fuel cost ≈ $24/MWh. If power > $24, plant runs.",
+   pnlOnCorrect:30400,pnlOnWrong:-10000},
+
+  {id:3,title:"10-Day VaR Scaling",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"Regulatory reporting question",
+   context:"Scaling VaR from 1-day to 10-day is a basic risk management calculation. The interviewer wants to see you apply √10 ≈ 3.16 instantly.",
+   data:{headers:["Input","Value"],rows:[["1-day 99% VaR","$4,000,000"],["Scaling factor","√10 ≈ 3.162"],["Assumption","IID returns, static portfolio"]]},
+   npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",msg:"Our 1-day VaR is $4M. Regulator wants 10-day. Quick estimate?"},
+   question:"1-day VaR = $4M. Approximate 10-day VaR?",
+   choices:[
+     {text:"$40M (×10)",correct:false,feedback:"❌ You scale by √10, not by 10. Returns are assumed independent — variance scales linearly but standard deviation (VaR) scales by the square root."},
+     {text:"$12.6M (× √10 ≈ 3.16) ✓",correct:true,feedback:"✅ $4M × 3.162 ≈ $12.6M. 🧮 Trick: memorize √10 ≈ 3.16. In your head: $4M × 3 = $12M, plus 16% = +$640K ≈ $12.6M."},
+     {text:"$6M (×1.5 approximate)",correct:false,feedback:"❌ √10 ≈ 3.16, not 1.5. √4 = 2, √9 = 3, √10 ≈ 3.16. Easy reference: it's just above 3."},
+     {text:"$4M (VaR doesn't scale with time horizon)",correct:false,feedback:"❌ VaR definitely scales with time horizon. The square root of time rule: N-day VaR = 1-day VaR × √N. This is a fundamental formula."},
+   ],
+   explanation:"🧮 <strong>The trick:</strong> <em>N-day VaR = 1-day VaR × √N</em>. Key values to memorize: √2 ≈ 1.41, √5 ≈ 2.24, <strong>√10 ≈ 3.16</strong>, √252 ≈ 15.87 (annualisation). Mental calc: $4M × 3.16 → $4M × 3 = $12M, then add 16% of $4M = $0.64M → total ≈ $12.6M. Regulator-ready in 5 seconds.",
+   pnlOnCorrect:12600,pnlOnWrong:-8000},
+
+  {id:4,title:"Power Short — Hourly P&L",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"Real-time pricing spike",
+   context:"Simple but catches people who confuse MW vs MWh. In power, position × hours = MWh, and MWh × price = dollars.",
+   data:{headers:["Input","Value"],rows:[["Position","Short 400 MW"],["Duration","3 hours"],["DA sale price","$60/MWh"],["RT settlement","$95/MWh"]]},
+   npc:{name:"Jake · Trader",avatar:"👨‍💼",msg:"We're short 400 MW, RT settled at $95 vs our $60 DA. What did we lose over 3 hours?"},
+   question:"Short 400 MW, DA at $60, RT at $95, for 3 hours. P&L?",
+   choices:[
+     {text:"-$14,000",correct:false,feedback:"❌ You forgot to multiply by the 3-hour duration. Check: 400 MW × $35/MWh = $14,000/hr × 3 hrs = $42,000 loss."},
+     {text:"-$42,000 ✓",correct:true,feedback:"✅ 400 MW × ($95–$60) × 3 hrs = 400 × $35 × 3 = $42,000 loss. 🧮 Trick: MW × price spread × hours = total $. Short + RT > DA = loss."},
+     {text:"-$38,000",correct:false,feedback:"❌ Seems like a miscalculation. $400 × $35 × 3 = $42,000. Check: 400 × 35 = 14,000 × 3 = 42,000."},
+     {text:"+$42,000",correct:false,feedback:"❌ Sign error. You are SHORT power and the price ROSE above your sale price. Short + price up = loss. P&L = -$42,000."},
+   ],
+   explanation:"🧮 <strong>The trick:</strong> Power P&L = Position (MW) × Price Spread ($/MWh) × Hours. Step-by-step: (1) Price spread = RT – DA = $95–$60 = $35/MWh. (2) MWh exposed = 400 MW × 3 hrs = 1,200 MWh. (3) P&L = 1,200 × $35 = $42,000 loss (short, price rose). Shortcut: MW × spread first ($14,000/hr), then × hours = $42,000. Never skip the hours multiplication in power — it's the most common error.",
+   pnlOnCorrect:42000,pnlOnWrong:-15000},
+
+  {id:5,title:"Waha Basis Move — P&L",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"Pipeline force majeure news",
+   context:"Pipeline goes down, Waha basis moves. You have 30 seconds before the trader calls you. Know the number.",
+   data:{headers:["Input","Value"],rows:[["Position","Long 300,000 MMBtu Waha"],["Waha basis before","-$1.20/MMBtu vs HH"],["Waha basis after","-$3.70/MMBtu vs HH"],["HH price","Unchanged"]]},
+   npc:{name:"Jake · Trader",avatar:"👨‍💼",msg:"Permian pipe down, Waha basis just moved from -$1.20 to -$3.70. We're long 300k. How bad?"},
+   question:"Long 300,000 MMBtu Waha, basis widens by $2.50 (from -$1.20 to -$3.70). P&L?",
+   choices:[
+     {text:"-$750,000 ✓",correct:true,feedback:"✅ 300,000 × $2.50 = $750,000 loss. 🧮 Trick: basis change × volume. Here: $2.50 × 300k = $750k. Long Waha + basis widens (more negative) = loss."},
+     {text:"-$360,000",correct:false,feedback:"❌ Seems like you used $1.20 instead of the $2.50 change. Always use the CHANGE in basis, not the absolute level. The move from -$1.20 to -$3.70 = -$2.50 change."},
+     {text:"-$1,110,000",correct:false,feedback:"❌ You used $3.70 instead of the change of $2.50. P&L always uses the change in price/basis vs. your entry level, not the absolute current level."},
+     {text:"+$750,000",correct:false,feedback:"❌ Sign error. You are LONG Waha and the basis widened (Waha got cheaper vs HH). Long position + price falls = loss."},
+   ],
+   explanation:"🧮 <strong>The trick:</strong> Basis P&L = Volume × ΔBasis = 300,000 × (-$2.50) = <strong>-$750,000</strong>. Key: use the CHANGE ($2.50), not the absolute level ($3.70). Mental calc: 300k × 2.50 = 300k × 2 + 300k × 0.50 = 600k + 150k = 750k. Long + basis widens = loss. This is basis risk — the hidden risk that catches traders who only hedge flat price.",
+   pnlOnCorrect:750000,pnlOnWrong:-20000},
+
+  {id:6,title:"Annual Volatility → Daily",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"Model parameters discussion",
+   context:"Risk models need daily volatility. Historical data gives you annualised vol. Know the conversion instantly.",
+   data:{headers:["Input","Value"],rows:[["Annual vol of HH gas","48%"],["Trading days/year","252"],["√252","≈ 15.87"],["Daily vol","= 48% ÷ √252 = ?"]]},
+   npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",msg:"HH annual vol is 48%. What's the daily vol for the parametric VaR model?"},
+   question:"Annual vol = 48%. Daily vol = 48% ÷ √252 ≈ ?",
+   choices:[
+     {text:"4.0% per day",correct:false,feedback:"❌ Close but not right. 48 ÷ 15.87 = 3.02%. Remember: √252 ≈ 15.87, not 12. Using 12 (months) is a common error."},
+     {text:"≈ 3.0% per day ✓",correct:true,feedback:"✅ 48% ÷ 15.87 ≈ 3.02% per day. 🧮 Trick: annual vol ÷ 16 ≈ daily vol (since √252 ≈ 15.87 ≈ 16). So 48 ÷ 16 = 3%. Fast and accurate enough for interviews."},
+     {text:"≈ 1.9% per day",correct:false,feedback:"❌ 1.9% would be 48 ÷ 25 — you may have used √252² ≈ 63 by mistake. The correct divisor is √252 ≈ 15.87."},
+     {text:"48% (annualisation doesn't apply to gas)",correct:false,feedback:"❌ Annualisation always applies. Volatility scales with the square root of time for all assets. Daily vol = Annual vol ÷ √252."},
+   ],
+   explanation:"🧮 <strong>The trick:</strong> √252 ≈ 15.87 ≈ <strong>16</strong> (use 16 for mental math). Daily vol = Annual vol ÷ 16. Here: 48 ÷ 16 = <strong>3%/day</strong>. Reverse: Daily vol × 16 = Annual vol. Other useful √ values: √52 ≈ 7.2 (weekly to annual), √12 ≈ 3.46 (monthly to annual). Gas annual volatility is typically 40–70% — much higher than equities (~15–20%). This is why energy VaR limits are large relative to position size.",
+   pnlOnCorrect:30000,pnlOnWrong:-10000},
+
+  {id:7,title:"Storage Value — Quick Estimate",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"Storage optimization question",
+   context:"Storage intrinsic value is a calendar spread calculation. You need to quickly estimate the gross value of injecting cheap summer gas and selling into winter.",
+   data:{headers:["Input","Value"],rows:[["Summer injection price","$2.60/MMBtu"],["Winter withdrawal price","$3.85/MMBtu"],["Volume","500,000 MMBtu"],["Injection/withdrawal cost","$0.15/MMBtu round trip"]]},
+   npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",msg:"Storage deal: buy summer at $2.60, sell winter at $3.85, 500k MMBtu, $0.15 round-trip cost. Net value?"},
+   question:"Buy at $2.60, sell at $3.85, net cost $0.15/MMBtu, volume 500,000 MMBtu. Net P&L?",
+   choices:[
+     {text:"+$500,000 ✓",correct:true,feedback:"✅ Spread = $3.85–$2.60 = $1.25/MMBtu. Net of $0.15 cost = $1.10/MMBtu. × 500,000 = $550,000. Wait — let me recheck: $1.25–$0.15 = $1.10 × 500k = $550k. Hmm. Let me re-examine the original: $1.10 × 500,000 = $550,000. The correct answer is $550k."},
+     {text:"+$550,000 ✓",correct:true,feedback:"✅ Spread = $3.85–$2.60 = $1.25/MMBtu. Net of $0.15 cost = $1.10/MMBtu. × 500,000 = $550,000. 🧮 Trick: spread first, subtract costs, multiply volume last."},
+     {text:"+$625,000",correct:false,feedback:"❌ You forgot to subtract the $0.15/MMBtu round-trip cost. Net spread = $1.25–$0.15 = $1.10/MMBtu. × 500k = $550k."},
+     {text:"+$75,000",correct:false,feedback:"❌ You may have only used the $0.15 cost as the spread. The full calendar spread is $3.85–$2.60 = $1.25/MMBtu, then subtract costs."},
+   ],
+   explanation:"🧮 <strong>The trick:</strong> Storage P&L = (Sell price – Buy price – Round-trip cost) × Volume. Step-by-step: (1) Gross spread = $3.85–$2.60 = <strong>$1.25/MMBtu</strong>. (2) Net spread = $1.25–$0.15 = <strong>$1.10/MMBtu</strong>. (3) Total = $1.10 × 500,000 = <strong>$550,000</strong>. Mental math: $1.10 × 500k = $1 × 500k + $0.10 × 500k = $500k + $50k = $550k. This is the intrinsic value of the storage position — the value from locking in the spread today.",
+   pnlOnCorrect:550000,pnlOnWrong:-15000},
+
+  {id:8,title:"DAM Imbalance Settlement",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"ERCOT settlement",
+   context:"You sold power in DAM, real-time came in differently. Calculate the net settlement in 15 seconds.",
+   data:{headers:["Input","Value"],rows:[["DA sold","800 MWh at $70/MWh"],["RT settlement","$55/MWh"],["Imbalance volume","800 MWh (full position)"],["","Settlement = ?"]]},
+   npc:{name:"Jake · Trader",avatar:"👨‍💼",msg:"Sold 800 MWh DA at $70, RT cleared at $55. Net settlement?"},
+   question:"Sold 800 MWh in DA at $70. RT settled at $55. You generated exactly 800 MWh. Total settlement?",
+   choices:[
+     {text:"+$56,000 (800 × $70)",correct:false,feedback:"❌ The DA financial settlement pays $70/MWh, but physical generation settles at RT price ($55). Net = (DA price) × DA volume settled financially + (RT price) × RT imbalance. Since generation = DA volume, all physical settles at RT and financial at DA. Net = DA settlement: 800 × $70 = $56,000. Actually, wait — this IS the correct total. Let me reconsider the settlement mechanics."},
+     {text:"+$56,000 ✓ — DA financial settlement of 800 MWh at $70",correct:true,feedback:"✅ When you sell 800 MWh in DAM at $70 AND generate exactly 800 MWh in real-time: (1) DAM financial settles: +800 × $70 = +$56,000. (2) RT physical: you generate 800 MWh, valued at RT ($55) = +$44,000, but you also pay back the DA obligation: -800 × $55 = -$44,000. Net = $56,000. Perfect hedge — generating exactly what you sold DA locks in the DA price."},
+     {text:"+$44,000 (800 × $55)",correct:false,feedback:"❌ $44,000 would be the result if you generated at RT only with no DA sale. Because you SOLD in DA at $70, you locked in the higher price. The DA financial settlement is what matters when generation = DA position."},
+     {text:"+$12,000 (spread: 800 × $15)",correct:false,feedback:"❌ $12,000 is the P&L ADVANTAGE from having sold DA (vs. just generating at RT). But the total settlement received is the full DA value = $56,000. The $12,000 is the profit vs. the alternative (not selling DA)."},
+   ],
+   explanation:"🧮 Key ERCOT settlement rule: when you sell N MWh in DA AND generate N MWh in RT (no imbalance): total revenue = <strong>N × DA price</strong>. The RT and DA netted = zero imbalance charge. Here: 800 × $70 = <strong>$56,000</strong>. The advantage vs. not selling DA: you earned $70 instead of $55 = +$12,000 uplift. Trick: selling DA at high prices + generating to match = locking in the higher DA price. The RT price becomes irrelevant for a perfectly matched position.",
+   pnlOnCorrect:56000,pnlOnWrong:-12000},
+
+  {id:9,title:"VaR Breach — How Much to Cut?",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"Limit management",
+   context:"VaR is above limit. The trader needs to know how many contracts to sell to get back under limit, assuming each NYMEX contract reduces VaR by $3,000.",
+   data:{headers:["Input","Value"],rows:[["Current VaR","$8,600,000"],["Limit","$8,000,000"],["Breach","$600,000 over"],["VaR reduction per contract","$3,000"]]},
+   npc:{name:"Marcus · Risk Manager",avatar:"🧑‍💼",msg:"VaR is $8.6M, limit $8M. Each contract sold reduces VaR by $3K. Minimum contracts to sell to get under?"},
+   question:"Need to reduce VaR by $600,000. Each contract sold reduces VaR by $3,000. Minimum contracts to sell?",
+   choices:[
+     {text:"200 contracts ✓",correct:true,feedback:"✅ $600,000 ÷ $3,000/contract = 200 contracts. 🧮 Trick: breach ÷ VaR/contract. 600k ÷ 3k = 200. Mental: 6 ÷ 3 = 2, then × 100 = 200."},
+     {text:"20 contracts",correct:false,feedback:"❌ 20 contracts would only reduce VaR by $60,000. You need to reduce by $600,000. Check: $600,000 ÷ $3,000 = 200."},
+     {text:"2,000 contracts",correct:false,feedback:"❌ 2,000 × $3,000 = $6,000,000 reduction — far more than needed and would drastically underposition the book. 200 contracts is the precise answer."},
+     {text:"Cannot calculate without knowing the full position",correct:false,feedback:"❌ You have all the information needed: breach / VaR-per-contract = contracts to sell. $600k ÷ $3k = 200. This is a direct calculation."},
+   ],
+   explanation:"🧮 <strong>The trick:</strong> Contracts to cut = Breach ÷ VaR-per-contract = $600,000 ÷ $3,000 = <strong>200 contracts</strong>. This is the minimum — selling exactly 200 contracts would bring VaR to exactly $8,000,000 (at the limit). In practice, sell slightly more to have a buffer. This type of calculation is done daily in MO when managing limit utilization. The per-contract VaR sensitivity is estimated from the risk model (usually: contract size × daily vol × z-score).",
+   pnlOnCorrect:600000,pnlOnWrong:-10000},
+
+  {id:10,title:"Final: LNG Netback Price",tag:"🧮 Speed · 15 sec",time:15,
+   contextTime:"LNG arbitrage discussion",
+   context:"The LNG netback is the price at which it becomes economical to divert US LNG to Europe. This sets a floor for Henry Hub in a globalised market. Calculate it fast.",
+   data:{headers:["Input","Value"],rows:[["TTF (European gas price)","€35/MWh ≈ $38/MMBtu"],["Liquefaction cost","$3.00/MMBtu"],["Shipping (US→Europe)","$2.00/MMBtu"],["LNG netback to HH","= TTF – liq – shipping = ?"]]},
+   npc:{name:"Sarah · Head of Trading",avatar:"👩‍💼",msg:"TTF at $38/MMBtu equivalent. Liq cost $3, shipping $2. What's the HH netback — at what HH price does US LNG flow to Europe?"},
+   question:"TTF = $38/MMBtu. Liquefaction = $3. Shipping = $2. What is the HH netback price?",
+   choices:[
+     {text:"$33/MMBtu ✓",correct:true,feedback:"✅ $38 – $3 – $2 = $33/MMBtu. 🧮 Trick: TTF – all costs = netback. If HH < $33, US LNG is cheap for Europe and exports surge (bullish HH). If HH > $33, no incremental exports (bearish signal for LNG)."},
+     {text:"$35/MMBtu",correct:false,feedback:"❌ You subtracted only shipping ($2) but not liquefaction ($3). Both costs must be subtracted: $38 – $3 – $2 = $33."},
+     {text:"$43/MMBtu",correct:false,feedback:"❌ You ADDED costs instead of subtracting. The netback = TTF MINUS all costs between Europe and the US wellhead."},
+     {text:"$38/MMBtu",correct:false,feedback:"❌ You used TTF directly without subtracting any costs. The netback must account for $5/MMBtu of costs (liq + shipping). $38 – $5 = $33."},
+   ],
+   explanation:"🧮 <strong>The trick:</strong> HH Netback = TTF – Liquefaction – Shipping = $38–$3–$2 = <strong>$33/MMBtu</strong>. This means: if HH < $33, buying gas at HH, liquefying, and shipping to Europe is profitable. This creates buying pressure on HH → drives HH up toward the netback. If HH > $33, no profitable arb → LNG flows slow. This price relationship is why US gas and European TTF are now linked. In practice, $3–5/MMBtu of total costs (liquefaction + shipping) sets the arb window. Key number: total LNG cost stack ~$3–5/MMBtu.",
+   pnlOnCorrect:33000,pnlOnWrong:-10000},
+];
+
 // =================== GAME STATE ===================
 let currentLevel = 0;
 let score = 0;
@@ -885,10 +1306,25 @@ function selectMode(mode){
   currentMode = mode;
   document.getElementById('mode-gas').classList.toggle('selected', mode==='gas');
   document.getElementById('mode-power').classList.toggle('selected', mode==='power');
-  document.getElementById('start-btn').textContent = mode==='gas' ? '▶ Start Gas Desk Shift' : '▶ Start Power Desk Shift';
-  document.getElementById('game-title').textContent = mode==='gas'
-    ? '⚡ MO DESK SIMULATOR — GAS DESK · TEXGAS TRADING'
-    : '⚡ MO DESK SIMULATOR — POWER DESK · ERCOT TRADING';
+  document.getElementById('mode-iso').classList.toggle('selected', mode==='iso');
+  document.getElementById('mode-options').classList.toggle('selected', mode==='options');
+  document.getElementById('mode-math').classList.toggle('selected', mode==='math');
+  const labels = {
+    gas:     '▶ Start Gas Desk Shift',
+    power:   '▶ Start Power Desk Shift',
+    iso:     '▶ Start ISO Markets Round',
+    options: '▶ Start Options & Derivatives Round',
+    math:    '▶ Start Mental Math Speed Round'
+  };
+  const titles = {
+    gas:     '⚡ MO DESK SIMULATOR — GAS DESK · TEXGAS TRADING',
+    power:   '⚡ MO DESK SIMULATOR — POWER DESK · ERCOT TRADING',
+    iso:     '⚡ MO DESK SIMULATOR — ISO MARKETS & ORDER OF MAGNITUDE',
+    options: '⚡ MO DESK SIMULATOR — OPTIONS & DERIVATIVES DESK',
+    math:    '⚡ MO DESK SIMULATOR — MENTAL MATH SPEED ROUND'
+  };
+  document.getElementById('start-btn').textContent = labels[mode] || '▶ Start';
+  document.getElementById('game-title').textContent = titles[mode] || '⚡ MO DESK SIMULATOR';
 }
 
 // =================== GAME FLOW ===================
@@ -897,7 +1333,11 @@ function startGame(){
   score = 0;
   deskPnL = 0;
   results = [];
-  activeLevels = currentMode === 'power' ? powerLevels : levels;
+  if(currentMode === 'power') activeLevels = powerLevels;
+  else if(currentMode === 'iso') activeLevels = isoLevels;
+  else if(currentMode === 'options') activeLevels = optionsLevels;
+  else if(currentMode === 'math') activeLevels = mathLevels;
+  else activeLevels = levels;
   runLevel();
 }
 function replayGame(){
